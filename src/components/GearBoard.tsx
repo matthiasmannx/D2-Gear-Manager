@@ -562,6 +562,7 @@ export default function GearBoard({
         </div>
       )}
 
+      <div className="gear-chars-grid">
       {characters.map((c) => (
         <section
           key={c.characterId}
@@ -641,6 +642,7 @@ export default function GearBoard({
           )}
         </section>
       ))}
+      </div>
 
       <section
         className={`gear-char ${dragging ? "drag-target" : ""} ${dropZone === "vault" ? "drop-over" : ""}`}
