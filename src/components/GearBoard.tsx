@@ -101,6 +101,7 @@ function Tile({
   const [info, setInfo] = useState<ItemInfo | null>(null);
   const [loading, setLoading] = useState(false);
   const [flipUp, setFlipUp] = useState(false);
+  const [grOpen, setGrOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
   const border = TIER_COLOR[item.tier] ?? "var(--border)";
   const canAct = !!item.instanceId;
@@ -204,25 +205,42 @@ function Tile({
             </div>
           )}
 
-          {isWeapon && (
-            <div className="gear-godroll">
-              <span className="gear-godroll-h">God rolls</span>
-              {loading && <span className="muted" style={{ fontSize: "0.76rem" }}>laden…</span>}
-              {info && (info.pve.length > 0 || info.pvp.length > 0) && (
-                <>
-                  {info.pve.length > 0 && <PerkRow label="PvE" perks={info.pve} cls="pve" owned={item.perks} />}
-                  {info.pvp.length > 0 && <PerkRow label="PvP" perks={info.pvp} cls="pvp" owned={item.perks} />}
-                </>
-              )}
-              {info && info.pve.length === 0 && info.pvp.length === 0 && (
-                <span className="muted" style={{ fontSize: "0.76rem" }}>Geen wishlist-roll bekend.</span>
-              )}
-              <div className="gear-godroll-links">
-                <a className="gear-godroll-btn pve" href={`https://www.light.gg/db/items/${item.hash}/`} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>PvE ↗</a>
-                <a className="gear-godroll-btn pvp" href={`https://www.light.gg/db/items/${item.hash}/`} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>PvP ↗</a>
+          {isWeapon && (() => {
+            const owned = new Set(item.perks);
+            const pveM = info?.pve.filter((p) => owned.has(p.hash)).length ?? 0;
+            const pvpM = info?.pvp.filter((p) => owned.has(p.hash)).length ?? 0;
+            const hasRolls = info && (info.pve.length > 0 || info.pvp.length > 0);
+            return (
+              <div className="gear-godroll">
+                <button className="gr-toggle" onClick={() => setGrOpen((o) => !o)}>
+                  <span className="gear-godroll-h">God rolls</span>
+                  <span className="gr-summary">
+                    {loading
+                      ? "laden…"
+                      : hasRolls
+                      ? `✓${pveM}/${info!.pve.length} PvE · ✓${pvpM}/${info!.pvp.length} PvP`
+                      : info
+                      ? "geen roll"
+                      : ""}{" "}
+                    {grOpen ? "▲" : "▼"}
+                  </span>
+                </button>
+                {grOpen && (
+                  <>
+                    {info && info.pve.length > 0 && <PerkRow label="PvE" perks={info.pve} cls="pve" owned={item.perks} />}
+                    {info && info.pvp.length > 0 && <PerkRow label="PvP" perks={info.pvp} cls="pvp" owned={item.perks} />}
+                    {info && info.pve.length === 0 && info.pvp.length === 0 && (
+                      <span className="muted" style={{ fontSize: "0.76rem" }}>Geen wishlist-roll bekend.</span>
+                    )}
+                    <div className="gear-godroll-links">
+                      <a className="gear-godroll-btn pve" href={`https://www.light.gg/db/items/${item.hash}/`} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>PvE ↗</a>
+                      <a className="gear-godroll-btn pvp" href={`https://www.light.gg/db/items/${item.hash}/`} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>PvP ↗</a>
+                    </div>
+                  </>
+                )}
               </div>
-            </div>
-          )}
+            );
+          })()}
 
           {context === "postmaster" ? (
             <div className="gear-panel-actions">
@@ -712,7 +730,7 @@ function emblemBg(path?: string): React.CSSProperties {
   if (!path) return {};
   const url = iconUrl(path);
   return {
-    backgroundImage: `linear-gradient(90deg, rgba(10,12,18,0.15) 55%, rgba(10,12,18,0.8) 92%), url(${url})`,
+    backgroundImage: `linear-gradient(90deg, rgba(10,12,18,0.8) 0%, rgba(10,12,18,0.15) 32%, rgba(10,12,18,0.15) 60%, rgba(10,12,18,0.85) 100%), url(${url})`,
     backgroundSize: "cover, cover",
     backgroundRepeat: "no-repeat, no-repeat",
     backgroundPosition: "center, center",
