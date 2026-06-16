@@ -9,6 +9,11 @@ const nextConfig = {
       },
     ],
   },
+  // Zorg dat de gebundelde manifest-snapshot (data/) in de serverless-bundle
+  // op Vercel terechtkomt — dynamische fs-paden worden niet auto-getraceerd.
+  outputFileTracingIncludes: {
+    "/**": ["./data/**"],
+  },
 };
 
 module.exports = nextConfig;
