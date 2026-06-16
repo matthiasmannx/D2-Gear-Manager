@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 interface ItemStat {
   name: string;
@@ -100,6 +100,8 @@ function Tile({
   const [pinned, setPinned] = useState(false);
   const [info, setInfo] = useState<ItemInfo | null>(null);
   const [loading, setLoading] = useState(false);
+  const [flipUp, setFlipUp] = useState(false);
+  const wrapRef = useRef<HTMLDivElement>(null);
   const border = TIER_COLOR[item.tier] ?? "var(--border)";
   const canAct = !!item.instanceId;
   const otherChars = a.characters.filter((c) => c.characterId !== source);
@@ -122,9 +124,16 @@ function Tile({
 
   return (
     <div
+      ref={wrapRef}
       className="gear-tile-wrap"
       style={{ zIndex: pinned ? 200 : hover ? 120 : undefined }}
-      onMouseEnter={() => setHover(true)}
+      onMouseEnter={() => {
+        // Bepaal vóór het tonen of het paneel naar boven moet openen, zodat het
+        // niet buiten beeld valt (voorkomt flikker onderaan de pagina).
+        const r = wrapRef.current?.getBoundingClientRect();
+        if (r) setFlipUp(window.innerHeight - r.bottom < 380);
+        setHover(true);
+      }}
       onMouseLeave={() => setHover(false)}
     >
       <button
@@ -150,7 +159,11 @@ function Tile({
       {show && (
         <div
           className="gear-panel"
-          style={{ borderTopColor: border, pointerEvents: pinned ? "auto" : "none" }}
+          style={{
+            borderTopColor: border,
+            pointerEvents: pinned ? "auto" : "none",
+            ...(flipUp ? { top: "auto", bottom: "calc(100% + 4px)" } : {}),
+          }}
         >
           <div className="gear-panel-head" style={{ background: border }}>
             {item.name}
