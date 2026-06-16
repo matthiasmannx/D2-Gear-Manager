@@ -1607,6 +1607,27 @@ input:focus {
     flex-wrap: wrap;
   }
 
+  /* Navbar compacter: alleen logo, korte login-tekst */
+  .brand-text,
+  .nav-auth-extra {
+    display: none;
+  }
+
+  /* Gear-zoekresultaten netjes stapelen (knoppen op een eigen regel) */
+  .gsr-row {
+    flex-wrap: wrap;
+  }
+  .gsr-info {
+    flex: 1 1 calc(100% - 46px);
+    min-width: 0;
+  }
+  .gsr-actions {
+    flex: 1 1 100%;
+  }
+  .gsr-actions button {
+    flex: 1;
+  }
+
   /* Voorkom horizontale paginascroll door absolute panelen */
   body {
     overflow-x: hidden;

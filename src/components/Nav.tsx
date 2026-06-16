@@ -19,7 +19,7 @@ export default function Nav({ loggedIn }: { loggedIn: boolean }) {
     <nav className="nav">
       <div className="nav-inner">
         <Link href="/" className="nav-brand">
-          ⟡ Guardian Hub
+          ⟡<span className="brand-text"> Guardian Hub</span>
         </Link>
         <div className="nav-links">
           {LINKS.map((l) => {
@@ -32,12 +32,12 @@ export default function Nav({ loggedIn }: { loggedIn: boolean }) {
           })}
         </div>
         {loggedIn ? (
-          <a href="/api/auth/logout" className="btn btn-ghost">
-            Uitloggen
+          <a href="/api/auth/logout" className="btn btn-ghost nav-auth">
+            Uit<span className="nav-auth-extra">loggen</span>
           </a>
         ) : (
-          <a href="/api/auth/login" className="btn">
-            Login met Bungie
+          <a href="/api/auth/login" className="btn nav-auth">
+            Login<span className="nav-auth-extra"> met Bungie</span>
           </a>
         )}
       </div>
