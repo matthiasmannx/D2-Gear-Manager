@@ -169,10 +169,7 @@ h3 {
   color: var(--text);
 }
 .brand-hub {
-  background: var(--accent);
-  color: #1a1200;
-  padding: 0.06em 0.4em;
-  border-radius: 0.38em;
+  color: var(--text);
 }
 .home-title {
   font-size: clamp(2.2rem, 6vw, 3.4rem);

@@ -1,10 +1,12 @@
 import { getValidAccessToken } from "@/lib/auth";
 import { loadGear, GearData } from "@/lib/gear";
 import GearBoard from "@/components/GearBoard";
+import { getTranslations } from "next-intl/server";
 
 export const metadata = { title: "Gear — Guardian Hub" };
 
 export default async function GearPage() {
+  const t = await getTranslations("gear");
   const token = await getValidAccessToken();
   if (!token) return <LoginPrompt />;
 
@@ -19,27 +21,24 @@ export default async function GearPage() {
   if (error) {
     return (
       <>
-        <h1>Gear</h1>
-        <div className="notice error">Kon je gear niet laden: {error}</div>
+        <h1>{t("title")}</h1>
+        <div className="notice error">{t("loadFailed", { error })}</div>
       </>
     );
   }
   if (!data || data.characters.length === 0) {
     return (
       <>
-        <h1>Gear</h1>
-        <div className="empty">Geen Destiny 2 characters gevonden op dit account.</div>
+        <h1>{t("title")}</h1>
+        <div className="empty">{t("noChars")}</div>
       </>
     );
   }
 
   return (
     <>
-      <h1>Gear</h1>
-      <p className="muted">
-        Uitrusting van {data.name}. <strong>Sleep</strong> een item op een <strong>slot</strong> om te
-        equippen, of naar een andere guardian / de vault om te verplaatsen. Of <strong>klik</strong> erop voor opties.
-      </p>
+      <h1>{t("title")}</h1>
+      <p className="muted">{t("intro", { name: data.name })}</p>
       <GearBoard
         characters={data.characters}
         vault={data.vault}
@@ -49,15 +48,14 @@ export default async function GearPage() {
   );
 }
 
-function LoginPrompt() {
+async function LoginPrompt() {
+  const t = await getTranslations("gear");
   return (
     <>
-      <h1>Gear</h1>
-      <div className="notice">
-        Log in met je Bungie-account om je characters en uitrusting te beheren.
-      </div>
+      <h1>{t("title")}</h1>
+      <div className="notice">{t("loginPrompt")}</div>
       <a href="/api/auth/login" className="btn" style={{ marginTop: "1rem" }}>
-        Login met Bungie
+        {t("loginBtn")}
       </a>
     </>
   );

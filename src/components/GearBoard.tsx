@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface ItemStat {
   name: string;
@@ -107,6 +108,7 @@ function Tile({
   const [flipUp, setFlipUp] = useState(false);
   const [grOpen, setGrOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations("gear");
   const border = TIER_COLOR[item.tier] ?? "var(--border)";
   const canAct = !!item.instanceId;
   const otherChars = a.characters.filter((c) => c.characterId !== source);
@@ -249,23 +251,23 @@ function Tile({
 
           {context === "postmaster" ? (
             <div className="gear-panel-actions">
-              <button onClick={() => a.pull(item, source)} disabled={a.busy}>⤓ Pull naar character</button>
+              <button onClick={() => a.pull(item, source)} disabled={a.busy}>⤓ {t("pull")}</button>
               {canAct && (
                 <button className="gear-lock-btn" onClick={() => a.toggleLock(item, source, item.locked)} disabled={a.busy}>
-                  {item.locked ? "🔓 Unlock" : "🔒 Lock"}
+                  {item.locked ? `🔓 ${t("unlock")}` : `🔒 ${t("lock")}`}
                 </button>
               )}
             </div>
           ) : (
             canAct && (
               <div className="gear-panel-actions">
-                {context === "inventory" && <button onClick={() => a.equip(item, source)} disabled={a.busy}>Equip</button>}
+                {context === "inventory" && <button onClick={() => a.equip(item, source)} disabled={a.busy}>{t("equip")}</button>}
                 {(context === "inventory" || context === "equipped") && (
                   <button
                     onClick={() => (equipped ? a.moveEquipped(item, source, "vault") : a.enqueue(dragData, "vault"))}
                     disabled={a.busy}
                   >
-                    + Vault
+                    + {t("vault")}
                   </button>
                 )}
                 {otherChars.map((c) => (
@@ -278,14 +280,14 @@ function Tile({
                   </button>
                 ))}
                 <button className="gear-lock-btn" onClick={() => a.toggleLock(item, source, item.locked)} disabled={a.busy}>
-                  {item.locked ? "🔓 Unlock" : "🔒 Lock"}
+                  {item.locked ? `🔓 ${t("unlock")}` : `🔒 ${t("lock")}`}
                 </button>
               </div>
             )
           )}
           {equipped && (
             <div className="muted" style={{ fontSize: "0.72rem", marginTop: "0.3rem" }}>
-              Uitgerust — verplaatsen equipt automatisch eerst een ander item uit de inventory in dit slot.
+              {t("equippedNote")}
             </div>
           )}
         </div>
@@ -331,6 +333,7 @@ export default function GearBoard({
   vault: Item[];
   membershipType: number;
 }) {
+  const t = useTranslations("gear");
   const router = useRouter();
   // Direct verversen + nogmaals na 5s, omdat Bungie's profiel-data soms even
   // achterloopt na een transfer/equip.
@@ -363,13 +366,13 @@ export default function GearBoard({
   const [processing, setProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const targetLabel = (t: string) =>
-    t === "vault" ? "Vault" : CLASS_NAMES[characters.find((c) => c.characterId === t)?.classType ?? 3];
+  const targetLabel = (tg: string) =>
+    tg === "vault" ? t("vault") : CLASS_NAMES[characters.find((c) => c.characterId === tg)?.classType ?? 3];
 
   function enqueue(d: DragData, target: string) {
     if (d.source === target) return;
     if (d.equipped) {
-      setError("Uitgeruste items kun je niet verplaatsen — equip eerst iets anders.");
+      setError(t("cannotMoveEquipped"));
       return;
     }
     if (!d.instanceId) return;
@@ -405,10 +408,10 @@ export default function GearBoard({
           }),
         });
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error ?? "Mislukt");
+        if (!res.ok) throw new Error(data.error ?? t("failed"));
         setQueue((q) => q.filter((x) => x.key !== qi.key));
       } catch (e: any) {
-        setError(`Bij "${qi.name}" → ${targetLabel(qi.target)}: ${e.message}`);
+        setError(`${qi.name} → ${targetLabel(qi.target)}: ${e.message}`);
         break;
       }
     }
@@ -431,7 +434,7 @@ export default function GearBoard({
     try {
       const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Actie mislukt");
+      if (!res.ok) throw new Error(data.error ?? t("actionFailed"));
       refreshSoon();
     } catch (e: any) {
       setError(e.message);
@@ -454,9 +457,7 @@ export default function GearBoard({
       if (isEquipped) {
         const repl = srcChar?.inventory.find((x) => x.bucketHash === item.bucketHash && x.instanceId);
         if (!repl) {
-          setError(
-            `"${item.name}" is uitgerust op ${CLASS_NAMES[srcChar!.classType]} en die guardian heeft geen ander item voor dat slot in z'n inventory. Equip daar eerst iets anders.`
-          );
+          setError(t("noReplacement", { name: item.name, who: CLASS_NAMES[srcChar!.classType] }));
           return;
         }
         deequipItemId = repl.instanceId;
@@ -479,9 +480,7 @@ export default function GearBoard({
     const srcChar = characters.find((c) => c.characterId === source);
     const repl = srcChar?.inventory.find((x) => x.bucketHash === item.bucketHash && x.instanceId);
     if (!repl) {
-      setError(
-        `"${item.name}" is uitgerust en ${srcChar ? CLASS_NAMES[srcChar.classType] : "die guardian"} heeft geen ander item voor dat slot in z'n inventory. Equip daar eerst iets anders.`
-      );
+      setError(t("noReplacement", { name: item.name, who: srcChar ? CLASS_NAMES[srcChar.classType] : t("anyClass") }));
       return;
     }
     setBusy(true);
@@ -493,7 +492,7 @@ export default function GearBoard({
         body: JSON.stringify({ itemId: repl.instanceId, characterId: source, membershipType }),
       });
       let data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "De-equip mislukt");
+      if (!res.ok) throw new Error(data.error ?? t("deequipFailed"));
       res = await fetch("/api/gear/move", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -506,7 +505,7 @@ export default function GearBoard({
         }),
       });
       data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Verplaatsen mislukt");
+      if (!res.ok) throw new Error(data.error ?? t("moveFailed"));
       refreshSoon();
     } catch (e: any) {
       setError(e.message);
@@ -521,12 +520,12 @@ export default function GearBoard({
     const out: { item: Item; source: string; location: string }[] = [];
     for (const c of characters) {
       const cls = CLASS_NAMES[c.classType];
-      c.equipped.forEach((i) => out.push({ item: i, source: c.characterId, location: `Uitgerust · ${cls}` }));
-      c.inventory.forEach((i) => out.push({ item: i, source: c.characterId, location: `${cls}-inventory` }));
+      c.equipped.forEach((i) => out.push({ item: i, source: c.characterId, location: t("locEquipped", { cls }) }));
+      c.inventory.forEach((i) => out.push({ item: i, source: c.characterId, location: t("locInventory", { cls }) }));
     }
-    vault.forEach((i) => out.push({ item: i, source: "vault", location: "Vault" }));
+    vault.forEach((i) => out.push({ item: i, source: "vault", location: t("vault") }));
     return out;
-  }, [characters, vault]);
+  }, [characters, vault, t]);
 
   const gearResults = useMemo(() => {
     const q = gearQuery.trim().toLowerCase();
@@ -588,7 +587,7 @@ export default function GearBoard({
     try {
       const d: DragData = JSON.parse(e.dataTransfer.getData("application/json"));
       if (d.bucketHash !== slotBucket) {
-        setError("Dit item past niet in dit slot.");
+        setError(t("slotNotFit"));
         return;
       }
       if (d.source === characterId && d.equipped) return; // al uitgerust hier
@@ -618,13 +617,13 @@ export default function GearBoard({
   return (
     <>
       <div className="gear-toolbar">
-        <button className="gear-refresh" onClick={doRefresh} disabled={refreshing} title="Ververst automatisch elke 10 min">
-          <span className={refreshing ? "spin" : ""}>🔄</span> {refreshing ? "Verversen…" : "Ververs"}
+        <button className="gear-refresh" onClick={doRefresh} disabled={refreshing} title={t("refreshTitle")}>
+          <span className={refreshing ? "spin" : ""}>🔄</span> {refreshing ? t("refreshing") : t("refresh")}
         </button>
         <input
           type="search"
           className="gear-search"
-          placeholder="🔎 Zoek in al je gear (klik resultaat om te equippen)…"
+          placeholder={t("searchPlaceholder")}
           value={gearQuery}
           onChange={(e) => setGearQuery(e.target.value)}
         />
@@ -633,7 +632,7 @@ export default function GearBoard({
       {gearQuery.trim() && (
         <div className="gear-search-results">
           {gearResults.length === 0 ? (
-            <div className="muted" style={{ padding: "0.5rem" }}>Geen gear gevonden voor “{gearQuery}”.</div>
+            <div className="muted" style={{ padding: "0.5rem" }}>{t("noGearFound", { query: gearQuery })}</div>
           ) : (
             gearResults.map((r, i) => (
               <div key={(r.item.instanceId ?? r.item.hash) + "-" + i} className="gsr-row">
@@ -648,7 +647,7 @@ export default function GearBoard({
                 <div className="gsr-actions">
                   {characters.map((c) => (
                     <button key={c.characterId} onClick={() => equipTo(r.item, r.source, c.characterId)} disabled={busy}>
-                      Equip → {CLASS_NAMES[c.classType]}
+                      {t("equipToChar", { cls: CLASS_NAMES[c.classType] })}
                     </button>
                   ))}
                 </div>
@@ -659,13 +658,13 @@ export default function GearBoard({
       )}
 
       {error && <div className="notice error" style={{ marginTop: "1rem" }}>{error}</div>}
-      {busy && <div className="gear-busy">Bezig…</div>}
+      {busy && <div className="gear-busy">{t("busy")}</div>}
 
       {queue.length > 0 && (
         <div className="queue-panel">
           <div className="queue-head">
-            <strong>Wachtrij ({queue.length})</strong>
-            <button className="queue-clear" onClick={() => setQueue([])} disabled={processing}>Wis</button>
+            <strong>{t("queue", { n: queue.length })}</strong>
+            <button className="queue-clear" onClick={() => setQueue([])} disabled={processing}>{t("clear")}</button>
           </div>
           <div className="queue-list">
             {queue.map((qi) => (
@@ -676,12 +675,12 @@ export default function GearBoard({
                 )}
                 <span className="queue-name">{qi.name}</span>
                 <span className="queue-arrow">→ {targetLabel(qi.target)}</span>
-                <button className="queue-x" onClick={() => dequeue(qi.key)} disabled={processing} title="Verwijder">×</button>
+                <button className="queue-x" onClick={() => dequeue(qi.key)} disabled={processing} title={t("remove")}>×</button>
               </div>
             ))}
           </div>
           <button className="queue-go" onClick={processQueue} disabled={processing}>
-            {processing ? `Bezig… (${progress}/${queue.length})` : `Verplaats alles (${queue.length})`}
+            {processing ? t("processing", { progress, total: queue.length }) : t("moveAll", { n: queue.length })}
           </button>
         </div>
       )}
@@ -696,7 +695,7 @@ export default function GearBoard({
           onDrop={(e) => onDrop(e, c.characterId)}
         >
           {dragging && (
-            <div className="drop-hint">⤵ Sleep hierheen → naar {CLASS_NAMES[c.classType]}-inventory</div>
+            <div className="drop-hint">⤵ {t("dropChar", { cls: CLASS_NAMES[c.classType] })}</div>
           )}
           {/* rij 1: banner */}
           <div className="gear-char-head" style={emblemBg(c.emblemBackground)}>
@@ -706,7 +705,7 @@ export default function GearBoard({
 
           {/* rij 2: loadouts */}
           <div className="gc-row">
-            <span className="gear-sublabel">Loadouts</span>
+            <span className="gear-sublabel">{t("loadouts")}</span>
             <div className="loadout-row">
               {c.loadouts.length > 0 ? (
                 c.loadouts.map((lo) => (
@@ -715,7 +714,7 @@ export default function GearBoard({
                     className={`loadout-btn ${lo.active ? "active" : ""}`}
                     onClick={() => equipLoadout(lo.index, c.characterId)}
                     disabled={busy}
-                    title={`${lo.active ? "Actief — " : ""}Equip "${lo.name}" (${lo.itemCount} items)`}
+                    title={t(lo.active ? "loadoutTitleActive" : "loadoutTitle", { name: lo.name, n: lo.itemCount })}
                   >
                     {lo.icon && (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -725,14 +724,14 @@ export default function GearBoard({
                   </button>
                 ))
               ) : (
-                <span className="loadout-empty muted">Geen opgeslagen loadouts</span>
+                <span className="loadout-empty muted">{t("noLoadouts")}</span>
               )}
             </div>
           </div>
 
           {/* rij 3: uitgerust */}
           <div className="gc-row">
-            <span className="gear-sublabel">Uitgerust</span>
+            <span className="gear-sublabel">{t("equipped")}</span>
             <div className="gear-slots">
               {SLOTS.map((slot) => {
                 const it = c.equipped.find((x) => x.bucketHash === slot.bucket);
@@ -751,7 +750,7 @@ export default function GearBoard({
                     {it ? (
                       <Tile item={it} source={c.characterId} equipped context="equipped" a={actions} />
                     ) : (
-                      <div className="gear-slot-empty" title="Leeg — sleep hier een item om te equippen" />
+                      <div className="gear-slot-empty" />
                     )}
                   </div>
                 );
@@ -761,7 +760,7 @@ export default function GearBoard({
 
           {/* rij 4: "op character"-kop */}
           <div className="gc-row gc-invhead">
-            <span className="gear-sublabel">Op character ({c.inventory.length})</span>
+            <span className="gear-sublabel">{t("onCharacter", { n: c.inventory.length })}</span>
           </div>
 
           {/* rij 5-12: één rij per slot (subgrid lijnt ze uit over de guardians) */}
@@ -787,7 +786,7 @@ export default function GearBoard({
           <div className="gc-row gc-postmaster">
             {c.postmaster.length > 0 ? (
               <>
-                <span className="gear-sublabel">📭 Postmaster ({c.postmaster.length}) — klik voor god-roll &amp; pull</span>
+                <span className="gear-sublabel">📭 {t("postmaster", { n: c.postmaster.length })}</span>
                 <div className="gear-vault gc-items">
                   {c.postmaster.map((it, i) => (
                     <Tile key={(it.instanceId ?? it.hash) + "-pm-" + i} item={it} source={c.characterId} equipped={false} context="postmaster" a={actions} />
@@ -795,7 +794,7 @@ export default function GearBoard({
                 </div>
               </>
             ) : (
-              <span className="gear-sublabel muted">📭 Postmaster leeg</span>
+              <span className="gear-sublabel muted">📭 {t("postmasterEmpty")}</span>
             )}
           </div>
         </section>
@@ -809,30 +808,30 @@ export default function GearBoard({
         onDragLeave={() => setDropZone(null)}
         onDrop={(e) => onDrop(e, "vault")}
       >
-        {dragging && <div className="drop-hint">⤵ Sleep hierheen → naar de Vault</div>}
+        {dragging && <div className="drop-hint">⤵ {t("dropVault")}</div>}
         <div className="gear-char-head">
-          <span className="gear-char-class">Vault</span>
-          <span className="muted">{filteredVault.length} / {vault.length} items</span>
+          <span className="gear-char-class">{t("vault")}</span>
+          <span className="muted">{t("vaultItems", { shown: filteredVault.length, total: vault.length })}</span>
         </div>
 
         <div className="vault-controls">
-          <input type="search" placeholder="Zoek in vault…" value={q} onChange={(e) => { setQ(e.target.value); setPage(0); }} style={{ flex: 1, minWidth: 160 }} />
+          <input type="search" placeholder={t("vaultSearch")} value={q} onChange={(e) => { setQ(e.target.value); setPage(0); }} style={{ flex: 1, minWidth: 160 }} />
           <select value={typeFilter} onChange={(e) => { setTypeFilter(e.target.value as any); setPage(0); }}>
-            <option value="all">Alle types</option>
-            <option value="weapon">Wapens</option>
-            <option value="armor">Armor</option>
+            <option value="all">{t("allTypes")}</option>
+            <option value="weapon">{t("weapons")}</option>
+            <option value="armor">{t("armor")}</option>
           </select>
           <select value={rarity} onChange={(e) => { setRarity(e.target.value as any); setPage(0); }}>
-            <option value="all">Alle rarities</option>
-            <option value="Exotic">Exotic</option>
-            <option value="Legendary">Legendary</option>
+            <option value="all">{t("allRarities")}</option>
+            <option value="Exotic">{t("exotic")}</option>
+            <option value="Legendary">{t("legendary")}</option>
           </select>
           <label className="vault-toggle"><input type="checkbox" checked={mwOnly} onChange={(e) => { setMwOnly(e.target.checked); setPage(0); }} /> MW</label>
           <label className="vault-toggle"><input type="checkbox" checked={lockedOnly} onChange={(e) => { setLockedOnly(e.target.checked); setPage(0); }} /> 🔒</label>
         </div>
 
         {pageItems.length === 0 ? (
-          <div className="gear-label muted">Geen items die aan de filters voldoen.</div>
+          <div className="gear-label muted">{t("noFilterMatch")}</div>
         ) : (
           <div className="gear-vault">
             {pageItems.map((it, i) => (
@@ -843,9 +842,9 @@ export default function GearBoard({
 
         {pageCount > 1 && (
           <div className="vault-pager">
-            <button onClick={() => setPage(Math.max(0, safePage - 1))} disabled={safePage === 0}>← Vorige</button>
-            <span className="muted">Pagina {safePage + 1} / {pageCount}</span>
-            <button onClick={() => setPage(Math.min(pageCount - 1, safePage + 1))} disabled={safePage >= pageCount - 1}>Volgende →</button>
+            <button onClick={() => setPage(Math.max(0, safePage - 1))} disabled={safePage === 0}>{t("prev")}</button>
+            <span className="muted">{t("page", { n: safePage + 1, total: pageCount })}</span>
+            <button onClick={() => setPage(Math.min(pageCount - 1, safePage + 1))} disabled={safePage >= pageCount - 1}>{t("next")}</button>
           </div>
         )}
       </section>
