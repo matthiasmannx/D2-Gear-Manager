@@ -54,6 +54,7 @@ export interface GearLoadout {
   icon: string | null;
   color: string | null;
   itemCount: number;
+  active: boolean; // komt overeen met wat de guardian nu draagt
 }
 
 export interface GearCharacter {
@@ -154,13 +155,15 @@ export async function loadGear(token: string): Promise<GearData | null> {
 
   const isGear = (it: GearItem) => it.itemType === 2 || it.itemType === 3; // armor/weapon
 
-  const resolveLoadouts = async (charId: string): Promise<GearLoadout[]> => {
+  const resolveLoadouts = async (charId: string, equippedIds: Set<string>): Promise<GearLoadout[]> => {
     const raw = loadoutData[charId]?.loadouts ?? [];
     const out: GearLoadout[] = [];
     for (let i = 0; i < raw.length; i++) {
       const l = raw[i];
       const items = (l.items ?? []).filter((it: any) => it.itemInstanceId && it.itemInstanceId !== "0");
       if (items.length === 0) continue; // lege slot overslaan
+      // Actief = elk item uit de loadout zit ook in de huidige uitrusting.
+      const active = items.every((it: any) => equippedIds.has(it.itemInstanceId));
       let name = `Loadout ${i + 1}`;
       let ic: string | null = null;
       let color: string | null = null;
@@ -176,7 +179,7 @@ export async function loadGear(token: string): Promise<GearData | null> {
       } catch {
         /* val terug op standaardnaam */
       }
-      out.push({ index: i, name, icon: ic, color, itemCount: items.length });
+      out.push({ index: i, name, icon: ic, color, itemCount: items.length, active });
     }
     return out;
   };
@@ -201,7 +204,12 @@ export async function loadGear(token: string): Promise<GearData | null> {
         .filter((raw) => raw.bucketHash === POSTMASTER_BUCKET)
         .map(toItem)
         .filter((x: GearItem | null): x is GearItem => !!x);
-      const loadouts = await resolveLoadouts(c.characterId);
+      const equippedIds = new Set<string>(
+        (equipData[c.characterId]?.items ?? [])
+          .map((it: any) => it.itemInstanceId)
+          .filter((x: any): x is string => !!x)
+      );
+      const loadouts = await resolveLoadouts(c.characterId, equippedIds);
       return {
         characterId: c.characterId,
         classType: c.classType,

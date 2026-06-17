@@ -1409,6 +1409,18 @@ input:focus {
   opacity: 0.5;
   cursor: default;
 }
+/* Actieve (huidig gedragen) loadout: lichtgevende knop */
+.loadout-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(245, 166, 35, 0.14);
+  box-shadow: 0 0 0 1px var(--accent), 0 0 12px rgba(245, 166, 35, 0.55);
+}
+.loadout-btn.active::after {
+  content: "●";
+  font-size: 0.6rem;
+  color: var(--accent);
+}
 .loadout-btn img {
   width: 22px;
   height: 22px;

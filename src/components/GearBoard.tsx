@@ -25,7 +25,7 @@ interface Item {
   stats: ItemStat[];
   perks: number[];
 }
-interface Loadout { index: number; name: string; icon: string | null; color: string | null; itemCount: number }
+interface Loadout { index: number; name: string; icon: string | null; color: string | null; itemCount: number; active: boolean }
 interface Character {
   characterId: string;
   classType: number;
@@ -712,10 +712,10 @@ export default function GearBoard({
                 c.loadouts.map((lo) => (
                   <button
                     key={lo.index}
-                    className="loadout-btn"
+                    className={`loadout-btn ${lo.active ? "active" : ""}`}
                     onClick={() => equipLoadout(lo.index, c.characterId)}
                     disabled={busy}
-                    title={`Equip "${lo.name}" (${lo.itemCount} items)`}
+                    title={`${lo.active ? "Actief — " : ""}Equip "${lo.name}" (${lo.itemCount} items)`}
                   >
                     {lo.icon && (
                       // eslint-disable-next-line @next/next/no-img-element
