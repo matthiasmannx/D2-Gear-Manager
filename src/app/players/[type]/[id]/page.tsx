@@ -13,6 +13,7 @@ import {
   StreakInfo,
 } from "@/lib/bungie";
 import { getValidAccessToken } from "@/lib/auth";
+import { FavStar } from "@/components/Favorites";
 
 export const metadata = { title: "Player stats — Guardian Hub" };
 
@@ -56,10 +57,11 @@ export default async function PlayerStats({
           // eslint-disable-next-line @next/next/no-img-element
           <img src={extras.emblemPath} alt="" className="player-emblem" />
         )}
-        <div>
+        <div style={{ flex: 1 }}>
           <h1 style={{ margin: 0 }}>{extras.name ?? "Onbekende speler"}</h1>
           <div className="muted">PvP Stats{extras.platform ? ` · ${extras.platform}` : ""}</div>
         </div>
+        {extras.name && <FavStar type={mType} id={id} name={extras.name} />}
       </div>
 
       {failed && (

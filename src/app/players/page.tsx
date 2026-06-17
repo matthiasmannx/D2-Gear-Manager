@@ -2,6 +2,7 @@ import Link from "next/link";
 import SearchBar from "@/components/SearchBar";
 import { searchPlayers, icon, PLATFORMS, PlayerResult } from "@/lib/bungie";
 import { isLoggedIn } from "@/lib/auth";
+import { FavStar, FavoritesList } from "@/components/Favorites";
 
 export const metadata = { title: "Players — Guardian Hub" };
 
@@ -29,6 +30,7 @@ export default async function PlayersPage({
       )}
 
       <SearchBar basePath="/players" initial={q} placeholder="Bungie-naam, bv. Fhaxyy of Fhaxyy#3853" />
+      <FavoritesList />
       {q ? <Results query={q} /> : <Hint />}
     </>
   );
@@ -72,28 +74,27 @@ async function Results({ query }: { query: string }) {
           p.memberships.find((x: any) => x.crossSaveOverride === x.membershipType) ??
           p.memberships[0];
         return (
-          <Link
-            key={p.bungieName + m.membershipId}
-            href={`/players/${m.membershipType}/${m.membershipId}`}
-            className="card card-link"
-          >
-            <div className="item">
-              {icon(m.iconPath) ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img className="item-icon" src={icon(m.iconPath)!} alt="" />
-              ) : (
-                <div className="item-icon" />
-              )}
-              <div>
-                <div className="item-name">{p.bungieName}</div>
-                <div className="item-type">
-                  {p.memberships
-                    .map((x) => PLATFORMS[x.membershipType] ?? `Type ${x.membershipType}`)
-                    .join(" · ")}
+          <div key={p.bungieName + m.membershipId} className="card fav-card">
+            <Link href={`/players/${m.membershipType}/${m.membershipId}`} className="fav-card-link">
+              <div className="item">
+                {icon(m.iconPath) ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img className="item-icon" src={icon(m.iconPath)!} alt="" />
+                ) : (
+                  <div className="item-icon" />
+                )}
+                <div>
+                  <div className="item-name">{p.bungieName}</div>
+                  <div className="item-type">
+                    {p.memberships
+                      .map((x) => PLATFORMS[x.membershipType] ?? `Type ${x.membershipType}`)
+                      .join(" · ")}
+                  </div>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+            <FavStar type={m.membershipType} id={m.membershipId} name={p.bungieName} />
+          </div>
         );
       })}
     </div>
