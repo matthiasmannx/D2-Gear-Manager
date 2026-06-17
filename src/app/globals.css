@@ -41,8 +41,12 @@ main.container {
   border-top: 1px solid var(--border);
   color: var(--text-dim);
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.12em;
+}
+.footer-name {
+  font-weight: 800;
+  color: var(--text);
 }
 
 a {

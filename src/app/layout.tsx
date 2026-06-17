@@ -20,7 +20,9 @@ export default async function RootLayout({
       <body>
         <Nav loggedIn={loggedIn} />
         <main className="container">{children}</main>
-        <footer className="site-footer">DESIGNED &amp; DEVELOPED BY MATTHIAS MANN</footer>
+        <footer className="site-footer">
+          DESIGNED &amp; DEVELOPED BY <strong className="footer-name">MATTHIAS MANN</strong>
+        </footer>
       </body>
     </html>
   );
