@@ -332,6 +332,12 @@ export default function GearBoard({
   membershipType: number;
 }) {
   const router = useRouter();
+  // Direct verversen + nogmaals na 5s, omdat Bungie's profiel-data soms even
+  // achterloopt na een transfer/equip.
+  const refreshSoon = () => {
+    router.refresh();
+    setTimeout(() => router.refresh(), 5000);
+  };
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [dropZone, setDropZone] = useState<string | null>(null);
@@ -408,7 +414,7 @@ export default function GearBoard({
     }
     setProcessing(false);
     setProgress(0);
-    router.refresh();
+    refreshSoon();
   }
 
   const [q, setQ] = useState("");
@@ -426,7 +432,7 @@ export default function GearBoard({
       const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Actie mislukt");
-      router.refresh();
+      refreshSoon();
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -501,7 +507,7 @@ export default function GearBoard({
       });
       data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Verplaatsen mislukt");
-      router.refresh();
+      refreshSoon();
     } catch (e: any) {
       setError(e.message);
     } finally {
