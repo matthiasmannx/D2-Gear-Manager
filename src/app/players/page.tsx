@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import SearchBar from "@/components/SearchBar";
 import { searchPlayers, icon, PLATFORMS, PlayerResult } from "@/lib/bungie";
 import { isLoggedIn } from "@/lib/auth";
@@ -13,54 +14,48 @@ export default async function PlayersPage({
 }) {
   const { q } = await searchParams;
   const loggedIn = await isLoggedIn();
+  const t = await getTranslations("players");
 
   return (
     <>
-      <h1>Players</h1>
-      <p className="muted">
-        Zoek op <strong>Bungie-naam</strong> (bv. <code>Fhaxyy#3853</code>) en bekijk
-        PvP-stats: K/D, wins, Trials, Iron Banner en hoe vaak iemand Flawless is geweest.
-      </p>
+      <h1>{t("title")}</h1>
+      <p className="muted">{t("intro")}</p>
 
       {!loggedIn && (
         <div className="notice" style={{ marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
-          <span>🤝 Log in met Bungie om te zien of je <strong>samen gematcht</strong> bent met een speler.</span>
-          <a href="/api/auth/login" className="btn" style={{ marginLeft: "auto" }}>Login met Bungie</a>
+          <span>{t("loginPrompt")}</span>
+          <a href="/api/auth/login" className="btn" style={{ marginLeft: "auto" }}>{t("loginBtn")}</a>
         </div>
       )}
 
-      <SearchBar basePath="/players" initial={q} placeholder="Bungie-naam, bv. Fhaxyy of Fhaxyy#3853" />
+      <SearchBar basePath="/players" initial={q} placeholder={t("searchPlaceholder")} />
       <FavoritesList />
       {q ? <Results query={q} /> : <Hint />}
     </>
   );
 }
 
-function Hint() {
-  return (
-    <div className="empty">
-      Typ (een deel van) een Bungie-naam om spelers te vinden.
-    </div>
-  );
+async function Hint() {
+  const t = await getTranslations("players");
+  return <div className="empty">{t("hint")}</div>;
 }
 
 async function Results({ query }: { query: string }) {
+  const t = await getTranslations("players");
   let players: PlayerResult[] = [];
   try {
     players = await searchPlayers(query);
   } catch (e: any) {
-    return <div className="notice error">Zoeken mislukt: {e.message}</div>;
+    return <div className="notice error">{t("searchFailed", { error: e.message })}</div>;
   }
 
   players = players.filter((p) => p.memberships.length > 0);
   if (players.length === 0) {
     return (
       <div className="empty">
-        <p>Geen spelers gevonden voor “{query}”.</p>
+        <p>{t("noResults", { query })}</p>
         <p className="muted" style={{ fontSize: "0.85rem", maxWidth: 460, margin: "0 auto" }}>
-          Tip: zoek op de <strong>Bungie-naam</strong>, niet de PSN-gamertag. Die
-          kunnen verschillen. Weet je de code? Probeer <code>Naam#1234</code> voor
-          een exacte match.
+          {t("noResultsTip")}
         </p>
       </div>
     );
@@ -87,7 +82,7 @@ async function Results({ query }: { query: string }) {
                   <div className="item-name">{p.bungieName}</div>
                   <div className="item-type">
                     {p.memberships
-                      .map((x) => PLATFORMS[x.membershipType] ?? `Type ${x.membershipType}`)
+                      .map((x) => PLATFORMS[x.membershipType] ?? t("platformType", { n: x.membershipType }))
                       .join(" · ")}
                   </div>
                 </div>

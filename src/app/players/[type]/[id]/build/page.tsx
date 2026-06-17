@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { getPlayerBuild, PlayerBuild, BuildCharacter, CLASS_NAMES } from "@/lib/playerBuild";
 
 export const metadata = { title: "Build — Guardian Hub" };
@@ -11,6 +12,7 @@ export default async function PlayerBuildPage({
   params: Promise<{ type: string; id: string }>;
 }) {
   const { type, id } = await params;
+  const t = await getTranslations("players");
 
   let build: PlayerBuild | null = null;
   let error: string | null = null;
@@ -23,15 +25,15 @@ export default async function PlayerBuildPage({
   return (
     <>
       <Link href={`/players/${type}/${id}`} className="muted" style={{ display: "inline-block", marginBottom: "1rem" }}>
-        ← Terug naar stats
+        {t("buildBack")}
       </Link>
-      <h1 style={{ marginBottom: 0 }}>Build{build?.name ? ` — ${build.name}` : ""}</h1>
+      <h1 style={{ marginBottom: 0 }}>{t("buildTitle")}{build?.name ? ` — ${build.name}` : ""}</h1>
       <div className="notice" style={{ marginTop: "0.5rem", fontSize: "0.82rem" }}>
-        ℹ️ Dit is de <strong>huidige</strong> uitrusting van deze speler. De Bungie-API bewaart niet welke build iemand in een specifieke match droeg — maar dit is doorgaans wat ze (nog) draaien.
+        {t("buildNote")}
       </div>
 
       {error || !build ? (
-        <div className="notice error" style={{ marginTop: "1rem" }}>Kon de build niet laden{error ? `: ${error}` : ""} (profiel mogelijk privé).</div>
+        <div className="notice error" style={{ marginTop: "1rem" }}>{t("buildLoadFailed")}</div>
       ) : (
         build.characters.map((c, i) => <CharBuild key={i} c={c} />)
       )}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations, getLocale } from "next-intl/server";
 import { getMatchReport, MatchReport, MatchTeam } from "@/lib/bungie";
 
 export const metadata = { title: "Match — Guardian Hub" };
@@ -9,6 +10,8 @@ export default async function MatchPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const t = await getTranslations("players");
+  const locale = await getLocale();
 
   let report: MatchReport | null = null;
   let error: string | null = null;
@@ -21,22 +24,22 @@ export default async function MatchPage({
   return (
     <>
       <Link href="/players" className="muted" style={{ display: "inline-block", marginBottom: "1rem" }}>
-        ← Players
+        {t("matchBack")}
       </Link>
 
       {error || !report ? (
         <>
-          <h1>Match</h1>
-          <div className="notice error">Kon de match niet laden{error ? `: ${error}` : ""}.</div>
+          <h1>{t("matchTitle")}</h1>
+          <div className="notice error">{t("matchLoadFailed")}{error ? `: ${error}` : ""}.</div>
         </>
       ) : (
         <>
           <h1 style={{ marginBottom: 0 }}>{report.mapName}</h1>
-          <p className="muted">{report.mode} · {fmtDate(report.date)}</p>
+          <p className="muted">{report.mode} · {fmtDate(report.date, locale)}</p>
 
           <div className="match-teams">
-            {report.teams.map((t) => (
-              <TeamCard key={t.id} team={t} />
+            {report.teams.map((tm) => (
+              <TeamCard key={tm.id} team={tm} colPlayer={t("colPlayer")} viewStats={t("viewStats")} viewBuild={t("viewBuild")} />
             ))}
           </div>
         </>
@@ -45,7 +48,7 @@ export default async function MatchPage({
   );
 }
 
-function TeamCard({ team }: { team: MatchTeam }) {
+function TeamCard({ team, colPlayer, viewStats, viewBuild }: { team: MatchTeam; colPlayer: string; viewStats: string; viewBuild: string }) {
   const win = /victory/i.test(team.result);
   return (
     <div className="card" style={{ borderLeft: `3px solid ${win ? "#38d39f" : team.result ? "var(--danger)" : "var(--border)"}` }}>
@@ -57,7 +60,7 @@ function TeamCard({ team }: { team: MatchTeam }) {
       )}
       <div className="match-players">
         <div className="mp-head muted">
-          <span>Speler</span><span>K</span><span>D</span><span>A</span><span>K/D</span><span></span>
+          <span>{colPlayer}</span><span>K</span><span>D</span><span>A</span><span>K/D</span><span></span>
         </div>
         {team.players.map((p, i) => {
           const linkable = p.membershipType > 0 && p.membershipId !== "0";
@@ -104,9 +107,9 @@ function TeamCard({ team }: { team: MatchTeam }) {
   );
 }
 
-function fmtDate(iso: string): string {
+function fmtDate(iso: string, locale: string): string {
   try {
-    return new Intl.DateTimeFormat("nl-NL", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(iso));
+    return new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(iso));
   } catch {
     return iso;
   }
