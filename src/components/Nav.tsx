@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { sectionColor } from "@/lib/sectionColors";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import Brand from "@/components/Brand";
 
 const LINKS = [
   { href: "/items", key: "items" },
@@ -23,7 +24,7 @@ export default function Nav({ loggedIn }: { loggedIn: boolean }) {
     <nav className="nav">
       <div className="nav-inner">
         <Link href="/" className="nav-brand">
-          ⟡<span className="brand-text"> Guardian Hub</span>
+          <Brand collapsible />
         </Link>
         <div className="nav-links">
           {LINKS.map((l) => {

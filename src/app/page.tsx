@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { sectionColor } from "@/lib/sectionColors";
+import Brand from "@/components/Brand";
 
 const SECTION_KEYS = ["items", "gear", "builds", "players", "events", "changelog", "sandbox"] as const;
 
@@ -14,7 +15,7 @@ export default async function Home({
     <>
       <section className="home-hero">
         <span className="tag">{t("tag")}</span>
-        <h1>{t("title")}</h1>
+        <h1 className="home-title"><Brand /></h1>
         <p className="muted">{t("intro")}</p>
       </section>
 

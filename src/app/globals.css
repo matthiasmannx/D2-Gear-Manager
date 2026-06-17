@@ -148,6 +148,35 @@ h3 {
   color: var(--accent);
   white-space: nowrap;
 }
+/* Guardian Hub wordmerk (eigen vormgeving) */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.brand-star {
+  color: var(--accent);
+}
+.brand-text,
+.brand-shown {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32em;
+}
+.brand-word {
+  color: var(--text);
+}
+.brand-hub {
+  background: var(--accent);
+  color: #1a1200;
+  padding: 0.06em 0.4em;
+  border-radius: 0.38em;
+}
+.home-title {
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+}
 .nav-links {
   display: flex;
   gap: 1rem;
