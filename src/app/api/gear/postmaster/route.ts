@@ -16,6 +16,17 @@ export async function POST(req: NextRequest) {
     });
     return NextResponse.json({ ok: true });
   } catch (e: any) {
-    return NextResponse.json({ error: e.message ?? "Pull mislukt" }, { status: 400 });
+    const msg: string = e.message ?? "Pull mislukt";
+    // Bungie blokkeert het ophalen van bepaalde postmaster-items via de API.
+    if (/postmaster/i.test(msg) && /in[- ]?game/i.test(msg)) {
+      return NextResponse.json(
+        {
+          error:
+            "Dit item kun je alleen in-game uit de postmaster halen — Bungie staat dit specifieke item niet toe via de API. Veel andere items pullen wél.",
+        },
+        { status: 400 }
+      );
+    }
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 }
