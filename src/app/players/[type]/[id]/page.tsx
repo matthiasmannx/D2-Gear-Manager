@@ -89,11 +89,17 @@ export default async function PlayerStats({
       <div className="stat-cards">
         <BigStat label="Lifetime K/D" value={h?.kd ?? "—"} accent />
         <BigStat label="Win rate" value={h?.winRate ?? "—"} />
-        <BigStat label="Flawless (Trials)" value={extras.flawlessCount ?? "—"} accent />
+        <BigStat label="Flawless tickets" value={extras.flawlessCount ?? "—"} accent sub="verifieer op Trials Report" />
         {extras.ranks.map((r) => (
           <BigStat key={r.label} label={r.label} value={r.rankName} sub={r.resets != null ? `${r.resets} resets` : undefined} small />
         ))}
       </div>
+      <p className="muted" style={{ fontSize: "0.8rem", marginTop: "0.5rem" }}>
+        ℹ️ Lifetime-flawless zit niet betrouwbaar in de Bungie-API (de "tickets"-metric telt niet alles).{" "}
+        <a href={`https://destinytrialsreport.com/report/${mType}/${id}`} target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-2)" }}>
+          Bekijk de geverifieerde flawless-count op Trials Report ↗
+        </a>
+      </p>
 
       {/* Per modus: weekly + lifetime */}
       {modes.some((m) => m.lifetime.games > 0) && (
