@@ -57,41 +57,46 @@ function TeamCard({ team }: { team: MatchTeam }) {
       )}
       <div className="match-players">
         <div className="mp-head muted">
-          <span>Speler</span><span>K</span><span>D</span><span>A</span><span>K/D</span>
+          <span>Speler</span><span>K</span><span>D</span><span>A</span><span>K/D</span><span></span>
         </div>
         {team.players.map((p, i) => {
           const linkable = p.membershipType > 0 && p.membershipId !== "0";
-          const row = (
+          const nameInner = (
             <>
-              <span className="mp-name">
-                {p.emblem && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={p.emblem} alt="" />
-                )}
-                <span className="mp-name-text">
-                  <span className="mp-line1">
-                    {p.name}
-                    {p.mvp && <span className="mp-mvp">MVP</span>}
-                  </span>
-                  <span className="muted mp-sub">
-                    {p.charClass}
-                    {p.topWeapon ? ` · 🔫 ${p.topWeapon}` : ""}
-                    {` · ☀️${p.superKills} 👊${p.meleeKills} 💣${p.grenadeKills} · 🎯${p.precisionPct}`}
-                  </span>
+              {p.emblem && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={p.emblem} alt="" />
+              )}
+              <span className="mp-name-text">
+                <span className="mp-line1">
+                  {p.name}
+                  {p.mvp && <span className="mp-mvp">MVP</span>}
+                </span>
+                <span className="muted mp-sub">
+                  {p.charClass}
+                  {p.topWeapon ? ` · 🔫 ${p.topWeapon}` : ""}
+                  {` · ☀️${p.superKills} 👊${p.meleeKills} 💣${p.grenadeKills} · 🎯${p.precisionPct}`}
                 </span>
               </span>
+            </>
+          );
+          return (
+            <div key={i} className="mp-row">
+              {linkable ? (
+                <Link href={`/players/${p.membershipType}/${p.membershipId}`} className="mp-name mp-link" title="Bekijk stats">{nameInner}</Link>
+              ) : (
+                <span className="mp-name">{nameInner}</span>
+              )}
               <span>{p.kills}</span>
               <span>{p.deaths}</span>
               <span>{p.assists}</span>
               <span className="mp-kd">{p.kd}</span>
-            </>
-          );
-          return linkable ? (
-            <Link key={i} href={`/players/${p.membershipType}/${p.membershipId}`} className="mp-row mp-link">
-              {row}
-            </Link>
-          ) : (
-            <div key={i} className="mp-row">{row}</div>
+              {linkable ? (
+                <Link href={`/players/${p.membershipType}/${p.membershipId}/build`} className="mp-build" title="Bekijk build">🔧</Link>
+              ) : (
+                <span />
+              )}
+            </div>
           );
         })}
       </div>

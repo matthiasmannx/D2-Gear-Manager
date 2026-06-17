@@ -509,7 +509,75 @@ input:focus {
 }
 .mp-head,
 .mp-row {
-  grid-template-columns: 1fr 30px 30px 30px 48px;
+  grid-template-columns: 1fr 30px 30px 30px 48px 32px;
+}
+.mp-build {
+  text-align: center;
+  font-size: 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+}
+.mp-build:hover {
+  background: var(--bg-card);
+}
+
+/* ---- Build-pagina (speler-uitrusting) ---- */
+.build-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+.bi-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  color: inherit;
+}
+.bi-row:hover {
+  border-color: var(--accent-2);
+}
+.bi-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  background: #11151f;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+.bi-info {
+  min-width: 0;
+  flex: 1;
+}
+.bi-top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.bi-slot {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  min-width: 60px;
+}
+.bi-name {
+  font-weight: 700;
+}
+.bi-power {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.bi-perks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.4rem;
 }
 .mp-kd {
   font-weight: 700;
