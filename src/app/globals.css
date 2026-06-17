@@ -462,13 +462,42 @@ input:focus {
   font-weight: 600;
 }
 .mp-name img {
-  width: 26px;
-  height: 26px;
+  width: 30px;
+  height: 30px;
   border-radius: 5px;
   flex-shrink: 0;
 }
-.mp-class {
+.mp-name-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.mp-line1 {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mp-mvp {
+  font-size: 0.6rem;
+  font-weight: 800;
+  background: var(--accent);
+  color: #1a1200;
+  padding: 0.05rem 0.35rem;
+  border-radius: 4px;
+}
+.mp-sub {
+  font-size: 0.7rem;
   font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mp-head,
+.mp-row {
+  grid-template-columns: 1fr 30px 30px 30px 48px;
 }
 .mp-kd {
   font-weight: 700;

@@ -749,6 +749,12 @@ export interface MatchPlayer {
   assists: string;
   kd: string;
   score: string;
+  superKills: string;
+  meleeKills: string;
+  grenadeKills: string;
+  precisionPct: string;
+  topWeapon: string | null;
+  mvp: boolean;
 }
 export interface MatchTeam {
   id: number;
@@ -780,12 +786,42 @@ export async function getMatchReport(instanceId: string): Promise<MatchReport | 
     }
   }
 
+  const entries: any[] = r.entries;
+
+  // Top-wapen per speler resolven (dedup over hashes).
+  const topHashOf = (e: any): number | null => {
+    const ws = e.extended?.weapons ?? [];
+    let best: any = null;
+    for (const w of ws) {
+      const k = w.values?.uniqueWeaponKills?.basic?.value ?? 0;
+      if (!best || k > (best.values?.uniqueWeaponKills?.basic?.value ?? 0)) best = w;
+    }
+    return best?.referenceId ?? null;
+  };
+  const weaponHashes = [...new Set(entries.map(topHashOf).filter((h): h is number => !!h))];
+  const weaponNames: Record<number, string> = {};
+  await Promise.all(
+    weaponHashes.map(async (h) => {
+      try {
+        const def = await getEntityDefinition("DestinyInventoryItemDefinition", h);
+        if (def?.displayProperties?.name) weaponNames[h] = def.displayProperties.name;
+      } catch {
+        /* negeer */
+      }
+    })
+  );
+  const maxKills = Math.max(...entries.map((e) => e.values?.kills?.basic?.value ?? 0), 0);
+
   const toPlayer = (e: any): MatchPlayer => {
     const ui = e.player?.destinyUserInfo ?? {};
     const v = e.values ?? {};
+    const ev = e.extended?.values ?? {};
     const name = ui.bungieGlobalDisplayName
       ? `${ui.bungieGlobalDisplayName}#${ui.bungieGlobalDisplayNameCode}`
       : ui.displayName ?? "Guardian";
+    const kills = v.kills?.basic?.value ?? 0;
+    const precision = ev.precisionKills?.basic?.value ?? 0;
+    const th = topHashOf(e);
     return {
       name,
       membershipType: ui.membershipType ?? 0,
@@ -797,10 +833,15 @@ export async function getMatchReport(instanceId: string): Promise<MatchReport | 
       assists: disp(v, "assists"),
       kd: disp(v, "killsDeathsRatio"),
       score: disp(v, "score"),
+      superKills: disp(ev, "weaponKillsSuper"),
+      meleeKills: disp(ev, "weaponKillsMelee"),
+      grenadeKills: disp(ev, "weaponKillsGrenade"),
+      precisionPct: kills > 0 ? `${((precision / kills) * 100).toFixed(0)}%` : "—",
+      topWeapon: th ? weaponNames[th] ?? null : null,
+      mvp: maxKills > 0 && kills === maxKills,
     };
   };
 
-  const entries: any[] = r.entries;
   const teamDefs: any[] = r.teams ?? [];
 
   let teams: MatchTeam[];
@@ -819,7 +860,6 @@ export async function getMatchReport(instanceId: string): Promise<MatchReport | 
       };
     });
   } else {
-    // FFA (bv. Rumble): één lijst, gesorteerd op standing/score.
     const players = entries
       .map(toPlayer)
       .sort((a, b) => Number(b.score) - Number(a.score));

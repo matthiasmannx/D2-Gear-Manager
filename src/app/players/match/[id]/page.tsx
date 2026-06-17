@@ -68,9 +68,16 @@ function TeamCard({ team }: { team: MatchTeam }) {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={p.emblem} alt="" />
                 )}
-                <span>
-                  {p.name}
-                  {p.charClass && <span className="muted mp-class"> · {p.charClass}</span>}
+                <span className="mp-name-text">
+                  <span className="mp-line1">
+                    {p.name}
+                    {p.mvp && <span className="mp-mvp">MVP</span>}
+                  </span>
+                  <span className="muted mp-sub">
+                    {p.charClass}
+                    {p.topWeapon ? ` · 🔫 ${p.topWeapon}` : ""}
+                    {` · ☀️${p.superKills} 👊${p.meleeKills} 💣${p.grenadeKills} · 🎯${p.precisionPct}`}
+                  </span>
                 </span>
               </span>
               <span>{p.kills}</span>
