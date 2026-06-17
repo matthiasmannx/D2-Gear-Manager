@@ -70,6 +70,7 @@ interface DragData {
   equipped: boolean;
   name: string;
   icon: string | null;
+  bucketHash: number;
 }
 
 interface TileActions {
@@ -78,6 +79,7 @@ interface TileActions {
   membershipType: number;
   enqueue: (d: DragData, target: string) => void;
   equip: (item: Item, characterId: string) => void;
+  moveEquipped: (item: Item, source: string, target: string) => void;
   toggleLock: (item: Item, source: string, locked: boolean) => void;
   pull: (item: Item, characterId: string) => void;
   setDragging: (v: boolean) => void;
@@ -121,7 +123,7 @@ function Tile({
     }
   }, [show, isWeapon, isExotic, info, loading, item.hash]);
 
-  const dragData: DragData = { hash: item.hash, instanceId: item.instanceId, source, equipped, name: item.name, icon: item.icon };
+  const dragData: DragData = { hash: item.hash, instanceId: item.instanceId, source, equipped, name: item.name, icon: item.icon, bucketHash: item.bucketHash };
 
   return (
     <div
@@ -256,10 +258,19 @@ function Tile({
               <div className="gear-panel-actions">
                 {context === "inventory" && <button onClick={() => a.equip(item, source)} disabled={a.busy}>Equip</button>}
                 {(context === "inventory" || context === "equipped") && (
-                  <button onClick={() => a.enqueue(dragData, "vault")} disabled={equipped}>+ Vault</button>
+                  <button
+                    onClick={() => (equipped ? a.moveEquipped(item, source, "vault") : a.enqueue(dragData, "vault"))}
+                    disabled={a.busy}
+                  >
+                    + Vault
+                  </button>
                 )}
                 {otherChars.map((c) => (
-                  <button key={c.characterId} onClick={() => a.enqueue(dragData, c.characterId)} disabled={equipped}>
+                  <button
+                    key={c.characterId}
+                    onClick={() => (equipped ? a.moveEquipped(item, source, c.characterId) : a.enqueue(dragData, c.characterId))}
+                    disabled={a.busy}
+                  >
                     + {CLASS_NAMES[c.classType]}
                   </button>
                 ))}
@@ -269,7 +280,11 @@ function Tile({
               </div>
             )
           )}
-          {equipped && <div className="muted" style={{ fontSize: "0.72rem", marginTop: "0.3rem" }}>Uitgerust — equip eerst iets anders om te verplaatsen.</div>}
+          {equipped && (
+            <div className="muted" style={{ fontSize: "0.72rem", marginTop: "0.3rem" }}>
+              Uitgerust — verplaatsen equipt automatisch eerst een ander item uit de inventory in dit slot.
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -446,6 +461,49 @@ export default function GearBoard({
     });
   };
 
+  // Een uitgerust item verplaatsen naar vault/andere guardian: eerst een ander
+  // item uit hetzelfde slot equippen (de-equip), dán pas verplaatsen.
+  async function moveEquipped(item: Item, source: string, target: string) {
+    if (source === target) return;
+    const srcChar = characters.find((c) => c.characterId === source);
+    const repl = srcChar?.inventory.find((x) => x.bucketHash === item.bucketHash && x.instanceId);
+    if (!repl) {
+      setError(
+        `"${item.name}" is uitgerust en ${srcChar ? CLASS_NAMES[srcChar.classType] : "die guardian"} heeft geen ander item voor dat slot in z'n inventory. Equip daar eerst iets anders.`
+      );
+      return;
+    }
+    setBusy(true);
+    setError(null);
+    try {
+      let res = await fetch("/api/gear/equip", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ itemId: repl.instanceId, characterId: source, membershipType }),
+      });
+      let data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "De-equip mislukt");
+      res = await fetch("/api/gear/move", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          itemReferenceHash: item.hash,
+          itemId: item.instanceId,
+          membershipType,
+          sourceCharacterId: source,
+          target,
+        }),
+      });
+      data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Verplaatsen mislukt");
+      router.refresh();
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
   // Zoeken over álle gear (uitgerust + inventory + vault).
   const [gearQuery, setGearQuery] = useState("");
   const allItems = useMemo(() => {
@@ -470,6 +528,7 @@ export default function GearBoard({
     characters,
     membershipType,
     enqueue,
+    moveEquipped,
     equip: (item, characterId) => postJson("/api/gear/equip", { itemId: item.instanceId, characterId, membershipType }),
     pull: (item, characterId) =>
       postJson("/api/gear/postmaster", { itemReferenceHash: item.hash, itemId: item.instanceId, characterId, membershipType }),
@@ -502,6 +561,26 @@ export default function GearBoard({
   function allowDrop(e: React.DragEvent, zone: string) {
     e.preventDefault();
     setDropZone(zone);
+  }
+
+  // Sleep op een equip-slot → equip dat item op die guardian (auto-de-equip
+  // via equipTo). Stopt bubbling zodat de kaart-drop (inventory) niet ook vuurt.
+  function onDropSlot(e: React.DragEvent, characterId: string, slotBucket: number) {
+    e.preventDefault();
+    e.stopPropagation();
+    setDropZone(null);
+    setDragging(false);
+    try {
+      const d: DragData = JSON.parse(e.dataTransfer.getData("application/json"));
+      if (d.bucketHash !== slotBucket) {
+        setError("Dit item past niet in dit slot.");
+        return;
+      }
+      if (d.source === characterId && d.equipped) return; // al uitgerust hier
+      equipTo({ hash: d.hash, instanceId: d.instanceId, bucketHash: d.bucketHash, name: d.name } as Item, d.source, characterId);
+    } catch {
+      /* geen drag-data */
+    }
   }
 
   const filteredVault = useMemo(() => {
@@ -642,13 +721,20 @@ export default function GearBoard({
             <div className="gear-slots">
               {SLOTS.map((slot) => {
                 const it = c.equipped.find((x) => x.bucketHash === slot.bucket);
+                const slotKey = `slot-${c.characterId}-${slot.bucket}`;
                 return (
-                  <div key={slot.bucket} className="gear-slot">
+                  <div
+                    key={slot.bucket}
+                    className={`gear-slot ${dragging ? "slot-droppable" : ""} ${dropZone === slotKey ? "drop-over" : ""}`}
+                    onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); setDropZone(slotKey); }}
+                    onDragLeave={() => setDropZone(null)}
+                    onDrop={(e) => onDropSlot(e, c.characterId, slot.bucket)}
+                  >
                     <span className="gear-slot-label">{slot.label}</span>
                     {it ? (
                       <Tile item={it} source={c.characterId} equipped context="equipped" a={actions} />
                     ) : (
-                      <div className="gear-slot-empty" title="Leeg" />
+                      <div className="gear-slot-empty" title="Leeg — sleep hier een item om te equippen" />
                     )}
                   </div>
                 );

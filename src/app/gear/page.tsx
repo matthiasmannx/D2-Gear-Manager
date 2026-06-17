@@ -37,8 +37,8 @@ export default async function GearPage() {
     <>
       <h1>Gear</h1>
       <p className="muted">
-        Uitrusting van {data.name}. <strong>Sleep</strong> een item naar een andere
-        guardian of de vault, of <strong>klik</strong> erop voor equip/verplaats-opties.
+        Uitrusting van {data.name}. <strong>Sleep</strong> een item op een <strong>slot</strong> om te
+        equippen, of naar een andere guardian / de vault om te verplaatsen. Of <strong>klik</strong> erop voor opties.
       </p>
       <GearBoard
         characters={data.characters}

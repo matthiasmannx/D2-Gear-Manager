@@ -719,6 +719,18 @@ input:focus {
 .gc-postmaster {
   padding-bottom: 0.6rem;
 }
+/* Equip-slot als drop-zone bij slepen */
+.gear-slot.slot-droppable {
+  outline: 1px dashed var(--border);
+  outline-offset: 1px;
+  border-radius: 8px;
+}
+.gear-slot.drop-over {
+  outline: 2px dashed var(--accent-2);
+  outline-offset: 1px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+}
 .gear-char {
   margin-top: 1.5rem;
   background: var(--bg-card);
