@@ -170,16 +170,25 @@ export default async function PlayerStats({
         <>
           <h2 style={{ marginTop: "2rem" }}>Recente wedstrijden</h2>
           <div className="match-list">
-            {matches.map((m, i) => (
-              <div key={i} className={`match ${m.won ? "win" : "loss"}`}>
-                <span className="match-result">{m.won ? "W" : "L"}</span>
-                <span className="match-map">{m.mapName}</span>
-                <span className="match-mode">{m.mode}</span>
-                <span className="match-kda muted">{m.kills}/{m.deaths}/{m.assists}</span>
-                <span className="match-kd">{m.kd} K/D</span>
-                <span className="match-date muted">{relTime(m.date)}</span>
-              </div>
-            ))}
+            {matches.map((m, i) => {
+              const inner = (
+                <>
+                  <span className="match-result">{m.won ? "W" : "L"}</span>
+                  <span className="match-map">{m.mapName}</span>
+                  <span className="match-mode">{m.mode}</span>
+                  <span className="match-kda muted">{m.kills}/{m.deaths}/{m.assists}</span>
+                  <span className="match-kd">{m.kd} K/D</span>
+                  <span className="match-date muted">{relTime(m.date)}</span>
+                </>
+              );
+              return m.instanceId ? (
+                <Link key={i} href={`/players/match/${m.instanceId}`} className={`match match-link ${m.won ? "win" : "loss"}`}>
+                  {inner}
+                </Link>
+              ) : (
+                <div key={i} className={`match ${m.won ? "win" : "loss"}`}>{inner}</div>
+              );
+            })}
           </div>
         </>
       )}

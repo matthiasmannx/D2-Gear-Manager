@@ -412,6 +412,68 @@ input:focus {
   font-weight: 600;
   white-space: nowrap;
 }
+.match-link {
+  color: inherit;
+  transition: border-color 0.12s, background 0.12s;
+}
+.match-link:hover {
+  border-color: var(--accent-2);
+  background: var(--bg-elev);
+}
+/* Match-detail: spelerlijst */
+.match-players {
+  display: grid;
+  gap: 0.2rem;
+  margin-top: 0.4rem;
+}
+.mp-head,
+.mp-row {
+  display: grid;
+  grid-template-columns: 1fr 32px 32px 32px 48px;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.4rem;
+  font-size: 0.85rem;
+}
+.mp-head {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--border);
+}
+.mp-head span:not(:first-child),
+.mp-row span:not(.mp-name) {
+  text-align: center;
+}
+.mp-row {
+  border-radius: 6px;
+}
+.mp-link {
+  color: inherit;
+}
+.mp-link:hover {
+  background: var(--bg-elev);
+}
+.mp-name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  font-weight: 600;
+}
+.mp-name img {
+  width: 26px;
+  height: 26px;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+.mp-class {
+  font-weight: 400;
+}
+.mp-kd {
+  font-weight: 700;
+  color: var(--accent-2);
+}
 .match {
   grid-template-columns: 28px 1fr auto auto auto auto;
 }

@@ -736,6 +736,104 @@ export async function getRecentMatches(
   return matches.slice(0, 20);
 }
 
+// --- Match-rapport (PGCR): wie zat erin en hoe gingen ze ---
+
+export interface MatchPlayer {
+  name: string;
+  membershipType: number;
+  membershipId: string;
+  charClass: string;
+  emblem: string | null;
+  kills: string;
+  deaths: string;
+  assists: string;
+  kd: string;
+  score: string;
+}
+export interface MatchTeam {
+  id: number;
+  result: string; // Victory / Defeat
+  score: string;
+  players: MatchPlayer[];
+}
+export interface MatchReport {
+  mapName: string;
+  mode: string;
+  date: string;
+  teams: MatchTeam[];
+}
+
+export async function getMatchReport(instanceId: string): Promise<MatchReport | null> {
+  const r = await bungieFetch<any>(`/Destiny2/Stats/PostGameCarnageReport/${instanceId}/`, {
+    revalidate: 60 * 60 * 24 * 30,
+  });
+  if (!r?.entries) return null;
+
+  let mapName = "Onbekende map";
+  const refId = r.activityDetails?.referenceId;
+  if (refId) {
+    try {
+      const def = await getEntityDefinition("DestinyActivityDefinition", refId);
+      mapName = def?.displayProperties?.name ?? mapName;
+    } catch {
+      /* val terug */
+    }
+  }
+
+  const toPlayer = (e: any): MatchPlayer => {
+    const ui = e.player?.destinyUserInfo ?? {};
+    const v = e.values ?? {};
+    const name = ui.bungieGlobalDisplayName
+      ? `${ui.bungieGlobalDisplayName}#${ui.bungieGlobalDisplayNameCode}`
+      : ui.displayName ?? "Guardian";
+    return {
+      name,
+      membershipType: ui.membershipType ?? 0,
+      membershipId: ui.membershipId ?? "0",
+      charClass: e.player?.characterClass ?? "",
+      emblem: icon(ui.iconPath),
+      kills: disp(v, "kills"),
+      deaths: disp(v, "deaths"),
+      assists: disp(v, "assists"),
+      kd: disp(v, "killsDeathsRatio"),
+      score: disp(v, "score"),
+    };
+  };
+
+  const entries: any[] = r.entries;
+  const teamDefs: any[] = r.teams ?? [];
+
+  let teams: MatchTeam[];
+  if (teamDefs.length > 0) {
+    teams = teamDefs.map((t) => {
+      const teamId = t.teamId;
+      const players = entries
+        .filter((e) => (e.values?.team?.basic?.value ?? -1) === teamId)
+        .map(toPlayer)
+        .sort((a, b) => Number(b.kills) - Number(a.kills));
+      return {
+        id: teamId,
+        result: t.standing?.basic?.displayValue ?? "—",
+        score: t.score?.basic?.displayValue ?? "",
+        players,
+      };
+    });
+  } else {
+    // FFA (bv. Rumble): één lijst, gesorteerd op standing/score.
+    const players = entries
+      .map(toPlayer)
+      .sort((a, b) => Number(b.score) - Number(a.score));
+    teams = [{ id: 0, result: "", score: "", players }];
+  }
+
+  return {
+    mapName,
+    mode: modeLabel(r.activityDetails),
+    date: r.period,
+    teams,
+  };
+}
+
 // --- Win-streaks per modus (over recente matches) ---
 
 function matchGroupOf(label: string): "Crucible" | "Iron Banner" | "Trials of Osiris" {
