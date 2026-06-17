@@ -579,6 +579,22 @@ input:focus {
   gap: 0.3rem;
   margin-top: 0.4rem;
 }
+.bi-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+.bi-stat {
+  font-size: 0.76rem;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.1rem 0.4rem;
+}
+.bi-stat b {
+  color: var(--accent);
+}
 .mp-kd {
   font-weight: 700;
   color: var(--accent-2);

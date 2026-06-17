@@ -61,6 +61,15 @@ function CharBuild({ c }: { c: BuildCharacter }) {
                 <span className="bi-name">{it.name}</span>
                 {it.power != null && <span className="bi-power">⚡{it.power}</span>}
               </div>
+              {it.stats.length > 0 && (
+                <div className="bi-stats">
+                  {it.stats.map((s) => (
+                    <span key={s.name} className="bi-stat">
+                      <span className="muted">{s.name}</span> <b>{s.value}</b>
+                    </span>
+                  ))}
+                </div>
+              )}
               {it.perks.length > 0 && (
                 <div className="bi-perks">
                   {it.perks.map((p) => (

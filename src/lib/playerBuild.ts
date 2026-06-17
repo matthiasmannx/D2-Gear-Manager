@@ -1,6 +1,9 @@
 import "server-only";
-import { bungieFetch, getEntityDefinition, icon } from "./bungie";
-import { lookupItems } from "./manifest";
+import { bungieFetch, icon } from "./bungie";
+import { lookupItems, getStatNames } from "./manifest";
+
+// Armor 3.0-stats (alleen deze tonen op armor-stukken).
+const ARMOR_STAT_NAMES = new Set(["Weapons", "Health", "Class", "Grenade", "Super", "Melee"]);
 
 /**
  * Publieke "build"-weergave van een speler: huidige uitrusting + perks per
@@ -30,6 +33,7 @@ export interface BuildItem {
   slot: string;
   power?: number;
   perks: string[];
+  stats: { name: string; value: number }[];
 }
 export interface BuildCharacter {
   classType: number;
@@ -51,11 +55,14 @@ export async function getPlayerBuild(
   membershipId: string
 ): Promise<PlayerBuild | null> {
   const r = await bungieFetch<any>(
-    `/Destiny2/${membershipType}/Profile/${membershipId}/?components=100,200,205,300,305`,
+    `/Destiny2/${membershipType}/Profile/${membershipId}/?components=100,200,205,300,304,305`,
     { revalidate: 60 * 15 }
   );
   const charData = r?.characters?.data ?? {};
   if (Object.keys(charData).length === 0) return null;
+
+  const itemStats = r?.itemComponents?.stats?.data ?? {};
+  const statNames = await getStatNames();
 
   const ui = r?.profile?.data?.userInfo ?? {};
   const name = ui.bungieGlobalDisplayName ? `${ui.bungieGlobalDisplayName}#${ui.bungieGlobalDisplayNameCode}` : ui.displayName ?? null;
@@ -90,6 +97,14 @@ export async function getPlayerBuild(
         const perks = (sockets[it.itemInstanceId]?.sockets ?? [])
           .map((s: any) => defs.get(s.plugHash)?.name)
           .filter((n: any): n is string => !!n && !skipPerk(n));
+        // Armor 3.0-stats (alleen op armor).
+        let stats: { name: string; value: number }[] = [];
+        if (d?.itemType === 2 && it.itemInstanceId) {
+          const sv = itemStats[it.itemInstanceId]?.stats ?? {};
+          stats = Object.values<any>(sv)
+            .map((s) => ({ name: statNames[s.statHash] ?? "", value: s.value ?? 0 }))
+            .filter((s) => ARMOR_STAT_NAMES.has(s.name));
+        }
         return {
           hash: it.itemHash,
           name: d?.name ?? "Onbekend",
@@ -98,6 +113,7 @@ export async function getPlayerBuild(
           slot: slotOf(it.bucketHash)!,
           power: inst?.primaryStat?.value,
           perks: [...new Set(perks)].slice(0, 6),
+          stats,
         };
       })
       .sort(
