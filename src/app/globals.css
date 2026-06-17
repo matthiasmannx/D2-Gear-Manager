@@ -73,6 +73,7 @@ h3 {
   gap: 1rem;
   flex-wrap: wrap;
   flex: 1;
+  justify-content: center;
 }
 .nav-links a {
   color: var(--text-dim);
@@ -316,6 +317,16 @@ input:focus {
 .streak.loss {
   background: rgba(255, 91, 91, 0.18);
   color: #ff8a8a;
+}
+.streak.best {
+  background: rgba(245, 166, 35, 0.15);
+  color: var(--accent);
+}
+.streak-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
 }
 .mode-block {
   margin-bottom: 0.6rem;
@@ -1653,6 +1664,7 @@ input:focus {
     gap: 0.9rem;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    justify-content: flex-start;
   }
   .nav-links::-webkit-scrollbar {
     display: none;

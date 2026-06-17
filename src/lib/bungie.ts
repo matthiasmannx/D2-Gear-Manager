@@ -725,6 +725,73 @@ export async function getRecentMatches(
   return matches.slice(0, 20);
 }
 
+// --- Win-streaks per modus (over recente matches) ---
+
+function matchGroupOf(label: string): "Crucible" | "Iron Banner" | "Trials of Osiris" {
+  if (/iron banner/i.test(label)) return "Iron Banner";
+  if (/trials/i.test(label)) return "Trials of Osiris";
+  return "Crucible";
+}
+
+export interface StreakInfo {
+  current: { won: boolean; n: number } | null;
+  longestWin: number;
+}
+
+/** Huidige + langste win-streak per modus-groep, uit recente matches. */
+export async function getMatchStreaks(
+  membershipType: number,
+  membershipId: string,
+  characterIds: string[],
+  perChar = 100
+): Promise<Record<string, StreakInfo>> {
+  const all = await Promise.all(
+    characterIds.map(async (cid) => {
+      try {
+        const r = await bungieFetch<any>(
+          `/Destiny2/${membershipType}/Account/${membershipId}/Character/${cid}/Stats/Activities/?mode=5&count=${perChar}&page=0`,
+          { revalidate: 60 * 20 }
+        );
+        return (r?.activities ?? []) as any[];
+      } catch {
+        return [];
+      }
+    })
+  );
+  const flat = all.flat().map((m) => ({
+    group: matchGroupOf(modeLabel(m.activityDetails)),
+    won: m.values?.standing?.basic?.value === 0,
+    date: m.period as string,
+  }));
+  flat.sort((a, b) => (a.date < b.date ? 1 : -1)); // nieuwste eerst
+
+  const out: Record<string, StreakInfo> = {};
+  for (const group of ["Crucible", "Iron Banner", "Trials of Osiris"]) {
+    const games = flat.filter((g) => g.group === group);
+    let current: StreakInfo["current"] = null;
+    if (games.length > 0) {
+      const won = games[0].won;
+      let n = 0;
+      for (const g of games) {
+        if (g.won === won) n++;
+        else break;
+      }
+      current = { won, n };
+    }
+    // Langste win-streak (chronologisch maakt niet uit voor max).
+    let longestWin = 0;
+    let run = 0;
+    for (const g of games) {
+      if (g.won) {
+        run++;
+        if (run > longestWin) longestWin = run;
+      } else run = 0;
+    }
+    out[group] = { current, longestWin };
+  }
+  return out;
+}
+
 // --- Per-modus PvP-stats (weekly + lifetime): Crucible / Iron Banner / Trials ---
 
 export interface ModeBlock {

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import SearchBar from "@/components/SearchBar";
 import { searchPlayers, icon, PLATFORMS, PlayerResult } from "@/lib/bungie";
+import { isLoggedIn } from "@/lib/auth";
 
 export const metadata = { title: "Players — Guardian Hub" };
 
@@ -10,6 +11,7 @@ export default async function PlayersPage({
   searchParams: Promise<{ q?: string }>;
 }) {
   const { q } = await searchParams;
+  const loggedIn = await isLoggedIn();
 
   return (
     <>
@@ -18,6 +20,14 @@ export default async function PlayersPage({
         Zoek op <strong>Bungie-naam</strong> (bv. <code>Fhaxyy#3853</code>) en bekijk
         PvP-stats: K/D, wins, Trials, Iron Banner en hoe vaak iemand Flawless is geweest.
       </p>
+
+      {!loggedIn && (
+        <div className="notice" style={{ marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
+          <span>🤝 Log in met Bungie om te zien of je <strong>samen gematcht</strong> bent met een speler.</span>
+          <a href="/api/auth/login" className="btn" style={{ marginLeft: "auto" }}>Login met Bungie</a>
+        </div>
+      )}
+
       <SearchBar basePath="/players" initial={q} placeholder="Bungie-naam, bv. Fhaxyy of Fhaxyy#3853" />
       {q ? <Results query={q} /> : <Hint />}
     </>

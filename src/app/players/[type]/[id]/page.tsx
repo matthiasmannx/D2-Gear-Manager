@@ -5,10 +5,12 @@ import {
   getPlayerExtras,
   getRecentMatches,
   getSharedMatchCount,
+  getMatchStreaks,
   PvpStatsResult,
   PvpModeSummary,
   PlayerExtras,
   MatchResult,
+  StreakInfo,
 } from "@/lib/bungie";
 import { getValidAccessToken } from "@/lib/auth";
 
@@ -33,12 +35,13 @@ export default async function PlayerStats({
   }
 
   const charIds = extras.characters.map((c) => c.characterId);
-  const [modes, matches, shared] = await Promise.all([
+  const [modes, matches, shared, streaks] = await Promise.all([
     charIds.length ? getPvpModes(mType, id, charIds).catch(() => []) : Promise.resolve([] as PvpModeSummary[]),
     charIds.length ? getRecentMatches(mType, id, charIds).catch(() => []) : Promise.resolve([] as MatchResult[]),
     token && charIds.length
       ? getSharedMatchCount(token, { membershipType: mType, membershipId: id, characterIds: charIds }).catch(() => null)
       : Promise.resolve(null),
+    charIds.length ? getMatchStreaks(mType, id, charIds).catch(() => ({} as Record<string, StreakInfo>)) : Promise.resolve({} as Record<string, StreakInfo>),
   ]);
 
   const h = stats.highlights;
@@ -89,15 +92,20 @@ export default async function PlayerStats({
           <h2 style={{ marginTop: "2rem" }}>Per modus</h2>
           <div className="section-list">
             {modes.filter((m) => m.lifetime.games > 0).map((m) => {
-              const streak = currentStreak(matches, m.label);
+              const s = streaks[m.label];
               return (
               <div key={m.label} className="card">
                 <h3 style={{ marginBottom: "0.3rem" }}>{m.label}</h3>
-                {streak && (
-                  <div className={`streak ${streak.won ? "win" : "loss"}`}>
-                    {streak.won ? "🔥" : "❄️"} {streak.n} {streak.won ? "wins" : "losses"} op rij
-                  </div>
-                )}
+                <div className="streak-row">
+                  {s?.current && (
+                    <span className={`streak ${s.current.won ? "win" : "loss"}`}>
+                      {s.current.won ? "🔥" : "❄️"} {s.current.n} {s.current.won ? "wins" : "losses"} op rij
+                    </span>
+                  )}
+                  {s && s.longestWin > 1 && (
+                    <span className="streak best">🏆 langste: {s.longestWin} wins</span>
+                  )}
+                </div>
                 <div className="mode-block">
                   <span className="mode-block-h">Deze week</span>
                   {m.weekly.games > 0 ? (
@@ -213,25 +221,6 @@ function StatRow({ label, value, highlight }: { label: string; value: string; hi
     </div>
   );
 }
-/** Bepaal welke modus-groep een match-label hoort (voor de 3 modus-cards). */
-function matchGroup(mode: string): "Crucible" | "Iron Banner" | "Trials of Osiris" {
-  if (/iron banner/i.test(mode)) return "Iron Banner";
-  if (/trials/i.test(mode)) return "Trials of Osiris";
-  return "Crucible";
-}
-/** Huidige streak in een modus uit de recente matches (nieuwste eerst). */
-function currentStreak(matches: MatchResult[], label: string): { won: boolean; n: number } | null {
-  const inMode = matches.filter((m) => matchGroup(m.mode) === label);
-  if (inMode.length === 0) return null;
-  const won = inMode[0].won;
-  let n = 0;
-  for (const m of inMode) {
-    if (m.won === won) n++;
-    else break;
-  }
-  return { won, n };
-}
-
 function relTime(iso: string): string {
   try {
     const then = new Date(iso).getTime();

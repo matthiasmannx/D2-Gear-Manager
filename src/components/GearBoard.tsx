@@ -524,7 +524,7 @@ export default function GearBoard({
   return (
     <>
       <div className="gear-toolbar">
-        <button className="gear-refresh" onClick={doRefresh} disabled={refreshing}>
+        <button className="gear-refresh" onClick={doRefresh} disabled={refreshing} title="Ververst automatisch elke 10 min">
           <span className={refreshing ? "spin" : ""}>🔄</span> {refreshing ? "Verversen…" : "Ververs"}
         </button>
         <input
@@ -534,7 +534,6 @@ export default function GearBoard({
           value={gearQuery}
           onChange={(e) => setGearQuery(e.target.value)}
         />
-        <span className="muted" style={{ fontSize: "0.78rem" }}>Auto-ververst /10 min</span>
       </div>
 
       {gearQuery.trim() && (
