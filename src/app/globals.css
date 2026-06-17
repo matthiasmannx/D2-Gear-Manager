@@ -1214,6 +1214,54 @@ input:focus {
   grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
 }
 
+/* ---- Modus-keuze meta builds ---- */
+.mode-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin: 1.25rem 0;
+}
+.mode-group-h {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+}
+.mode-tabs {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+  flex-wrap: wrap;
+}
+.mode-tab {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.mode-tab:hover {
+  color: var(--text);
+  border-color: var(--accent-2);
+}
+.mode-tab.active {
+  background: var(--accent);
+  color: #1a1200;
+  border-color: var(--accent);
+}
+.mode-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.mode-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
 /* ---- Inspect-stijl meta builds ---- */
 .class-head {
   font-size: 1.4rem;

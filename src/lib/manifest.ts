@@ -207,5 +207,19 @@ export async function searchItemIndex(
     if (aExact !== bExact) return aExact - bExact;
     return a.name.length - b.name.length;
   });
-  return matches.slice(0, limit);
+
+  // Bundel duplicaten: dezelfde naam + type + rarity = hetzelfde item (de
+  // manifest bevat meerdere kopieën/versies per item). Hou de eerste (best
+  // gesorteerde) en geef de voorkeur aan een exemplaar met een icoon.
+  const seen = new Map<string, ItemIndexEntry>();
+  for (const e of matches) {
+    const key = `${e.name.toLowerCase()}|${e.type}|${e.tier}`;
+    const existing = seen.get(key);
+    if (!existing) {
+      seen.set(key, e);
+    } else if (!existing.icon && e.icon) {
+      seen.set(key, e); // upgrade naar een exemplaar mét icoon
+    }
+  }
+  return [...seen.values()].slice(0, limit);
 }

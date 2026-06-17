@@ -36,14 +36,14 @@ export default async function BuildDetail({
 
   return (
     <>
-      <Link href={`/builds?mode=${b.activity}`} className="muted" style={{ display: "inline-block", marginBottom: "1rem" }}>
-        ← Terug naar {b.activity}-builds
+      <Link href={`/builds?m=${b.modes[0]}`} className="muted" style={{ display: "inline-block", marginBottom: "1rem" }}>
+        ← Terug naar builds
       </Link>
 
       <div className="bd-head" style={{ ["--class-color" as any]: color }}>
         <span className={`build-tier tier-${b.tier}`} style={{ width: 48, height: 48, fontSize: "1.5rem" }}>{b.tier}</span>
         <div>
-          <div className="build-class" style={{ color }}>{b.guardianClass} · {b.subclass} · {b.activity}</div>
+          <div className="build-class" style={{ color }}>{b.guardianClass} · {b.subclass} · {b.modes.join(" · ")}</div>
           <h1 style={{ margin: "0.1rem 0" }}>{b.name}</h1>
           <p className="muted" style={{ margin: 0, maxWidth: 640 }}>{b.summary}</p>
         </div>
