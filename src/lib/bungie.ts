@@ -278,7 +278,19 @@ export async function getEntityDefinition(
   hash: string | number,
   revalidate = 60 * 60 * 24
 ): Promise<any> {
-  return bungieFetch<any>(`/Destiny2/Manifest/${entityType}/${hash}/`, {
+  // Lokaliseer game-data (item-/perk-/activiteit-namen) voor DE/FR/ES via ?lc.
+  // NL valt terug op Engels (Bungie heeft geen NL). Buiten een request (bv. de
+  // index-build of cron) → Engels.
+  let lc = "en";
+  try {
+    const { getLocale } = await import("next-intl/server");
+    const { bungieLang } = await import("@/i18n/config");
+    lc = bungieLang(await getLocale());
+  } catch {
+    /* geen request-context → en */
+  }
+  const suffix = lc && lc !== "en" ? `?lc=${lc}` : "";
+  return bungieFetch<any>(`/Destiny2/Manifest/${entityType}/${hash}/${suffix}`, {
     revalidate,
   });
 }
