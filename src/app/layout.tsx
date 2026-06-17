@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import { isLoggedIn } from "@/lib/auth";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "Guardian Hub — Destiny 2 Companion",
@@ -15,14 +17,18 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const loggedIn = await isLoggedIn();
+  const locale = await getLocale();
+  const messages = await getMessages();
   return (
-    <html lang="nl">
+    <html lang={locale}>
       <body>
-        <Nav loggedIn={loggedIn} />
-        <main className="container">{children}</main>
-        <footer className="site-footer">
-          DESIGNED &amp; DEVELOPED BY <strong className="footer-name">MATTHIAS MANN</strong>
-        </footer>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <Nav loggedIn={loggedIn} />
+          <main className="container">{children}</main>
+          <footer className="site-footer">
+            DESIGNED &amp; DEVELOPED BY <strong className="footer-name">MATTHIAS MANN</strong>
+          </footer>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "items": "Items",
+    "gear": "Gear",
+    "builds": "Meta Builds",
+    "players": "Players",
+    "events": "Events Tracker",
+    "changelog": "Changelog",
+    "sandbox": "Buffs & Nerfs",
+    "login": "Login",
+    "loginExtra": " met Bungie",
+    "logout": "Uitloggen",
+    "language": "Taal"
+  },
+  "home": {
+    "tag": "Powered by de Bungie API",
+    "title": "Guardian Hub",
+    "intro": "Je centrale plek voor Destiny 2: doorzoek items, beheer je gear, volg events en vind snel waar je moet zijn.",
+    "open": "Open →",
+    "error": "Er ging iets mis: {error}",
+    "sections": {
+      "items": { "title": "Items", "desc": "Zoek door alle wapens, armor en mods uit de Destiny 2 database." },
+      "gear": { "title": "Gear", "desc": "Bekijk je eigen characters en uitrusting (login vereist)." },
+      "builds": { "title": "Meta Builds", "desc": "Sterkste PvE- en PvP-builds voor de huidige seizoens-meta." },
+      "players": { "title": "Players", "desc": "Zoek spelers en bekijk hun K/D, wins, Trials, Iron Banner en Flawless-count." },
+      "events": { "title": "Events Tracker", "desc": "Wekelijkse reset, milestones, vendors en actieve activiteiten." },
+      "changelog": { "title": "Changelog", "desc": "Destiny 2 updates, patches en rotaties — nieuwste bovenaan." },
+      "sandbox": { "title": "Buffs & Nerfs", "desc": "Sandbox-wijzigingen volgens Bungie — buffs, nerfs en aanpassingen." }
+    }
+  }
+}

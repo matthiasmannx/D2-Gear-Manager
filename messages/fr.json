@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "items": "Items",
+    "gear": "Équipement",
+    "builds": "Builds méta",
+    "players": "Joueurs",
+    "events": "Suivi des events",
+    "changelog": "Changelog",
+    "sandbox": "Buffs & Nerfs",
+    "login": "Connexion",
+    "loginExtra": " avec Bungie",
+    "logout": "Déconnexion",
+    "language": "Langue"
+  },
+  "home": {
+    "tag": "Propulsé par l'API Bungie",
+    "title": "Guardian Hub",
+    "intro": "Votre plateforme centrale pour Destiny 2 : cherchez des items, gérez votre équipement, suivez les events et trouvez vite où aller.",
+    "open": "Ouvrir →",
+    "error": "Une erreur est survenue : {error}",
+    "sections": {
+      "items": { "title": "Items", "desc": "Cherchez toutes les armes, armures et mods de la base de données Destiny 2." },
+      "gear": { "title": "Équipement", "desc": "Consultez vos propres personnages et votre équipement (connexion requise)." },
+      "builds": { "title": "Builds méta", "desc": "Les meilleurs builds PvE et PvP pour la méta de la saison actuelle." },
+      "players": { "title": "Joueurs", "desc": "Cherchez des joueurs et voyez leur K/D, victoires, Épreuves, Bannière de fer et nombre de Flawless." },
+      "events": { "title": "Suivi des events", "desc": "Reset hebdomadaire, jalons, marchands et activités actives." },
+      "changelog": { "title": "Changelog", "desc": "Mises à jour, patchs et rotations de Destiny 2 — les plus récents en haut." },
+      "sandbox": { "title": "Buffs & Nerfs", "desc": "Changements du sandbox selon Bungie — buffs, nerfs et ajustements." }
+    }
+  }
+}

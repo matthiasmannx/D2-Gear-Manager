@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "items": "Items",
+    "gear": "Gear",
+    "builds": "Meta Builds",
+    "players": "Players",
+    "events": "Events Tracker",
+    "changelog": "Changelog",
+    "sandbox": "Buffs & Nerfs",
+    "login": "Login",
+    "loginExtra": " with Bungie",
+    "logout": "Log out",
+    "language": "Language"
+  },
+  "home": {
+    "tag": "Powered by the Bungie API",
+    "title": "Guardian Hub",
+    "intro": "Your central hub for Destiny 2: search items, manage your gear, track events and quickly find where to go.",
+    "open": "Open →",
+    "error": "Something went wrong: {error}",
+    "sections": {
+      "items": { "title": "Items", "desc": "Search all weapons, armor and mods from the Destiny 2 database." },
+      "gear": { "title": "Gear", "desc": "View your own characters and equipment (login required)." },
+      "builds": { "title": "Meta Builds", "desc": "Strongest PvE and PvP builds for the current seasonal meta." },
+      "players": { "title": "Players", "desc": "Search players and view their K/D, wins, Trials, Iron Banner and Flawless count." },
+      "events": { "title": "Events Tracker", "desc": "Weekly reset, milestones, vendors and active activities." },
+      "changelog": { "title": "Changelog", "desc": "Destiny 2 updates, patches and rotations — newest on top." },
+      "sandbox": { "title": "Buffs & Nerfs", "desc": "Sandbox changes per Bungie — buffs, nerfs and adjustments." }
+    }
+  }
+}
