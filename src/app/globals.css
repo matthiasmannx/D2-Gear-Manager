@@ -719,17 +719,23 @@ input:focus {
 .gc-postmaster {
   padding-bottom: 0.6rem;
 }
-/* Equip-slot als drop-zone bij slepen */
-.gear-slot.slot-droppable {
-  outline: 1px dashed var(--border);
+/* Equip-slot als drop-zone bij slepen: groen = past, rood = past niet */
+.gear-slot.slot-ok {
+  outline: 1px dashed #38d39f;
   outline-offset: 1px;
   border-radius: 8px;
 }
-.gear-slot.drop-over {
-  outline: 2px dashed var(--accent-2);
+.gear-slot.slot-bad {
+  outline: 1px dashed var(--danger);
   outline-offset: 1px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.04);
+  opacity: 0.55;
+}
+.gear-slot.drop-over {
+  outline: 2px solid #38d39f;
+  outline-offset: 1px;
+  border-radius: 8px;
+  background: rgba(56, 211, 159, 0.12);
 }
 .gear-char {
   margin-top: 1.5rem;

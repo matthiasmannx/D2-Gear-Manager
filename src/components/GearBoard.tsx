@@ -84,6 +84,7 @@ interface TileActions {
   toggleLock: (item: Item, source: string, locked: boolean) => void;
   pull: (item: Item, characterId: string) => void;
   setDragging: (v: boolean) => void;
+  setDraggingBucket: (v: number | null) => void;
 }
 
 function Tile({
@@ -145,8 +146,8 @@ function Tile({
         className={`gear-tile ${item.masterwork ? "is-mw" : ""}`}
         style={{ borderColor: border }}
         draggable={canAct}
-        onDragStart={(e) => { e.dataTransfer.setData("application/json", JSON.stringify(dragData)); a.setDragging(true); }}
-        onDragEnd={() => a.setDragging(false)}
+        onDragStart={(e) => { e.dataTransfer.setData("application/json", JSON.stringify(dragData)); a.setDragging(true); a.setDraggingBucket(item.bucketHash); }}
+        onDragEnd={() => { a.setDragging(false); a.setDraggingBucket(null); }}
         onClick={() => setPinned((p) => !p)}
         disabled={a.busy}
       >
@@ -335,6 +336,8 @@ export default function GearBoard({
   const [error, setError] = useState<string | null>(null);
   const [dropZone, setDropZone] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
+  // bucketHash van het item dat nu gesleept wordt (om passende slots te kleuren)
+  const [draggingBucket, setDraggingBucket] = useState<number | null>(null);
 
   // Verversen (handmatig + automatisch elke 10 min)
   const [refreshing, setRefreshing] = useState(false);
@@ -536,6 +539,7 @@ export default function GearBoard({
     pull: (item, characterId) =>
       postJson("/api/gear/postmaster", { itemReferenceHash: item.hash, itemId: item.instanceId, characterId, membershipType }),
     setDragging,
+    setDraggingBucket,
     toggleLock: (item, sourceCharacterId, locked) =>
       postJson("/api/gear/lock", {
         itemId: item.instanceId,
@@ -554,6 +558,7 @@ export default function GearBoard({
     e.preventDefault();
     setDropZone(null);
     setDragging(false);
+    setDraggingBucket(null);
     try {
       const d: DragData = JSON.parse(e.dataTransfer.getData("application/json"));
       enqueue(d, target);
@@ -573,6 +578,7 @@ export default function GearBoard({
     e.stopPropagation();
     setDropZone(null);
     setDragging(false);
+    setDraggingBucket(null);
     try {
       const d: DragData = JSON.parse(e.dataTransfer.getData("application/json"));
       if (d.bucketHash !== slotBucket) {
@@ -725,10 +731,12 @@ export default function GearBoard({
               {SLOTS.map((slot) => {
                 const it = c.equipped.find((x) => x.bucketHash === slot.bucket);
                 const slotKey = `slot-${c.characterId}-${slot.bucket}`;
+                const fits = draggingBucket === null || draggingBucket === slot.bucket;
+                const fitClass = !dragging ? "" : fits ? "slot-ok" : "slot-bad";
                 return (
                   <div
                     key={slot.bucket}
-                    className={`gear-slot ${dragging ? "slot-droppable" : ""} ${dropZone === slotKey ? "drop-over" : ""}`}
+                    className={`gear-slot ${fitClass} ${dropZone === slotKey && fits ? "drop-over" : ""}`}
                     onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); setDropZone(slotKey); }}
                     onDragLeave={() => setDropZone(null)}
                     onDrop={(e) => onDropSlot(e, c.characterId, slot.bucket)}
