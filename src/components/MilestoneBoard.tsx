@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import Countdown from "./Countdown";
 
 export interface MilestoneView {
@@ -17,6 +18,7 @@ export interface MilestoneView {
 }
 
 export default function MilestoneBoard({ milestones }: { milestones: MilestoneView[] }) {
+  const t = useTranslations("events");
   const [sort, setSort] = useState<"default" | "ending">("default");
   const [endingSoon, setEndingSoon] = useState(false);
 
@@ -42,17 +44,17 @@ export default function MilestoneBoard({ milestones }: { milestones: MilestoneVi
     <>
       <div className="ms-controls">
         <select value={sort} onChange={(e) => setSort(e.target.value as any)}>
-          <option value="default">Standaard volgorde</option>
-          <option value="ending">Eindigt het eerst</option>
+          <option value="default">{t("sortDefault")}</option>
+          <option value="ending">{t("sortEnding")}</option>
         </select>
         <label className="vault-toggle">
           <input type="checkbox" checked={endingSoon} onChange={(e) => setEndingSoon(e.target.checked)} />
-          Loopt binnen 24u af
+          {t("endingSoon")}
         </label>
       </div>
 
       {list.length === 0 ? (
-        <div className="empty">Geen milestones die aan de filter voldoen.</div>
+        <div className="empty">{t("noFilterMilestones")}</div>
       ) : (
         <div className="section-list">
           {list.map((m) => (
@@ -66,7 +68,7 @@ export default function MilestoneBoard({ milestones }: { milestones: MilestoneVi
                   <div className="item-name">{m.name}</div>
                   {m.endDate && (
                     <div className="item-type">
-                      Eindigt over <Countdown to={m.endDate} />
+                      {t("endsIn")} <Countdown to={m.endDate} />
                     </div>
                   )}
                 </div>
@@ -74,10 +76,10 @@ export default function MilestoneBoard({ milestones }: { milestones: MilestoneVi
 
               <div className="ms-meta">
                 {m.activity && (
-                  <div><span className="muted">Doen: </span>{m.activity}{m.power ? ` · ⚡${m.power}` : ""}</div>
+                  <div><span className="muted">{t("doLabel")} </span>{m.activity}{m.power ? ` · ⚡${m.power}` : ""}</div>
                 )}
                 {((m.rewards?.length ?? 0) > 0 || m.rewardLabel) && (
-                  <div><span className="muted">Loot: </span>{(m.rewards?.length ?? 0) > 0 ? m.rewards.join(", ") : m.rewardLabel}</div>
+                  <div><span className="muted">{t("lootLabel")} </span>{(m.rewards?.length ?? 0) > 0 ? m.rewards.join(", ") : m.rewardLabel}</div>
                 )}
               </div>
 

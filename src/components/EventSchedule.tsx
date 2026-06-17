@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
 import Countdown from "./Countdown";
 import { nextDailyReset, nextWeeklyReset, weekendWindow } from "@/lib/schedule";
 
@@ -10,45 +11,46 @@ export interface IronBannerInfo {
   nextDate?: string;
 }
 
-function fmtDate(iso?: string): string {
-  if (!iso) return "";
-  try {
-    return new Intl.DateTimeFormat("nl-NL", { day: "numeric", month: "short" }).format(new Date(iso));
-  } catch {
-    return "";
-  }
-}
-
 export default function EventSchedule({ ironBanner }: { ironBanner: IronBannerInfo }) {
+  const t = useTranslations("events");
+  const locale = useLocale();
+  const fmtDate = (iso?: string): string => {
+    if (!iso) return "";
+    try {
+      return new Intl.DateTimeFormat(locale, { day: "numeric", month: "short" }).format(new Date(iso));
+    } catch {
+      return "";
+    }
+  };
   const daily = nextDailyReset().getTime();
   const weekly = nextWeeklyReset().getTime();
   const weekend = weekendWindow();
 
   return (
     <div className="sched-grid">
-      <Card title="Dagelijkse reset" status="In" live>
+      <Card title={t("dailyReset")} status={t("statusIn")} live>
         <Countdown to={daily} />
       </Card>
-      <Card title="Wekelijkse reset" status="Dinsdag · in" live>
+      <Card title={t("weeklyReset")} status={t("weeklyStatus")} live>
         <Countdown to={weekly} />
       </Card>
 
       <Card
-        title="Trials of Osiris"
-        status={weekend.active ? "Live · sluit over" : "Begint vrijdag · over"}
+        title={t("trials")}
+        status={weekend.active ? t("trialsLive") : t("trialsSoon")}
         accent={weekend.active ? "live" : "soon"}
       >
         <Countdown to={(weekend.active ? weekend.end : weekend.start).getTime()} />
       </Card>
 
       <Card
-        title="Iron Banner"
+        title={t("ironBanner")}
         status={
           ironBanner.active
-            ? `Actief · t/m ${fmtDate(ironBanner.endDate)} · sluit over`
+            ? t("ibActive", { date: fmtDate(ironBanner.endDate) })
             : ironBanner.nextDate
-            ? `Start ${fmtDate(ironBanner.nextDate)} · over`
-            : "Datum nog niet bekend (TWID)"
+            ? t("ibStart", { date: fmtDate(ironBanner.nextDate) })
+            : t("ibUnknown")
         }
         accent={ironBanner.active ? "live" : ironBanner.nextDate ? "soon" : "off"}
       >
@@ -62,8 +64,8 @@ export default function EventSchedule({ ironBanner }: { ironBanner: IronBannerIn
       </Card>
 
       <Card
-        title="Xûr"
-        status={weekend.active ? "Hier · vertrekt over" : "Komt vrijdag · over"}
+        title={t("xur")}
+        status={weekend.active ? t("xurLive") : t("xurSoon")}
         accent={weekend.active ? "live" : "soon"}
       >
         <Countdown to={(weekend.active ? weekend.end : weekend.start).getTime()} />

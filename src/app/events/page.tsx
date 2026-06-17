@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { getPublicMilestones, getEntityDefinition, icon } from "@/lib/bungie";
 import { lookupItems } from "@/lib/manifest";
 import { getValidAccessToken } from "@/lib/auth";
@@ -21,6 +22,7 @@ interface RawMilestone {
 }
 
 export default async function EventsPage() {
+  const t = await getTranslations("events");
   let milestones: MilestoneView[] = [];
   let ironBanner: IronBannerInfo = { active: false };
   let loadError: string | null = null;
@@ -84,7 +86,7 @@ export default async function EventsPage() {
             activity,
             power,
             rewards,
-            rewardLabel: rewards.length === 0 && activity ? "Loot uit de activiteit-pool + wekelijkse beloning" : undefined,
+            rewardLabel: rewards.length === 0 && activity ? t("rewardPool") : undefined,
           };
         })
     );
@@ -104,12 +106,10 @@ export default async function EventsPage() {
 
   return (
     <>
-      <h1>Events Tracker</h1>
-      <p className="muted">
-        Resets, weekend-events en actieve milestones — met live afteltimers.
-      </p>
+      <h1>{t("title")}</h1>
+      <p className="muted">{t("intro")}</p>
 
-      <h2 style={{ marginTop: "1.25rem" }}>Schema</h2>
+      <h2 style={{ marginTop: "1.25rem" }}>{t("schedule")}</h2>
       <EventSchedule ironBanner={ironBanner} />
 
       <ThisWeek />
@@ -117,11 +117,11 @@ export default async function EventsPage() {
       {/* Vendors (vereist login) */}
       <Vendors />
 
-      <h2 style={{ marginTop: "2rem" }}>Actieve milestones</h2>
+      <h2 style={{ marginTop: "2rem" }}>{t("activeMilestones")}</h2>
       {loadError ? (
-        <div className="notice error">Kon milestones niet laden: {loadError}</div>
+        <div className="notice error">{t("milestonesFailed", { error: loadError })}</div>
       ) : milestones.length === 0 ? (
-        <div className="empty">Geen actieve milestones gevonden.</div>
+        <div className="empty">{t("noMilestones")}</div>
       ) : (
         <MilestoneBoard milestones={milestones} />
       )}
@@ -129,46 +129,45 @@ export default async function EventsPage() {
   );
 }
 
-function ThisWeek() {
+async function ThisWeek() {
+  const t = await getTranslations("events");
   const w = WEEKLY;
   const has = w.nightfall || w.legendLostSector || w.featuredDungeon || w.featuredRaid;
   return (
     <>
-      <h2 style={{ marginTop: "2rem" }}>Deze week</h2>
+      <h2 style={{ marginTop: "2rem" }}>{t("thisWeek")}</h2>
       {has ? (
         <div className="sched-grid">
           {w.nightfall && (
             <div className="sched-card soon">
-              <div className="sched-title">Nightfall</div>
+              <div className="sched-title">{t("nightfall")}</div>
               <div className="sched-status muted">{w.nightfall.activity}</div>
               <div style={{ fontWeight: 700 }}>🎁 {w.nightfall.weapon}</div>
             </div>
           )}
           {w.legendLostSector && (
             <div className="sched-card soon">
-              <div className="sched-title">Legend Lost Sector</div>
+              <div className="sched-title">{t("legendLostSector")}</div>
               <div className="sched-status muted">{w.legendLostSector.name}</div>
-              <div style={{ fontWeight: 700 }}>🎁 Exotic {w.legendLostSector.exoticSlot}</div>
+              <div style={{ fontWeight: 700 }}>🎁 {t("exoticReward", { slot: w.legendLostSector.exoticSlot })}</div>
             </div>
           )}
           {w.featuredRaid && (
             <div className="sched-card">
-              <div className="sched-title">Featured raid</div>
+              <div className="sched-title">{t("featuredRaid")}</div>
               <div style={{ fontWeight: 700 }}>{w.featuredRaid}</div>
             </div>
           )}
           {w.featuredDungeon && (
             <div className="sched-card">
-              <div className="sched-title">Featured dungeon</div>
+              <div className="sched-title">{t("featuredDungeon")}</div>
               <div style={{ fontWeight: 700 }}>{w.featuredDungeon}</div>
             </div>
           )}
         </div>
       ) : (
         <div className="notice" style={{ fontSize: "0.86rem" }}>
-          Nightfall-wapen, Legend Lost Sector en featured dungeon/raid komen niet uit de
-          Bungie API. Vul ze in{" "}
-          <code>src/lib/weekly.ts</code> (of vraag mij "ververs de weekly highlights"). Bronnen:{" "}
+          {t("weeklyMissing")}{" "}
           <a href="https://www.bungie.net/7/en/News" target="_blank" rel="noopener noreferrer">Bungie TWID</a>,{" "}
           <a href="https://www.blueberries.gg/leveling/lost-sectors/" target="_blank" rel="noopener noreferrer">blueberries.gg</a>.
         </div>
@@ -178,13 +177,14 @@ function ThisWeek() {
 }
 
 async function Vendors() {
+  const t = await getTranslations("events");
   const token = await getValidAccessToken();
   if (!token) {
     return (
       <>
-        <h2 style={{ marginTop: "2rem" }}>Vendors</h2>
+        <h2 style={{ marginTop: "2rem" }}>{t("vendors")}</h2>
         <div className="notice">
-          <Link href="/api/auth/login">Log in met Bungie</Link> om te zien wat Xûr, Banshee-44 en Ada-1 nu verkopen.
+          <Link href="/api/auth/login">{t("vendorsLoginLink")}</Link> {t("vendorsLoginRest")}
         </div>
       </>
     );
@@ -199,9 +199,9 @@ async function Vendors() {
 
   return (
     <>
-      <h2 style={{ marginTop: "2rem" }}>Vendors</h2>
+      <h2 style={{ marginTop: "2rem" }}>{t("vendors")}</h2>
       {!vendors || vendors.length === 0 ? (
-        <div className="empty">Geen vendor-inventory beschikbaar (Xûr is alleen in het weekend aanwezig).</div>
+        <div className="empty">{t("noVendors")}</div>
       ) : (
         vendors.map((v) => (
           <section key={v.hash} style={{ marginTop: "1rem" }}>

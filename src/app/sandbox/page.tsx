@@ -1,11 +1,12 @@
+import { getTranslations } from "next-intl/server";
 import { SANDBOX_CHANGES, SandboxChange, ChangeKind } from "@/lib/sandbox";
 
 export const metadata = { title: "Buffs & Nerfs — Guardian Hub" };
 
-const KIND: Record<ChangeKind, { label: string; cls: string; icon: string }> = {
-  buff: { label: "Buff", cls: "buff", icon: "▲" },
-  nerf: { label: "Nerf", cls: "nerf", icon: "▼" },
-  change: { label: "Aangepast", cls: "change", icon: "↔" },
+const KIND_META: Record<ChangeKind, { cls: string; icon: string }> = {
+  buff: { cls: "buff", icon: "▲" },
+  nerf: { cls: "nerf", icon: "▼" },
+  change: { cls: "change", icon: "↔" },
 };
 
 export default async function SandboxPage({
@@ -15,6 +16,7 @@ export default async function SandboxPage({
 }) {
   const { kind } = await searchParams;
   const active = (["buff", "nerf", "change"] as const).includes(kind as any) ? (kind as ChangeKind) : "all";
+  const t = await getTranslations("sandbox");
 
   const list = SANDBOX_CHANGES.filter((c) => active === "all" || c.kind === active);
   const counts = {
@@ -25,22 +27,20 @@ export default async function SandboxPage({
 
   return (
     <>
-      <h1>Buffs &amp; Nerfs</h1>
-      <p className="muted">Sandbox-wijzigingen volgens Bungie's patch notes.</p>
-      <div className="notice" style={{ marginTop: "0.5rem", fontSize: "0.82rem" }}>
-        Redactioneel (de API levert geen patch notes). Vraag mij "ververs de buffs en nerfs" om dit per update bij te werken.
-      </div>
+      <h1>{t("title")}</h1>
+      <p className="muted">{t("intro")}</p>
+      <div className="notice" style={{ marginTop: "0.5rem", fontSize: "0.82rem" }}>{t("note")}</div>
 
       <div className="build-tabs">
-        <Tab k="all" label={`Alles (${SANDBOX_CHANGES.length})`} active={active} />
-        <Tab k="buff" label={`▲ Buffs (${counts.buff})`} active={active} />
-        <Tab k="nerf" label={`▼ Nerfs (${counts.nerf})`} active={active} />
-        <Tab k="change" label={`↔ Aangepast (${counts.change})`} active={active} />
+        <Tab k="all" label={t("tabAll", { n: SANDBOX_CHANGES.length })} active={active} />
+        <Tab k="buff" label={`▲ ${t("tabBuffs", { n: counts.buff })}`} active={active} />
+        <Tab k="nerf" label={`▼ ${t("tabNerfs", { n: counts.nerf })}`} active={active} />
+        <Tab k="change" label={`↔ ${t("tabChange", { n: counts.change })}`} active={active} />
       </div>
 
       <div className="section-list" style={{ marginTop: "1.25rem" }}>
         {list.map((c, i) => (
-          <Card key={i} c={c} />
+          <Card key={i} c={c} label={t(c.kind)} patchNotes={t("patchNotes")} />
         ))}
       </div>
     </>
@@ -55,12 +55,12 @@ function Tab({ k, label, active }: { k: string; label: string; active: string })
   );
 }
 
-function Card({ c }: { c: SandboxChange }) {
-  const k = KIND[c.kind];
+function Card({ c, label, patchNotes }: { c: SandboxChange; label: string; patchNotes: string }) {
+  const k = KIND_META[c.kind];
   return (
     <article className={`sb-card ${k.cls}`}>
       <div className="sb-head">
-        <span className={`sb-badge ${k.cls}`}>{k.icon} {k.label}</span>
+        <span className={`sb-badge ${k.cls}`}>{k.icon} {label}</span>
         <span className="tag">{c.category}</span>
         <span className="muted" style={{ fontSize: "0.78rem", marginLeft: "auto" }}>{c.version}</span>
       </div>
@@ -68,7 +68,7 @@ function Card({ c }: { c: SandboxChange }) {
       <p className="muted" style={{ margin: 0, fontSize: "0.9rem" }}>{c.note}</p>
       {c.url && (
         <a href={c.url} target="_blank" rel="noopener noreferrer" className="muted" style={{ fontSize: "0.78rem" }}>
-          Patch notes ↗
+          {patchNotes}
         </a>
       )}
     </article>

@@ -1,3 +1,4 @@
+import { getTranslations, getLocale } from "next-intl/server";
 import { CHANGELOG, ChangeEntry } from "@/lib/changelog";
 
 export const metadata = { title: "Changelog — Guardian Hub" };
@@ -9,24 +10,26 @@ const TAG_COLOR: Record<string, string> = {
   Rotatie: "#38d39f",
 };
 
-export default function ChangelogPage() {
+export default async function ChangelogPage() {
+  const t = await getTranslations("changelog");
+  const locale = await getLocale();
   return (
     <>
-      <h1>Changelog</h1>
-      <p className="muted">Destiny 2 updates, patches en rotaties — nieuwste bovenaan.</p>
+      <h1>{t("title")}</h1>
+      <p className="muted">{t("intro")}</p>
 
       <div className="timeline">
         {CHANGELOG.map((e, i) => (
-          <Entry key={i} e={e} />
+          <Entry key={i} e={e} locale={locale} patchNotes={t("patchNotes")} />
         ))}
       </div>
     </>
   );
 }
 
-function Entry({ e }: { e: ChangeEntry }) {
+function Entry({ e, locale, patchNotes }: { e: ChangeEntry; locale: string; patchNotes: string }) {
   const color = TAG_COLOR[e.tag ?? ""] ?? "var(--accent)";
-  const date = new Intl.DateTimeFormat("nl-NL", { day: "numeric", month: "long", year: "numeric" }).format(new Date(e.date));
+  const date = new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric" }).format(new Date(e.date));
   return (
     <div className="tl-entry" style={{ ["--tl-color" as any]: color }}>
       <div className="tl-dot" />
@@ -45,7 +48,7 @@ function Entry({ e }: { e: ChangeEntry }) {
         )}
         {e.url && (
           <a href={e.url} target="_blank" rel="noopener noreferrer" className="muted" style={{ fontSize: "0.82rem" }}>
-            Officiële patch notes ↗
+            {patchNotes}
           </a>
         )}
       </div>
