@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 interface ItemStat {
   name: string;
@@ -604,108 +604,100 @@ export default function GearBoard({
           {dragging && (
             <div className="drop-hint">⤵ Sleep hierheen → naar {CLASS_NAMES[c.classType]}-inventory</div>
           )}
+          {/* rij 1: banner */}
           <div className="gear-char-head" style={emblemBg(c.emblemBackground)}>
             <span className="gear-char-class">{CLASS_NAMES[c.classType] ?? "Guardian"}</span>
             <span className="gear-char-power">◆ {c.light}</span>
           </div>
 
-          <div className="gear-label muted">Loadouts</div>
-          <div className="loadout-row">
-            {c.loadouts.length > 0 ? (
-              c.loadouts.map((lo) => (
-                <button
-                  key={lo.index}
-                  className="loadout-btn"
-                  onClick={() => equipLoadout(lo.index, c.characterId)}
-                  disabled={busy}
-                  title={`Equip "${lo.name}" (${lo.itemCount} items)`}
-                >
-                  {lo.icon && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={iconUrl(lo.icon)!} alt="" style={lo.color ? { background: "transparent" } : undefined} />
-                  )}
-                  <span>{lo.name}</span>
-                </button>
-              ))
-            ) : (
-              <span className="loadout-empty muted">Geen opgeslagen loadouts</span>
-            )}
+          {/* rij 2: loadouts */}
+          <div className="gc-row">
+            <span className="gear-sublabel">Loadouts</span>
+            <div className="loadout-row">
+              {c.loadouts.length > 0 ? (
+                c.loadouts.map((lo) => (
+                  <button
+                    key={lo.index}
+                    className="loadout-btn"
+                    onClick={() => equipLoadout(lo.index, c.characterId)}
+                    disabled={busy}
+                    title={`Equip "${lo.name}" (${lo.itemCount} items)`}
+                  >
+                    {lo.icon && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={iconUrl(lo.icon)!} alt="" style={lo.color ? { background: "transparent" } : undefined} />
+                    )}
+                    <span>{lo.name}</span>
+                  </button>
+                ))
+              ) : (
+                <span className="loadout-empty muted">Geen opgeslagen loadouts</span>
+              )}
+            </div>
           </div>
 
-          <div className="gear-label muted">Uitgerust</div>
-          <div className="gear-slots">
-            {SLOTS.map((slot) => {
-              const it = c.equipped.find((x) => x.bucketHash === slot.bucket);
-              return (
-                <div key={slot.bucket} className="gear-slot">
-                  <span className="gear-slot-label">{slot.label}</span>
-                  {it ? (
-                    <Tile item={it} source={c.characterId} equipped context="equipped" a={actions} />
+          {/* rij 3: uitgerust */}
+          <div className="gc-row">
+            <span className="gear-sublabel">Uitgerust</span>
+            <div className="gear-slots">
+              {SLOTS.map((slot) => {
+                const it = c.equipped.find((x) => x.bucketHash === slot.bucket);
+                return (
+                  <div key={slot.bucket} className="gear-slot">
+                    <span className="gear-slot-label">{slot.label}</span>
+                    {it ? (
+                      <Tile item={it} source={c.characterId} equipped context="equipped" a={actions} />
+                    ) : (
+                      <div className="gear-slot-empty" title="Leeg" />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* rij 4: "op character"-kop */}
+          <div className="gc-row gc-invhead">
+            <span className="gear-sublabel">Op character ({c.inventory.length})</span>
+          </div>
+
+          {/* rij 5-12: één rij per slot (subgrid lijnt ze uit over de guardians) */}
+          {SLOTS.map((slot) => {
+            const items = c.inventory.filter((it) => it.bucketHash === slot.bucket);
+            return (
+              <div key={slot.bucket} className="gc-row gc-invslot">
+                <span className="gear-sublabel">{slot.label}</span>
+                <div className="gear-vault gc-items">
+                  {items.length > 0 ? (
+                    items.map((it, i) => (
+                      <Tile key={(it.instanceId ?? it.hash) + "-" + i} item={it} source={c.characterId} equipped={false} context="inventory" a={actions} />
+                    ))
                   ) : (
-                    <div className="gear-slot-empty" title="Leeg" />
+                    <span className="inv-empty">—</span>
                   )}
                 </div>
-              );
-            })}
-          </div>
-
-          {/* "Op character"-inventory staat in de uitgelijnde matrix onder de kolommen */}
-
-          {c.postmaster.length > 0 && (
-            <>
-              <div className="gear-label muted">📭 Postmaster ({c.postmaster.length}) — klik voor god-roll & pull</div>
-              <div className="gear-vault">
-                {c.postmaster.map((it, i) => (
-                  <Tile key={(it.instanceId ?? it.hash) + "-pm-" + i} item={it} source={c.characterId} equipped={false} context="postmaster" a={actions} />
-                ))}
               </div>
-            </>
-          )}
+            );
+          })}
+
+          {/* rij 13: postmaster */}
+          <div className="gc-row gc-postmaster">
+            {c.postmaster.length > 0 ? (
+              <>
+                <span className="gear-sublabel">📭 Postmaster ({c.postmaster.length}) — klik voor god-roll &amp; pull</span>
+                <div className="gear-vault gc-items">
+                  {c.postmaster.map((it, i) => (
+                    <Tile key={(it.instanceId ?? it.hash) + "-pm-" + i} item={it} source={c.characterId} equipped={false} context="postmaster" a={actions} />
+                  ))}
+                </div>
+              </>
+            ) : (
+              <span className="gear-sublabel muted">📭 Postmaster leeg</span>
+            )}
+          </div>
         </section>
       ))}
       </div>
-
-      {/* Inventory-matrix: slots als rijen, guardians als kolommen → uitgelijnd */}
-      {characters.some((c) => c.inventory.length > 0) && (
-        <section style={{ marginTop: "1.5rem" }}>
-          <h2 style={{ fontSize: "1.1rem" }}>Op character — per slot</h2>
-          <div
-            className="inv-matrix"
-            style={{ gridTemplateColumns: `64px repeat(${characters.length}, minmax(0, 1fr))` }}
-          >
-            <div className="inv-corner" />
-            {characters.map((c) => (
-              <div key={c.characterId} className="inv-colhead">{CLASS_NAMES[c.classType]}</div>
-            ))}
-            {SLOTS.map((slot) => (
-              <Fragment key={slot.bucket}>
-                <div className="inv-rowlabel">{slot.label}</div>
-                {characters.map((c) => {
-                  const items = c.inventory.filter((it) => it.bucketHash === slot.bucket);
-                  const key = `inv-${c.characterId}-${slot.bucket}`;
-                  return (
-                    <div
-                      key={c.characterId}
-                      className={`inv-cell ${dropZone === key ? "drop-over" : ""}`}
-                      onDragOver={(e) => { e.preventDefault(); setDropZone(key); }}
-                      onDragLeave={() => setDropZone(null)}
-                      onDrop={(e) => onDrop(e, c.characterId)}
-                    >
-                      {items.length > 0 ? (
-                        items.map((it, i) => (
-                          <Tile key={(it.instanceId ?? it.hash) + "-" + i} item={it} source={c.characterId} equipped={false} context="inventory" a={actions} />
-                        ))
-                      ) : (
-                        <span className="inv-empty">—</span>
-                      )}
-                    </div>
-                  );
-                })}
-              </Fragment>
-            ))}
-          </div>
-        </section>
-      )}
 
       <section
         className={`gear-char ${dragging ? "drag-target" : ""} ${dropZone === "vault" ? "drop-over" : ""}`}
