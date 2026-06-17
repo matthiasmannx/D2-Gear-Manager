@@ -208,18 +208,24 @@ export async function searchItemIndex(
     return a.name.length - b.name.length;
   });
 
-  // Bundel duplicaten: dezelfde naam + type + rarity = hetzelfde item (de
-  // manifest bevat meerdere kopieën/versies per item). Hou de eerste (best
-  // gesorteerde) en geef de voorkeur aan een exemplaar met een icoon.
+  // Bundel duplicaten: dezelfde naam + itemtype = hetzelfde item. De manifest
+  // bevat meerdere kopieën (dummy/template/"Common"-versies zonder type). We
+  // houden per groep het BESTE exemplaar: hoogste rarity, mét type en icoon.
+  const TIER_RANK: Record<string, number> = {
+    Exotic: 5, Legendary: 4, Rare: 3, Uncommon: 2, Common: 1,
+  };
+  // Echt wapen/armor (itemType 3/2) wint van dummy-/template-kopieën.
+  const score = (e: ItemIndexEntry) =>
+    (TIER_RANK[e.tier] ?? 0) * 10 +
+    (e.itemType === 3 || e.itemType === 2 ? 5 : 0) +
+    (e.type ? 2 : 0) +
+    (e.icon ? 1 : 0);
+
   const seen = new Map<string, ItemIndexEntry>();
   for (const e of matches) {
-    const key = `${e.name.toLowerCase()}|${e.type}|${e.tier}`;
+    const key = e.name.toLowerCase();
     const existing = seen.get(key);
-    if (!existing) {
-      seen.set(key, e);
-    } else if (!existing.icon && e.icon) {
-      seen.set(key, e); // upgrade naar een exemplaar mét icoon
-    }
+    if (!existing || score(e) > score(existing)) seen.set(key, e);
   }
   return [...seen.values()].slice(0, limit);
 }
