@@ -301,6 +301,22 @@ input:focus {
 .match {
   grid-template-columns: 28px 1fr auto auto auto auto;
 }
+.streak {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 99px;
+  margin-bottom: 0.5rem;
+}
+.streak.win {
+  background: rgba(56, 211, 159, 0.18);
+  color: #38d39f;
+}
+.streak.loss {
+  background: rgba(255, 91, 91, 0.18);
+  color: #ff8a8a;
+}
 .mode-block {
   margin-bottom: 0.6rem;
 }

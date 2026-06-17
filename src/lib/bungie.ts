@@ -838,27 +838,56 @@ async function recentInstanceIds(
  * Tel hoe vaak de ingelogde speler in dezelfde PvP-match zat als de doelspeler
  * (gedeelde recente instanceIds). accessToken = ingelogde gebruiker.
  */
+export interface SharedMatches {
+  count: number;
+  self: boolean;
+  teammate: number;
+  opponent: number;
+}
+
 export async function getSharedMatchCount(
   accessToken: string,
   target: { membershipType: number; membershipId: string; characterIds: string[] }
-): Promise<{ count: number; self: boolean } | null> {
+): Promise<SharedMatches | null> {
   try {
     const { primary } = await getMemberships(accessToken);
     if (!primary) return null;
-    // Zelfde speler opgezocht?
-    if (primary.membershipId === target.membershipId) return { count: 0, self: true };
+    if (primary.membershipId === target.membershipId) return { count: 0, self: true, teammate: 0, opponent: 0 };
 
     const meProfile = await getProfile(accessToken, primary.membershipType, primary.membershipId, [200]);
     const meChars = Object.keys(meProfile?.characters?.data ?? {});
-    if (meChars.length === 0) return { count: 0, self: false };
+    if (meChars.length === 0) return { count: 0, self: false, teammate: 0, opponent: 0 };
 
     const [mine, theirs] = await Promise.all([
       recentInstanceIds(primary.membershipType, primary.membershipId, meChars),
       recentInstanceIds(target.membershipType, target.membershipId, target.characterIds),
     ]);
-    let count = 0;
-    for (const iid of theirs) if (mine.has(iid)) count++;
-    return { count, self: false };
+    const shared = [...theirs].filter((iid) => mine.has(iid));
+
+    // Bepaal per gedeelde match of we teammates of tegenstanders waren (PGCR).
+    let teammate = 0;
+    let opponent = 0;
+    await Promise.all(
+      shared.slice(0, 25).map(async (iid) => {
+        try {
+          const pgcr = await bungieFetch<any>(`/Destiny2/Stats/PostGameCarnageReport/${iid}/`, {
+            revalidate: 60 * 60 * 24 * 30, // PGCR's zijn onveranderlijk
+          });
+          const entries: any[] = pgcr?.entries ?? [];
+          const me = entries.find((e) => e.player?.destinyUserInfo?.membershipId === primary.membershipId);
+          const tgt = entries.find((e) => e.player?.destinyUserInfo?.membershipId === target.membershipId);
+          if (!me || !tgt) return;
+          const mt = me.values?.team?.basic?.value;
+          const tt = tgt.values?.team?.basic?.value;
+          if (mt != null && tt != null && mt === tt) teammate++;
+          else opponent++;
+        } catch {
+          /* negeer deze match */
+        }
+      })
+    );
+
+    return { count: shared.length, self: false, teammate, opponent };
   } catch {
     return null;
   }

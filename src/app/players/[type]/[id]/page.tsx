@@ -59,9 +59,17 @@ export default async function PlayerStats({
       {/* Samen gematcht */}
       {shared && !shared.self && (
         <div className="notice" style={{ marginTop: "0.5rem", borderLeftColor: shared.count > 0 ? "#38d39f" : "var(--border)" }}>
-          {shared.count > 0
-            ? `🤝 Je hebt recent ${shared.count}× in dezelfde PvP-match gezeten als deze speler.`
-            : "Geen recente PvP-matches samen gevonden (op basis van je laatste ~50 games)."}
+          {shared.count > 0 ? (
+            <>
+              🤝 Je hebt recent <strong>{shared.count}×</strong> in dezelfde PvP-match gezeten als deze speler
+              {shared.teammate + shared.opponent > 0 && (
+                <> — <span style={{ color: "#38d39f" }}>{shared.teammate}× teammate</span>, <span style={{ color: "var(--danger)" }}>{shared.opponent}× tegenstander</span></>
+              )}
+              .
+            </>
+          ) : (
+            "Geen recente PvP-matches samen gevonden (op basis van je laatste ~50 games)."
+          )}
         </div>
       )}
 
@@ -80,9 +88,16 @@ export default async function PlayerStats({
         <>
           <h2 style={{ marginTop: "2rem" }}>Per modus</h2>
           <div className="section-list">
-            {modes.filter((m) => m.lifetime.games > 0).map((m) => (
+            {modes.filter((m) => m.lifetime.games > 0).map((m) => {
+              const streak = currentStreak(matches, m.label);
+              return (
               <div key={m.label} className="card">
-                <h3 style={{ marginBottom: "0.6rem" }}>{m.label}</h3>
+                <h3 style={{ marginBottom: "0.3rem" }}>{m.label}</h3>
+                {streak && (
+                  <div className={`streak ${streak.won ? "win" : "loss"}`}>
+                    {streak.won ? "🔥" : "❄️"} {streak.n} {streak.won ? "wins" : "losses"} op rij
+                  </div>
+                )}
                 <div className="mode-block">
                   <span className="mode-block-h">Deze week</span>
                   {m.weekly.games > 0 ? (
@@ -102,7 +117,8 @@ export default async function PlayerStats({
                   <StatRow label="Wins / games" value={`${m.lifetime.wins} / ${m.lifetime.games}`} />
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </>
       )}
@@ -197,6 +213,25 @@ function StatRow({ label, value, highlight }: { label: string; value: string; hi
     </div>
   );
 }
+/** Bepaal welke modus-groep een match-label hoort (voor de 3 modus-cards). */
+function matchGroup(mode: string): "Crucible" | "Iron Banner" | "Trials of Osiris" {
+  if (/iron banner/i.test(mode)) return "Iron Banner";
+  if (/trials/i.test(mode)) return "Trials of Osiris";
+  return "Crucible";
+}
+/** Huidige streak in een modus uit de recente matches (nieuwste eerst). */
+function currentStreak(matches: MatchResult[], label: string): { won: boolean; n: number } | null {
+  const inMode = matches.filter((m) => matchGroup(m.mode) === label);
+  if (inMode.length === 0) return null;
+  const won = inMode[0].won;
+  let n = 0;
+  for (const m of inMode) {
+    if (m.won === won) n++;
+    else break;
+  }
+  return { won, n };
+}
+
 function relTime(iso: string): string {
   try {
     const then = new Date(iso).getTime();
