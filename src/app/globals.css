@@ -106,11 +106,12 @@ h3 {
   transition: color 0.15s, border-color 0.15s;
 }
 .nav-links a:hover {
-  color: var(--text);
+  color: var(--link-color, var(--text));
+  border-bottom-color: var(--link-color, transparent);
 }
 .nav-links a.active {
-  color: var(--text);
-  border-bottom-color: var(--accent);
+  color: var(--link-color, var(--text));
+  border-bottom-color: var(--link-color, var(--accent));
 }
 
 /* ---- Buttons ---- */
@@ -242,6 +243,83 @@ input:focus {
   text-align: center;
   padding: 3rem 1rem;
   color: var(--text-dim);
+}
+
+/* ---- Landingspagina ---- */
+.home-hero {
+  text-align: center;
+  max-width: 640px;
+  margin: 2.5rem auto 0.5rem;
+}
+.home-hero h1 {
+  font-size: 2.6rem;
+  margin: 0.6rem 0;
+}
+.home-hero p {
+  font-size: 1.05rem;
+  margin: 0 auto;
+}
+.home-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem auto 0;
+  max-width: 1000px;
+}
+.home-card {
+  position: relative;
+  flex: 1 1 280px;
+  max-width: 320px;
+  background: linear-gradient(160deg, var(--bg-card), #10131c);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  overflow: hidden;
+  transition: transform 0.12s, border-color 0.15s, box-shadow 0.15s;
+}
+.home-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--c);
+  opacity: 0.5;
+  transition: opacity 0.15s, height 0.15s;
+}
+.home-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--c);
+  box-shadow: 0 10px 30px -10px var(--c);
+}
+.home-card:hover::before {
+  opacity: 1;
+  height: 5px;
+}
+.home-card-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--c);
+  margin-bottom: 0.5rem;
+  box-shadow: 0 0 10px var(--c);
+}
+.home-card h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1.15rem;
+}
+.home-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+.home-card-go {
+  display: inline-block;
+  margin-top: 0.8rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--c);
 }
 
 /* ---- Player stats ---- */

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { sectionColor } from "@/lib/sectionColors";
 
 const SECTIONS = [
   {
@@ -45,24 +46,29 @@ export default function Home({
 }) {
   return (
     <>
-      <section className="hero">
+      <section className="home-hero">
         <span className="tag">Powered by de Bungie API</span>
         <h1>Guardian Hub</h1>
-        <p className="muted" style={{ maxWidth: 600, fontSize: "1.05rem" }}>
-          Je centrale plek voor Destiny 2: doorzoek items, beheer je gear, volg
-          events en vind snel waar je moet zijn.
+        <p className="muted">
+          Je centrale plek voor Destiny&nbsp;2: doorzoek items, beheer je gear,
+          volg events en vind snel waar je moet zijn.
         </p>
       </section>
 
       <ErrorBanner searchParams={searchParams} />
 
-      <div className="section-list" style={{ marginTop: "1.5rem" }}>
+      <div className="home-cards">
         {SECTIONS.map((s) => (
-          <Link key={s.href} href={s.href} className="card card-link">
+          <Link
+            key={s.href}
+            href={s.href}
+            className="home-card"
+            style={{ ["--c" as string]: sectionColor(s.href) } as React.CSSProperties}
+          >
+            <span className="home-card-dot" />
             <h3>{s.title}</h3>
-            <p className="muted" style={{ margin: 0 }}>
-              {s.desc}
-            </p>
+            <p className="muted">{s.desc}</p>
+            <span className="home-card-go">Open →</span>
           </Link>
         ))}
       </div>

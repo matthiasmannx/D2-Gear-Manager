@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { sectionColor } from "@/lib/sectionColors";
 
 const LINKS = [
   { href: "/items", label: "Items" },
@@ -25,7 +26,12 @@ export default function Nav({ loggedIn }: { loggedIn: boolean }) {
           {LINKS.map((l) => {
             const active = pathname === l.href || pathname.startsWith(l.href + "/");
             return (
-              <Link key={l.href} href={l.href} className={active ? "active" : ""}>
+              <Link
+                key={l.href}
+                href={l.href}
+                className={active ? "active" : ""}
+                style={{ ["--link-color" as string]: sectionColor(l.href) } as React.CSSProperties}
+              >
                 {l.label}
               </Link>
             );
