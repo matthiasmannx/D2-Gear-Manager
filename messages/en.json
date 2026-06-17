@@ -107,7 +107,9 @@
     "godRolls": "God rolls",
     "exoticNoRoll": "Exotic with fixed perks — there's no random \"god roll\". See the Exotic trait above.",
     "noWishlist": "No wishlist roll known for this weapon.",
-    "moreLightGg": "More details on light.gg ↗"
+    "moreLightGg": "More details on light.gg ↗",
+    "sourceNote": "Bungie's database usually lists one main source. See all current ways to get this item (updated each Destiny patch) on light.gg.",
+    "allSourcesLink": "All current sources on light.gg ↗"
   },
   "gear": {
     "title": "Gear",

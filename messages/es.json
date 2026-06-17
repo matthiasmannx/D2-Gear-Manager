@@ -107,7 +107,9 @@
     "godRolls": "God rolls",
     "exoticNoRoll": "Exótico con perks fijos: no hay un \"god roll\" aleatorio. Mira el rasgo exótico arriba.",
     "noWishlist": "No se conoce ningún god roll para esta arma.",
-    "moreLightGg": "Más detalles en light.gg ↗"
+    "moreLightGg": "Más detalles en light.gg ↗",
+    "sourceNote": "La base de datos de Bungie suele indicar una fuente principal. Mira todas las formas actuales de conseguir este item (actualizado en cada parche de Destiny) en light.gg.",
+    "allSourcesLink": "Todas las fuentes actuales en light.gg ↗"
   },
   "gear": {
     "title": "Equipo",

@@ -71,6 +71,17 @@ export default async function ItemDetail({
         ) : (
           <p className="muted" style={{ margin: 0 }}>{t("noSource")}</p>
         )}
+        <p className="muted" style={{ fontSize: "0.82rem", marginTop: "0.7rem", marginBottom: 0 }}>
+          {t("sourceNote")}{" "}
+          <a
+            href={`https://www.light.gg/db/items/${item.hash}/`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "var(--accent-2)", fontWeight: 600 }}
+          >
+            {t("allSourcesLink")}
+          </a>
+        </p>
       </div>
 
       {/* Exotic trait */}

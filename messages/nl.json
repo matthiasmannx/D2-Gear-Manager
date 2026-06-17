@@ -107,7 +107,9 @@
     "godRolls": "God rolls",
     "exoticNoRoll": "Exotic met vaste perks — er is geen random \"god roll\". Zie de Exotic trait hierboven.",
     "noWishlist": "Geen wishlist-roll bekend voor dit wapen.",
-    "moreLightGg": "Meer details op light.gg ↗"
+    "moreLightGg": "Meer details op light.gg ↗",
+    "sourceNote": "Bungie's database noemt meestal één hoofdbron. Bekijk alle actuele manieren om dit item te krijgen (bijgewerkt per Destiny-update) op light.gg.",
+    "allSourcesLink": "Alle actuele bronnen op light.gg ↗"
   },
   "gear": {
     "title": "Gear",

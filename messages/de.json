@@ -107,7 +107,9 @@
     "godRolls": "God-Rolls",
     "exoticNoRoll": "Exotic mit festen Perks — es gibt keinen zufälligen \"God-Roll\". Siehe die Exotic-Eigenschaft oben.",
     "noWishlist": "Kein Wishlist-Roll für diese Waffe bekannt.",
-    "moreLightGg": "Mehr Details auf light.gg ↗"
+    "moreLightGg": "Mehr Details auf light.gg ↗",
+    "sourceNote": "Bungies Datenbank nennt meist eine Hauptquelle. Alle aktuellen Wege, dieses Item zu bekommen (mit jedem Destiny-Patch aktualisiert), findest du auf light.gg.",
+    "allSourcesLink": "Alle aktuellen Quellen auf light.gg ↗"
   },
   "gear": {
     "title": "Ausrüstung",
