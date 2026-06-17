@@ -652,11 +652,20 @@ export default function GearBoard({
           {c.inventory.length > 0 && (
             <>
               <div className="gear-label muted">Op character ({c.inventory.length})</div>
-              <div className="gear-vault">
-                {c.inventory.slice(0, 40).map((it, i) => (
-                  <Tile key={(it.instanceId ?? it.hash) + "-" + i} item={it} source={c.characterId} equipped={false} context="inventory" a={actions} />
-                ))}
-              </div>
+              {SLOTS.map((slot) => {
+                const items = c.inventory.filter((it) => it.bucketHash === slot.bucket);
+                if (items.length === 0) return null;
+                return (
+                  <div key={slot.bucket} className="gear-invgroup">
+                    <span className="gear-sublabel">{slot.label}</span>
+                    <div className="gear-vault">
+                      {items.map((it, i) => (
+                        <Tile key={(it.instanceId ?? it.hash) + "-" + i} item={it} source={c.characterId} equipped={false} context="inventory" a={actions} />
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
             </>
           )}
 
