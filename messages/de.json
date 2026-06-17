@@ -89,5 +89,24 @@
     "buildBack": "← Zurück zu den Statistiken",
     "buildNote": "ℹ️ Dies ist die aktuelle Ausrüstung des Spielers. Die Bungie-API speichert nicht, welchen Build jemand in einem bestimmten Match nutzte — aber das ist meist, was sie (noch) spielen.",
     "buildLoadFailed": "Build konnte nicht geladen werden (Profil evtl. privat)."
+  },
+  "items": {
+    "title": "Items",
+    "intro": "Durchsuche alle Waffen, Rüstungen, Mods und mehr aus der Destiny-2-Datenbank.",
+    "searchPlaceholder": "z. B. Gjallarhorn, Riskrunner…",
+    "hint": "Gib oben einen Item-Namen ein, um zu suchen.",
+    "searchFailed": "Suche fehlgeschlagen: {error}. Hast du deinen BUNGIE_API_KEY gesetzt?",
+    "noResults": "Keine Items gefunden für „{query}“.",
+    "itemFallback": "Item",
+    "back": "← Zurück zur Suche",
+    "loadFailed": "Item konnte nicht geladen werden: {error}",
+    "notFound": "Item nicht gefunden.",
+    "howToGet": "Wie bekommst du es?",
+    "noSource": "Keine spezifische Quellen-Info in der Manifest verfügbar. Dieses Item stammt wahrscheinlich aus allgemeinen World-Drops oder Händler-Engrammen.",
+    "exoticTrait": "Exotic-Eigenschaft",
+    "godRolls": "God-Rolls",
+    "exoticNoRoll": "Exotic mit festen Perks — es gibt keinen zufälligen \"God-Roll\". Siehe die Exotic-Eigenschaft oben.",
+    "noWishlist": "Kein Wishlist-Roll für diese Waffe bekannt.",
+    "moreLightGg": "Mehr Details auf light.gg ↗"
   }
 }

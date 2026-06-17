@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import SearchBar from "@/components/SearchBar";
 import { icon } from "@/lib/bungie";
 import { searchItemIndex, ItemIndexEntry } from "@/lib/manifest";
@@ -11,37 +12,34 @@ export default async function ItemsPage({
   searchParams: Promise<{ q?: string }>;
 }) {
   const { q } = await searchParams;
+  const t = await getTranslations("items");
 
   return (
     <>
-      <h1>Items</h1>
-      <p className="muted">
-        Doorzoek alle wapens, armor, mods en meer uit de Destiny 2 database.
-      </p>
-      <SearchBar basePath="/items" initial={q} placeholder="Bijv. Gjallarhorn, Riskrunner…" />
+      <h1>{t("title")}</h1>
+      <p className="muted">{t("intro")}</p>
+      <SearchBar basePath="/items" initial={q} placeholder={t("searchPlaceholder")} />
       {q ? <Results query={q} /> : <Hint />}
     </>
   );
 }
 
-function Hint() {
-  return <div className="empty">Typ een itemnaam hierboven om te zoeken.</div>;
+async function Hint() {
+  const t = await getTranslations("items");
+  return <div className="empty">{t("hint")}</div>;
 }
 
 async function Results({ query }: { query: string }) {
+  const t = await getTranslations("items");
   let items: ItemIndexEntry[] = [];
   try {
     items = await searchItemIndex(query);
   } catch (e: any) {
-    return (
-      <div className="notice error">
-        Zoeken mislukt: {e.message}. Heb je je BUNGIE_API_KEY al ingesteld?
-      </div>
-    );
+    return <div className="notice error">{t("searchFailed", { error: e.message })}</div>;
   }
 
   if (items.length === 0) {
-    return <div className="empty">Geen items gevonden voor “{query}”.</div>;
+    return <div className="empty">{t("noResults", { query })}</div>;
   }
 
   return (
@@ -58,7 +56,7 @@ async function Results({ query }: { query: string }) {
             <div>
               <div className="item-name">{i.name}</div>
               <div className="item-type">
-                {[i.tier, i.type].filter(Boolean).join(" · ") || "Item"}
+                {[i.tier, i.type].filter(Boolean).join(" · ") || t("itemFallback")}
               </div>
             </div>
           </div>

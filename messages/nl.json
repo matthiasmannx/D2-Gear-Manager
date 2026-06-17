@@ -89,5 +89,24 @@
     "buildBack": "← Terug naar stats",
     "buildNote": "ℹ️ Dit is de huidige uitrusting van deze speler. De Bungie-API bewaart niet welke build iemand in een specifieke match droeg — maar dit is doorgaans wat ze (nog) draaien.",
     "buildLoadFailed": "Kon de build niet laden (profiel mogelijk privé)."
+  },
+  "items": {
+    "title": "Items",
+    "intro": "Doorzoek alle wapens, armor, mods en meer uit de Destiny 2 database.",
+    "searchPlaceholder": "Bijv. Gjallarhorn, Riskrunner…",
+    "hint": "Typ een itemnaam hierboven om te zoeken.",
+    "searchFailed": "Zoeken mislukt: {error}. Heb je je BUNGIE_API_KEY al ingesteld?",
+    "noResults": "Geen items gevonden voor “{query}”.",
+    "itemFallback": "Item",
+    "back": "← Terug naar zoeken",
+    "loadFailed": "Kon item niet laden: {error}",
+    "notFound": "Item niet gevonden.",
+    "howToGet": "Hoe kom je eraan?",
+    "noSource": "Geen specifieke bron-info beschikbaar in de manifest. Dit item komt waarschijnlijk uit algemene world-drops of vendor-engrams.",
+    "exoticTrait": "Exotic trait",
+    "godRolls": "God rolls",
+    "exoticNoRoll": "Exotic met vaste perks — er is geen random \"god roll\". Zie de Exotic trait hierboven.",
+    "noWishlist": "Geen wishlist-roll bekend voor dit wapen.",
+    "moreLightGg": "Meer details op light.gg ↗"
   }
 }

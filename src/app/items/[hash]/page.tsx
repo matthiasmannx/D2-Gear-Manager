@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { getItemDetail } from "@/lib/itemDetail";
 import { getGodRoll } from "@/lib/wishlist";
 
@@ -17,6 +18,7 @@ export default async function ItemDetail({
   params: Promise<{ hash: string }>;
 }) {
   const { hash } = await params;
+  const t = await getTranslations("items");
 
   let item;
   try {
@@ -25,7 +27,7 @@ export default async function ItemDetail({
     return (
       <>
         <BackLink />
-        <div className="notice error">Kon item niet laden: {e.message}</div>
+        <div className="notice error">{t("loadFailed", { error: e.message })}</div>
       </>
     );
   }
@@ -33,7 +35,7 @@ export default async function ItemDetail({
     return (
       <>
         <BackLink />
-        <div className="empty">Item niet gevonden.</div>
+        <div className="empty">{t("notFound")}</div>
       </>
     );
   }
@@ -63,21 +65,18 @@ export default async function ItemDetail({
 
       {/* Hoe/waar te krijgen */}
       <div className="card" style={{ marginTop: "1.5rem", borderLeft: "3px solid var(--accent)" }}>
-        <h3>Hoe kom je eraan?</h3>
+        <h3>{t("howToGet")}</h3>
         {item.source ? (
           <p style={{ margin: 0 }}>{item.source}</p>
         ) : (
-          <p className="muted" style={{ margin: 0 }}>
-            Geen specifieke bron-info beschikbaar in de manifest. Dit item komt
-            waarschijnlijk uit algemene world-drops of vendor-engrams.
-          </p>
+          <p className="muted" style={{ margin: 0 }}>{t("noSource")}</p>
         )}
       </div>
 
       {/* Exotic trait */}
       {item.intrinsic && (
         <div className="card" style={{ marginTop: "1rem", borderLeft: `3px solid ${color}` }}>
-          <h3 style={{ color }}>Exotic trait</h3>
+          <h3 style={{ color }}>{t("exoticTrait")}</h3>
           <div className="idetail-trait">
             {item.intrinsic.icon && (
               // eslint-disable-next-line @next/next/no-img-element
@@ -105,12 +104,13 @@ export default async function ItemDetail({
 }
 
 async function GodRolls({ hash, isExotic }: { hash: number; isExotic: boolean }) {
+  const t = await getTranslations("items");
   const roll = await getGodRoll(hash);
   const hasRolls = roll && (roll.pve.length > 0 || roll.pvp.length > 0);
 
   return (
     <div className="card" style={{ marginTop: "1rem" }}>
-      <h3>God rolls</h3>
+      <h3>{t("godRolls")}</h3>
       {hasRolls ? (
         <>
           {roll!.pve.length > 0 && (
@@ -141,11 +141,9 @@ async function GodRolls({ hash, isExotic }: { hash: number; isExotic: boolean })
           )}
         </>
       ) : isExotic ? (
-        <p className="muted" style={{ margin: 0 }}>
-          Exotic met vaste perks — er is geen random "god roll". Zie de Exotic trait hierboven.
-        </p>
+        <p className="muted" style={{ margin: 0 }}>{t("exoticNoRoll")}</p>
       ) : (
-        <p className="muted" style={{ margin: 0 }}>Geen wishlist-roll bekend voor dit wapen.</p>
+        <p className="muted" style={{ margin: 0 }}>{t("noWishlist")}</p>
       )}
       <a
         href={`https://www.light.gg/db/items/${hash}/`}
@@ -154,16 +152,17 @@ async function GodRolls({ hash, isExotic }: { hash: number; isExotic: boolean })
         className="muted"
         style={{ fontSize: "0.82rem", display: "inline-block", marginTop: "0.6rem" }}
       >
-        Meer details op light.gg ↗
+        {t("moreLightGg")}
       </a>
     </div>
   );
 }
 
-function BackLink() {
+async function BackLink() {
+  const t = await getTranslations("items");
   return (
     <Link href="/items" className="muted" style={{ display: "inline-block", marginBottom: "1rem" }}>
-      ← Terug naar zoeken
+      {t("back")}
     </Link>
   );
 }

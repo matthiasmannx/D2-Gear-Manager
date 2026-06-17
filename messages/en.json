@@ -89,5 +89,24 @@
     "buildBack": "← Back to stats",
     "buildNote": "ℹ️ This is the player's current loadout. The Bungie API doesn't store which build someone used in a specific match — but this is usually what they're (still) running.",
     "buildLoadFailed": "Couldn't load the build (profile may be private)."
+  },
+  "items": {
+    "title": "Items",
+    "intro": "Search all weapons, armor, mods and more from the Destiny 2 database.",
+    "searchPlaceholder": "E.g. Gjallarhorn, Riskrunner…",
+    "hint": "Type an item name above to search.",
+    "searchFailed": "Search failed: {error}. Have you set your BUNGIE_API_KEY?",
+    "noResults": "No items found for “{query}”.",
+    "itemFallback": "Item",
+    "back": "← Back to search",
+    "loadFailed": "Couldn't load item: {error}",
+    "notFound": "Item not found.",
+    "howToGet": "How do you get it?",
+    "noSource": "No specific source info available in the manifest. This item likely comes from general world drops or vendor engrams.",
+    "exoticTrait": "Exotic trait",
+    "godRolls": "God rolls",
+    "exoticNoRoll": "Exotic with fixed perks — there's no random \"god roll\". See the Exotic trait above.",
+    "noWishlist": "No wishlist roll known for this weapon.",
+    "moreLightGg": "More details on light.gg ↗"
   }
 }

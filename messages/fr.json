@@ -89,5 +89,24 @@
     "buildBack": "← Retour aux stats",
     "buildNote": "ℹ️ Ceci est l'équipement actuel du joueur. L'API Bungie ne stocke pas quel build quelqu'un a utilisé dans une partie précise — mais c'est généralement ce qu'il utilise (encore).",
     "buildLoadFailed": "Impossible de charger le build (profil peut-être privé)."
+  },
+  "items": {
+    "title": "Items",
+    "intro": "Cherchez toutes les armes, armures, mods et plus dans la base de données Destiny 2.",
+    "searchPlaceholder": "Ex. Gjallarhorn, Riskrunner…",
+    "hint": "Tapez un nom d'item ci-dessus pour chercher.",
+    "searchFailed": "Échec de la recherche : {error}. Avez-vous défini votre BUNGIE_API_KEY ?",
+    "noResults": "Aucun item trouvé pour « {query} ».",
+    "itemFallback": "Item",
+    "back": "← Retour à la recherche",
+    "loadFailed": "Impossible de charger l'item : {error}",
+    "notFound": "Item introuvable.",
+    "howToGet": "Comment l'obtenir ?",
+    "noSource": "Aucune info de source spécifique dans le manifest. Cet item provient probablement de drops généraux ou d'engrammes de marchand.",
+    "exoticTrait": "Trait exotique",
+    "godRolls": "God rolls",
+    "exoticNoRoll": "Exotique avec perks fixes — il n'y a pas de « god roll » aléatoire. Voir le trait exotique ci-dessus.",
+    "noWishlist": "Aucun god roll connu pour cette arme.",
+    "moreLightGg": "Plus de détails sur light.gg ↗"
   }
 }
