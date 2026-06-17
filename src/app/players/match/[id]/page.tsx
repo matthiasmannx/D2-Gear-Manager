@@ -34,7 +34,7 @@ export default async function MatchPage({
           <h1 style={{ marginBottom: 0 }}>{report.mapName}</h1>
           <p className="muted">{report.mode} · {fmtDate(report.date)}</p>
 
-          <div className="section-list" style={{ marginTop: "1.25rem" }}>
+          <div className="match-teams">
             {report.teams.map((t) => (
               <TeamCard key={t.id} team={t} />
             ))}

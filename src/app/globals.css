@@ -420,6 +420,18 @@ input:focus {
   border-color: var(--accent-2);
   background: var(--bg-elev);
 }
+/* Match-detail: teams vol breed (max 2 naast elkaar) */
+.match-teams {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+  margin-top: 1.25rem;
+}
+@media (max-width: 520px) {
+  .match-teams {
+    grid-template-columns: 1fr;
+  }
+}
 /* Match-detail: spelerlijst */
 .match-players {
   display: grid;
