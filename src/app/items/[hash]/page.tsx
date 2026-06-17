@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { getItemDetail } from "@/lib/itemDetail";
-import { getGodRoll } from "@/lib/wishlist";
 
 const CLASS_NAMES: Record<number, string> = { 0: "Titan", 1: "Hunter", 2: "Warlock" };
 const TIER_COLOR: Record<string, string> = {
@@ -116,52 +115,15 @@ export default async function ItemDetail({
 
 async function GodRolls({ hash, isExotic }: { hash: number; isExotic: boolean }) {
   const t = await getTranslations("items");
-  const roll = await getGodRoll(hash);
-  const hasRolls = roll && (roll.pve.length > 0 || roll.pvp.length > 0);
-
   return (
     <div className="card" style={{ marginTop: "1rem" }}>
       <h3>{t("godRolls")}</h3>
-      {hasRolls ? (
-        <>
-          {roll!.pve.length > 0 && (
-            <div className="perk-row" style={{ marginBottom: "0.5rem" }}>
-              <span className="perk-tag pve">PvE</span>
-              <div className="perk-chips">
-                {roll!.pve.map((p) => (
-                  <span key={p.hash} className="perk-chip">
-                    {p.icon && /* eslint-disable-next-line @next/next/no-img-element */ <img src={p.icon} alt="" />}
-                    {p.name}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-          {roll!.pvp.length > 0 && (
-            <div className="perk-row">
-              <span className="perk-tag pvp">PvP</span>
-              <div className="perk-chips">
-                {roll!.pvp.map((p) => (
-                  <span key={p.hash} className="perk-chip">
-                    {p.icon && /* eslint-disable-next-line @next/next/no-img-element */ <img src={p.icon} alt="" />}
-                    {p.name}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-        </>
-      ) : isExotic ? (
-        <p className="muted" style={{ margin: 0 }}>{t("exoticNoRoll")}</p>
-      ) : (
-        <p className="muted" style={{ margin: 0 }}>{t("noWishlist")}</p>
-      )}
+      {isExotic && <p className="muted" style={{ margin: 0 }}>{t("exoticNoRoll")}</p>}
       <a
         href={`https://www.light.gg/db/items/${hash}/`}
         target="_blank"
         rel="noopener noreferrer"
-        className="muted"
-        style={{ fontSize: "0.82rem", display: "inline-block", marginTop: "0.6rem" }}
+        style={{ color: "var(--accent-2)", fontWeight: 600, fontSize: "0.9rem", display: "inline-block", marginTop: "0.5rem" }}
       >
         {t("moreLightGg")}
       </a>
