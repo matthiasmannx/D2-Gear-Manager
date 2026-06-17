@@ -609,28 +609,28 @@ export default function GearBoard({
             <span className="gear-char-power">◆ {c.light}</span>
           </div>
 
-          {c.loadouts.length > 0 && (
-            <>
-              <div className="gear-label muted">Loadouts</div>
-              <div className="loadout-row">
-                {c.loadouts.map((lo) => (
-                  <button
-                    key={lo.index}
-                    className="loadout-btn"
-                    onClick={() => equipLoadout(lo.index, c.characterId)}
-                    disabled={busy}
-                    title={`Equip "${lo.name}" (${lo.itemCount} items)`}
-                  >
-                    {lo.icon && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={iconUrl(lo.icon)!} alt="" style={lo.color ? { background: "transparent" } : undefined} />
-                    )}
-                    <span>{lo.name}</span>
-                  </button>
-                ))}
-              </div>
-            </>
-          )}
+          <div className="gear-label muted">Loadouts</div>
+          <div className="loadout-row">
+            {c.loadouts.length > 0 ? (
+              c.loadouts.map((lo) => (
+                <button
+                  key={lo.index}
+                  className="loadout-btn"
+                  onClick={() => equipLoadout(lo.index, c.characterId)}
+                  disabled={busy}
+                  title={`Equip "${lo.name}" (${lo.itemCount} items)`}
+                >
+                  {lo.icon && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={iconUrl(lo.icon)!} alt="" style={lo.color ? { background: "transparent" } : undefined} />
+                  )}
+                  <span>{lo.name}</span>
+                </button>
+              ))
+            ) : (
+              <span className="loadout-empty muted">Geen opgeslagen loadouts</span>
+            )}
+          </div>
 
           <div className="gear-label muted">Uitgerust</div>
           <div className="gear-slots">

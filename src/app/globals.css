@@ -1288,8 +1288,14 @@ input:focus {
 .loadout-row {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 0.4rem;
   padding: 0 1rem 0.5rem;
+  min-height: 2.4rem;
+}
+.loadout-empty {
+  font-size: 0.82rem;
+  font-style: italic;
 }
 .loadout-btn {
   display: inline-flex;
