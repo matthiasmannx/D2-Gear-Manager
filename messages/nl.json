@@ -168,5 +168,32 @@
     "next": "Volgende →",
     "page": "Pagina {n} / {total}",
     "anyClass": "Elke class"
+  },
+  "builds": {
+    "title": "Meta Builds",
+    "intro": "Builds per modus voor {season} · laatst bijgewerkt {date}.",
+    "note": "Recente community-builds (Armor 3.0). Kies een modus om de builds te zien. Hover over een exotic voor de info.",
+    "noBuilds": "Nog geen builds voor {mode}.",
+    "buildsCount": "{n} builds →",
+    "aspects": "Aspects",
+    "fragments": "Fragments",
+    "weapons": "Wapens",
+    "stats": "Stats",
+    "exoticArmor": "Exotic armor",
+    "exoticWeapon": "Exotic weapon",
+    "sourceLabel": "Bron",
+    "back": "← Terug naar builds",
+    "notFound": "Build niet gevonden.",
+    "exotics": "Exotics",
+    "subclassSetup": "Subclass-setup",
+    "statPriority": "Stat-prioriteit",
+    "howItWorks": "Hoe werkt het?",
+    "sourceDetail": "Bron: {source} — verifieer/fine-tune op light.gg of Mobalytics.",
+    "descGM": "Survivability, champion-coverage & add-clear",
+    "descRaid": "Boss-DPS, support & add-clear",
+    "descDungeon": "Solo-survivable & single-target",
+    "descTrials": "3v3 — duels & zone-control",
+    "descIronBanner": "6v6 — ability-heavy & objective",
+    "descCrucible": "Algemene PvP — duels & movement"
   }
 }

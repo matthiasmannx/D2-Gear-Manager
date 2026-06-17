@@ -168,5 +168,32 @@
     "next": "Weiter →",
     "page": "Seite {n} / {total}",
     "anyClass": "Jede Klasse"
+  },
+  "builds": {
+    "title": "Meta-Builds",
+    "intro": "Builds pro Modus für {season} · zuletzt aktualisiert {date}.",
+    "note": "Aktuelle Community-Builds (Armor 3.0). Wähle einen Modus, um die Builds zu sehen. Fahre über ein Exotic für Infos.",
+    "noBuilds": "Noch keine Builds für {mode}.",
+    "buildsCount": "{n} Builds →",
+    "aspects": "Aspekte",
+    "fragments": "Fragmente",
+    "weapons": "Waffen",
+    "stats": "Werte",
+    "exoticArmor": "Exotische Rüstung",
+    "exoticWeapon": "Exotische Waffe",
+    "sourceLabel": "Quelle",
+    "back": "← Zurück zu den Builds",
+    "notFound": "Build nicht gefunden.",
+    "exotics": "Exotics",
+    "subclassSetup": "Fokus-Setup",
+    "statPriority": "Werte-Priorität",
+    "howItWorks": "Wie funktioniert es?",
+    "sourceDetail": "Quelle: {source} — auf light.gg oder Mobalytics prüfen/feinjustieren.",
+    "descGM": "Überlebensfähigkeit, Champion-Abdeckung & Add-Clear",
+    "descRaid": "Boss-DPS, Support & Add-Clear",
+    "descDungeon": "Solo-tauglich & Einzelziel",
+    "descTrials": "3v3 — Duelle & Zonenkontrolle",
+    "descIronBanner": "6v6 — fähigkeitslastig & Objektive",
+    "descCrucible": "Allgemeines PvP — Duelle & Movement"
   }
 }

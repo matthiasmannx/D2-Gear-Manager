@@ -168,5 +168,32 @@
     "next": "Next →",
     "page": "Page {n} / {total}",
     "anyClass": "Any class"
+  },
+  "builds": {
+    "title": "Meta Builds",
+    "intro": "Builds per mode for {season} · last updated {date}.",
+    "note": "Recent community builds (Armor 3.0). Pick a mode to see the builds. Hover over an exotic for info.",
+    "noBuilds": "No builds yet for {mode}.",
+    "buildsCount": "{n} builds →",
+    "aspects": "Aspects",
+    "fragments": "Fragments",
+    "weapons": "Weapons",
+    "stats": "Stats",
+    "exoticArmor": "Exotic armor",
+    "exoticWeapon": "Exotic weapon",
+    "sourceLabel": "Source",
+    "back": "← Back to builds",
+    "notFound": "Build not found.",
+    "exotics": "Exotics",
+    "subclassSetup": "Subclass setup",
+    "statPriority": "Stat priority",
+    "howItWorks": "How does it work?",
+    "sourceDetail": "Source: {source} — verify/fine-tune on light.gg or Mobalytics.",
+    "descGM": "Survivability, champion coverage & add-clear",
+    "descRaid": "Boss DPS, support & add-clear",
+    "descDungeon": "Solo-survivable & single-target",
+    "descTrials": "3v3 — duels & zone control",
+    "descIronBanner": "6v6 — ability-heavy & objective",
+    "descCrucible": "General PvP — duels & movement"
   }
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { BUILDS } from "@/lib/builds";
 import { resolveItemByName } from "@/lib/buildItems";
 import { getItemDetail } from "@/lib/itemDetail";
@@ -15,13 +16,14 @@ export default async function BuildDetail({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const t = await getTranslations("builds");
   const b = BUILDS.find((x) => x.id === id);
 
   if (!b) {
     return (
       <>
-        <Link href="/builds" className="muted" style={{ display: "inline-block", marginBottom: "1rem" }}>← Terug naar builds</Link>
-        <div className="empty">Build niet gevonden.</div>
+        <Link href="/builds" className="muted" style={{ display: "inline-block", marginBottom: "1rem" }}>{t("back")}</Link>
+        <div className="empty">{t("notFound")}</div>
       </>
     );
   }
@@ -37,7 +39,7 @@ export default async function BuildDetail({
   return (
     <>
       <Link href={`/builds?m=${b.modes[0]}`} className="muted" style={{ display: "inline-block", marginBottom: "1rem" }}>
-        ← Terug naar builds
+        {t("back")}
       </Link>
 
       <div className="bd-head" style={{ ["--class-color" as any]: color }}>
@@ -52,8 +54,8 @@ export default async function BuildDetail({
       <div className="bd-grid">
         {/* Exotics met trait */}
         <div className="bd-col">
-          <h3 className="build-section-h">Exotics</h3>
-          {[{ res: armorRes, det: armorDetail, label: "Exotic armor" }, { res: weaponRes, det: weaponDetail, label: "Exotic weapon" }]
+          <h3 className="build-section-h">{t("exotics")}</h3>
+          {[{ res: armorRes, det: armorDetail, label: t("exoticArmor") }, { res: weaponRes, det: weaponDetail, label: t("exoticWeapon") }]
             .filter((x) => x.res)
             .map((x, i) => (
               <div key={i} className="bd-exotic" style={{ borderColor: "#ceae33" }}>
@@ -78,10 +80,10 @@ export default async function BuildDetail({
 
         {/* Subclass-setup */}
         <div className="bd-col">
-          <h3 className="build-section-h">Subclass-setup</h3>
-          <Block label="Aspects" items={b.aspects} accent />
-          <Block label="Fragments" items={b.fragments} />
-          <Block label="Stat-prioriteit">
+          <h3 className="build-section-h">{t("subclassSetup")}</h3>
+          <Block label={t("aspects")} items={b.aspects} accent />
+          <Block label={t("fragments")} items={b.fragments} />
+          <Block label={t("statPriority")}>
             <div className="stat-priority">
               {b.statPriority.map((s, i) => (
                 <span key={s} className="stat-step">{i > 0 && <span className="stat-arrow">›</span>}{s}</span>
@@ -92,7 +94,7 @@ export default async function BuildDetail({
 
         {/* Wapens */}
         <div className="bd-col">
-          <h3 className="build-section-h">Wapens</h3>
+          <h3 className="build-section-h">{t("weapons")}</h3>
           <div className="chips">
             {b.weapons.map((w) => <span key={w} className="chip">{w}</span>)}
           </div>
@@ -100,10 +102,10 @@ export default async function BuildDetail({
       </div>
 
       <div className="card" style={{ marginTop: "1.5rem", borderLeft: `3px solid ${color}` }}>
-        <h3>Hoe werkt het?</h3>
+        <h3>{t("howItWorks")}</h3>
         <p style={{ margin: 0 }}>{b.howItWorks}</p>
       </div>
-      {b.source && <p className="build-source muted" style={{ marginTop: "0.75rem" }}>Bron: {b.source} — verifieer/fine-tune op light.gg of Mobalytics.</p>}
+      {b.source && <p className="build-source muted" style={{ marginTop: "0.75rem" }}>{t("sourceDetail", { source: b.source })}</p>}
     </>
   );
 }
