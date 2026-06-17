@@ -775,6 +775,48 @@ input:focus {
   color: var(--text-dim);
   padding: 0.1rem 1rem 0.2rem;
 }
+/* Inventory-matrix: slots = rijen, guardians = kolommen (uitgelijnd) */
+.inv-matrix {
+  display: grid;
+  gap: 0.3rem 0.5rem;
+  align-items: start;
+  margin-top: 0.75rem;
+}
+.inv-colhead {
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.2rem 0.3rem;
+  border-bottom: 1px solid var(--border);
+}
+.inv-rowlabel {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  align-self: center;
+}
+.inv-cell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-content: flex-start;
+  min-height: 60px;
+  padding: 0.3rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.inv-cell.drop-over {
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 1px var(--accent-2);
+}
+.inv-empty {
+  color: var(--text-dim);
+  opacity: 0.35;
+  align-self: center;
+}
 .gear-tile-wrap {
   position: relative;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 
 interface ItemStat {
   name: string;
@@ -649,25 +649,7 @@ export default function GearBoard({
             })}
           </div>
 
-          {c.inventory.length > 0 && (
-            <>
-              <div className="gear-label muted">Op character ({c.inventory.length})</div>
-              {SLOTS.map((slot) => {
-                const items = c.inventory.filter((it) => it.bucketHash === slot.bucket);
-                if (items.length === 0) return null;
-                return (
-                  <div key={slot.bucket} className="gear-invgroup">
-                    <span className="gear-sublabel">{slot.label}</span>
-                    <div className="gear-vault">
-                      {items.map((it, i) => (
-                        <Tile key={(it.instanceId ?? it.hash) + "-" + i} item={it} source={c.characterId} equipped={false} context="inventory" a={actions} />
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </>
-          )}
+          {/* "Op character"-inventory staat in de uitgelijnde matrix onder de kolommen */}
 
           {c.postmaster.length > 0 && (
             <>
@@ -682,6 +664,48 @@ export default function GearBoard({
         </section>
       ))}
       </div>
+
+      {/* Inventory-matrix: slots als rijen, guardians als kolommen → uitgelijnd */}
+      {characters.some((c) => c.inventory.length > 0) && (
+        <section style={{ marginTop: "1.5rem" }}>
+          <h2 style={{ fontSize: "1.1rem" }}>Op character — per slot</h2>
+          <div
+            className="inv-matrix"
+            style={{ gridTemplateColumns: `64px repeat(${characters.length}, minmax(0, 1fr))` }}
+          >
+            <div className="inv-corner" />
+            {characters.map((c) => (
+              <div key={c.characterId} className="inv-colhead">{CLASS_NAMES[c.classType]}</div>
+            ))}
+            {SLOTS.map((slot) => (
+              <Fragment key={slot.bucket}>
+                <div className="inv-rowlabel">{slot.label}</div>
+                {characters.map((c) => {
+                  const items = c.inventory.filter((it) => it.bucketHash === slot.bucket);
+                  const key = `inv-${c.characterId}-${slot.bucket}`;
+                  return (
+                    <div
+                      key={c.characterId}
+                      className={`inv-cell ${dropZone === key ? "drop-over" : ""}`}
+                      onDragOver={(e) => { e.preventDefault(); setDropZone(key); }}
+                      onDragLeave={() => setDropZone(null)}
+                      onDrop={(e) => onDrop(e, c.characterId)}
+                    >
+                      {items.length > 0 ? (
+                        items.map((it, i) => (
+                          <Tile key={(it.instanceId ?? it.hash) + "-" + i} item={it} source={c.characterId} equipped={false} context="inventory" a={actions} />
+                        ))
+                      ) : (
+                        <span className="inv-empty">—</span>
+                      )}
+                    </div>
+                  );
+                })}
+              </Fragment>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section
         className={`gear-char ${dragging ? "drag-target" : ""} ${dropZone === "vault" ? "drop-over" : ""}`}
