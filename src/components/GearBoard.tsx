@@ -75,6 +75,7 @@ interface DragData {
 
 interface TileActions {
   busy: boolean;
+  dragging: boolean;
   characters: Character[];
   membershipType: number;
   enqueue: (d: DragData, target: string) => void;
@@ -108,7 +109,8 @@ function Tile({
   const border = TIER_COLOR[item.tier] ?? "var(--border)";
   const canAct = !!item.instanceId;
   const otherChars = a.characters.filter((c) => c.characterId !== source);
-  const show = hover || pinned;
+  // Tijdens slepen alle panelen verbergen zodat ze de drop-plekken niet blokkeren.
+  const show = (hover || pinned) && !a.dragging;
   const isWeapon = item.itemType === 3;
   const isExotic = item.tier === "Exotic";
 
@@ -525,6 +527,7 @@ export default function GearBoard({
 
   const actions: TileActions = {
     busy,
+    dragging,
     characters,
     membershipType,
     enqueue,
