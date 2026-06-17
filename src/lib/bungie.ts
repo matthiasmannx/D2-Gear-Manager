@@ -850,8 +850,8 @@ export async function getMatchReport(instanceId: string): Promise<MatchReport | 
       const teamId = t.teamId;
       const players = entries
         .filter((e) => (e.values?.team?.basic?.value ?? -1) === teamId)
-        .map(toPlayer)
-        .sort((a, b) => Number(b.kills) - Number(a.kills));
+        .sort((a, b) => (b.values?.kills?.basic?.value ?? 0) - (a.values?.kills?.basic?.value ?? 0))
+        .map(toPlayer);
       return {
         id: teamId,
         result: t.standing?.basic?.displayValue ?? "—",
@@ -861,8 +861,9 @@ export async function getMatchReport(instanceId: string): Promise<MatchReport | 
     });
   } else {
     const players = entries
-      .map(toPlayer)
-      .sort((a, b) => Number(b.score) - Number(a.score));
+      .slice()
+      .sort((a, b) => (b.values?.score?.basic?.value ?? 0) - (a.values?.score?.basic?.value ?? 0))
+      .map(toPlayer);
     teams = [{ id: 0, result: "", score: "", players }];
   }
 

@@ -33,26 +33,31 @@ export interface ItemDetail {
  */
 async function extractIntrinsic(def: any): Promise<Trait | null> {
   const entries = def?.sockets?.socketEntries ?? [];
+  // Verzamel kandidaat-plugs in socketvolgorde en resolve ze PARALLEL
+  // (sequentieel was traag: tot ~15 API-calls na elkaar per item).
+  const cands: number[] = [];
   for (const e of entries) {
-    const cands: number[] = [];
     if (e.singleInitialItemHash) cands.push(e.singleInitialItemHash);
     for (const rp of e.reusablePlugItems ?? []) {
       if (rp.plugItemHash) cands.push(rp.plugItemHash);
     }
-    for (const ph of cands) {
-      try {
-        const pd = await getEntityDefinition("DestinyInventoryItemDefinition", ph);
-        const isIntrinsic =
-          pd?.itemTypeDisplayName === "Intrinsic" ||
-          pd?.plug?.plugCategoryIdentifier === "intrinsics";
-        const n = pd?.displayProperties?.name;
-        const d = pd?.displayProperties?.description;
-        if (isIntrinsic && n && d) {
-          return { name: n, description: d, icon: icon(pd.displayProperties.icon) };
-        }
-      } catch {
-        /* probeer volgende kandidaat */
-      }
+  }
+  const unique = [...new Set(cands)];
+  const defsArr = await Promise.all(
+    unique.map((ph) => getEntityDefinition("DestinyInventoryItemDefinition", ph).catch(() => null))
+  );
+  const byHash = new Map<number, any>();
+  unique.forEach((ph, i) => byHash.set(ph, defsArr[i]));
+
+  // Eerste intrinsic-plug (in socketvolgorde) met naam + beschrijving.
+  for (const ph of cands) {
+    const pd = byHash.get(ph);
+    const isIntrinsic =
+      pd?.itemTypeDisplayName === "Intrinsic" || pd?.plug?.plugCategoryIdentifier === "intrinsics";
+    const n = pd?.displayProperties?.name;
+    const d = pd?.displayProperties?.description;
+    if (isIntrinsic && n && d) {
+      return { name: n, description: d, icon: icon(pd.displayProperties.icon) };
     }
   }
   return null;

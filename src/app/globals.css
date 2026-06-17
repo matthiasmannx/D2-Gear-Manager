@@ -957,7 +957,7 @@ input:focus {
   position: fixed;
   right: 1rem;
   bottom: 1rem;
-  width: 290px;
+  width: min(290px, calc(100vw - 2rem));
   max-height: 70vh;
   display: flex;
   flex-direction: column;
@@ -2032,6 +2032,17 @@ input:focus {
   }
   .gsr-actions button {
     flex: 1;
+  }
+
+  /* Recente-match-rij compacter: verberg detail-kolommen op mobiel */
+  .match {
+    grid-template-columns: 22px 1fr auto auto;
+    gap: 0.45rem;
+    font-size: 0.82rem;
+  }
+  .match .match-kda,
+  .match .match-date {
+    display: none;
   }
 
   /* Voorkom horizontale paginascroll door absolute panelen */
