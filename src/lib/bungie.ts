@@ -639,15 +639,32 @@ export async function getPlayerExtras(
 
 // --- Recente wedstrijden (match history) ---
 
+/** DestinyActivityModeType → leesbaar label (PvP-playlists). */
+const PVP_MODE_NAMES: Record<number, string> = {
+  5: "Crucible", 10: "Control", 12: "Clash", 19: "Iron Banner", 25: "Mayhem",
+  31: "Supremacy", 37: "Survival", 38: "Countdown", 43: "Iron Banner Control",
+  44: "Iron Banner Clash", 48: "Rumble", 60: "Scorched", 62: "Breakthrough",
+  65: "Doubles", 69: "Competitive", 70: "Quickplay", 81: "Zone Control",
+  84: "Trials of Osiris",
+};
+function modeLabel(details: any): string {
+  // Pak de meest specifieke mode (niet de generieke 5/AllPvP).
+  const candidates: number[] = [details?.mode, ...(details?.modes ?? [])].filter((x) => typeof x === "number");
+  const specific = candidates.find((m) => m !== 5 && PVP_MODE_NAMES[m]);
+  return PVP_MODE_NAMES[specific ?? details?.mode] ?? "Crucible";
+}
+
 export interface MatchResult {
   won: boolean;
   result: string; // "Victory" / "Defeat"
+  mode: string; // playlist-naam
   mapName: string;
   kills: string;
   deaths: string;
   assists: string;
   kd: string;
   date: string; // ISO
+  instanceId?: string;
 }
 
 /** Laatste PvP-wedstrijden over alle characters, gesorteerd op datum. */
@@ -655,7 +672,7 @@ export async function getRecentMatches(
   membershipType: number,
   membershipId: string,
   characterIds: string[],
-  perChar = 10
+  perChar = 12
 ): Promise<MatchResult[]> {
   const all = await Promise.all(
     characterIds.map(async (cid) => {
@@ -693,17 +710,158 @@ export async function getRecentMatches(
     return {
       won,
       result: won ? "Victory" : "Defeat",
+      mode: modeLabel(m.activityDetails),
       mapName: mapNames[m.activityDetails?.referenceId] ?? "—",
       kills: disp(v, "kills"),
       deaths: disp(v, "deaths"),
       assists: disp(v, "assists"),
       kd: disp(v, "killsDeathsRatio"),
       date: m.period,
+      instanceId: m.activityDetails?.instanceId,
     };
   });
 
   matches.sort((a, b) => (a.date < b.date ? 1 : -1));
   return matches.slice(0, 20);
+}
+
+// --- Per-modus PvP-stats (weekly + lifetime): Crucible / Iron Banner / Trials ---
+
+export interface ModeBlock {
+  kd: string;
+  winRate: string;
+  wins: number;
+  games: number;
+}
+export interface PvpModeSummary {
+  label: string;
+  lifetime: ModeBlock;
+  weekly: ModeBlock;
+}
+
+const PVP_MODES_QUERY = [
+  { id: 5, key: "allPvP", label: "Crucible" },
+  { id: 19, key: "ironBanner", label: "Iron Banner" },
+  { id: 84, key: "trialsOfOsiris", label: "Trials of Osiris" },
+];
+
+function blockFrom(kills: number, deaths: number, wins: number, games: number): ModeBlock {
+  return {
+    kd: deaths > 0 ? (kills / deaths).toFixed(2) : String(kills),
+    winRate: games > 0 ? `${((wins / games) * 100).toFixed(1)}%` : "—",
+    wins,
+    games,
+  };
+}
+
+/** Per modus lifetime + deze-week stats (gesommeerd over characters). */
+export async function getPvpModes(
+  membershipType: number,
+  membershipId: string,
+  characterIds: string[]
+): Promise<PvpModeSummary[]> {
+  // dayStart = 7 dagen terug (UTC), dayEnd = vandaag.
+  const today = new Date();
+  const weekAgo = new Date(today.getTime() - 7 * 86400000);
+  const fmt = (d: Date) => d.toISOString().slice(0, 10);
+  const modes = PVP_MODES_QUERY.map((m) => m.id).join(",");
+
+  // Accumulatoren per mode-key.
+  const acc: Record<string, { lk: number; ld: number; lw: number; lg: number; wk: number; wd: number; ww: number; wg: number }> = {};
+  for (const m of PVP_MODES_QUERY) acc[m.key] = { lk: 0, ld: 0, lw: 0, lg: 0, wk: 0, wd: 0, ww: 0, wg: 0 };
+
+  await Promise.all(
+    characterIds.map(async (cid) => {
+      const base = `/Destiny2/${membershipType}/Account/${membershipId}/Character/${cid}/Stats/?modes=${modes}&groups=1`;
+      const [life, daily] = await Promise.all([
+        bungieFetch<any>(`${base}&periodType=0`, { revalidate: 60 * 30 }).catch(() => ({})),
+        bungieFetch<any>(`${base}&periodType=2&dayStart=${fmt(weekAgo)}&dayEnd=${fmt(today)}`, { revalidate: 60 * 30 }).catch(() => ({})),
+      ]);
+      for (const m of PVP_MODES_QUERY) {
+        const a = life?.[m.key]?.allTime;
+        if (a) {
+          acc[m.key].lk += num(a, "kills");
+          acc[m.key].ld += num(a, "deaths");
+          acc[m.key].lw += num(a, "activitiesWon");
+          acc[m.key].lg += num(a, "activitiesEntered");
+        }
+        for (const day of daily?.[m.key]?.daily ?? []) {
+          const v = day.values ?? {};
+          acc[m.key].wk += v.kills?.basic?.value ?? 0;
+          acc[m.key].wd += v.deaths?.basic?.value ?? 0;
+          acc[m.key].ww += v.activitiesWon?.basic?.value ?? 0;
+          acc[m.key].wg += v.activitiesEntered?.basic?.value ?? 0;
+        }
+      }
+    })
+  );
+
+  return PVP_MODES_QUERY.map((m) => {
+    const x = acc[m.key];
+    return {
+      label: m.label,
+      lifetime: blockFrom(x.lk, x.ld, x.lw, x.lg),
+      weekly: blockFrom(x.wk, x.wd, x.ww, x.wg),
+    };
+  });
+}
+
+// --- "Samen gematcht": gedeelde PvP-instanceIds met de ingelogde speler ---
+
+async function recentInstanceIds(
+  type: number,
+  id: string,
+  charIds: string[],
+  perChar = 50
+): Promise<Set<string>> {
+  const ids = new Set<string>();
+  await Promise.all(
+    charIds.map(async (cid) => {
+      try {
+        const r = await bungieFetch<any>(
+          `/Destiny2/${type}/Account/${id}/Character/${cid}/Stats/Activities/?mode=5&count=${perChar}&page=0`,
+          { revalidate: 60 * 10 }
+        );
+        for (const a of r?.activities ?? []) {
+          const iid = a.activityDetails?.instanceId;
+          if (iid) ids.add(String(iid));
+        }
+      } catch {
+        /* negeer */
+      }
+    })
+  );
+  return ids;
+}
+
+/**
+ * Tel hoe vaak de ingelogde speler in dezelfde PvP-match zat als de doelspeler
+ * (gedeelde recente instanceIds). accessToken = ingelogde gebruiker.
+ */
+export async function getSharedMatchCount(
+  accessToken: string,
+  target: { membershipType: number; membershipId: string; characterIds: string[] }
+): Promise<{ count: number; self: boolean } | null> {
+  try {
+    const { primary } = await getMemberships(accessToken);
+    if (!primary) return null;
+    // Zelfde speler opgezocht?
+    if (primary.membershipId === target.membershipId) return { count: 0, self: true };
+
+    const meProfile = await getProfile(accessToken, primary.membershipType, primary.membershipId, [200]);
+    const meChars = Object.keys(meProfile?.characters?.data ?? {});
+    if (meChars.length === 0) return { count: 0, self: false };
+
+    const [mine, theirs] = await Promise.all([
+      recentInstanceIds(primary.membershipType, primary.membershipId, meChars),
+      recentInstanceIds(target.membershipType, target.membershipId, target.characterIds),
+    ]);
+    let count = 0;
+    for (const iid of theirs) if (mine.has(iid)) count++;
+    return { count, self: false };
+  } catch {
+    return null;
+  }
 }
 
 /** Volledige icon-URL bouwen vanuit een relatief manifest-pad. */

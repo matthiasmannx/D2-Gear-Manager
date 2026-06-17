@@ -292,6 +292,26 @@ input:focus {
 .match-kd {
   font-weight: 700;
 }
+.match-mode {
+  font-size: 0.75rem;
+  color: var(--accent-2);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.match {
+  grid-template-columns: 28px 1fr auto auto auto auto;
+}
+.mode-block {
+  margin-bottom: 0.6rem;
+}
+.mode-block-h {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  margin-bottom: 0.2rem;
+}
 
 /* ---- Gear (Destiny-stijl) ---- */
 /* Guardians naast elkaar als kolommen (makkelijker overzetten) */
