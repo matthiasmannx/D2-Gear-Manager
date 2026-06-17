@@ -26,7 +26,7 @@ export default async function PlayerStats({
   const token = await getValidAccessToken();
 
   let stats: PvpStatsResult = { modes: [], weapons: [], highlights: null };
-  let extras: PlayerExtras = { characters: [], ranks: [], flawlessCount: null };
+  let extras: PlayerExtras = { name: null, platform: null, emblemPath: null, characters: [], ranks: [], flawlessCount: null };
   let failed = false;
   try {
     [stats, extras] = await Promise.all([getPvpStats(mType, id), getPlayerExtras(mType, id)]);
@@ -51,7 +51,16 @@ export default async function PlayerStats({
       <Link href="/players" className="muted" style={{ display: "inline-block", marginBottom: "1rem" }}>
         ← Terug naar zoeken
       </Link>
-      <h1>PvP Stats</h1>
+      <div className="player-head">
+        {extras.emblemPath && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={extras.emblemPath} alt="" className="player-emblem" />
+        )}
+        <div>
+          <h1 style={{ margin: 0 }}>{extras.name ?? "Onbekende speler"}</h1>
+          <div className="muted">PvP Stats{extras.platform ? ` · ${extras.platform}` : ""}</div>
+        </div>
+      </div>
 
       {failed && (
         <div className="notice error">

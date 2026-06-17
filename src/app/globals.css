@@ -222,6 +222,18 @@ input:focus {
 }
 
 /* ---- Player stats ---- */
+.player-head {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+.player-emblem {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
 .stat-cards {
   display: grid;
   gap: 0.75rem;

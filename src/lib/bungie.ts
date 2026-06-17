@@ -578,6 +578,9 @@ export interface PlayerCharacter {
   emblemPath?: string;
 }
 export interface PlayerExtras {
+  name: string | null;
+  platform: string | null;
+  emblemPath: string | null;
   characters: PlayerCharacter[];
   ranks: RankInfo[];
   flawlessCount: number | null;
@@ -595,11 +598,19 @@ export async function getPlayerExtras(
   membershipId: string
 ): Promise<PlayerExtras> {
   const r = await bungieFetch<any>(
-    `/Destiny2/${membershipType}/Profile/${membershipId}/?components=200,202,1100`,
+    `/Destiny2/${membershipType}/Profile/${membershipId}/?components=100,200,202,1100`,
     { revalidate: 60 * 30 }
   );
 
+  // Bungie-naam + platform (component 100).
+  const ui = r?.profile?.data?.userInfo ?? {};
+  const name = ui.bungieGlobalDisplayName
+    ? `${ui.bungieGlobalDisplayName}#${ui.bungieGlobalDisplayNameCode}`
+    : ui.displayName ?? null;
+  const platform = PLATFORMS[ui.membershipType] ?? null;
+
   const charData = r?.characters?.data ?? {};
+  const emblemPath = icon((Object.values<any>(charData)[0] as any)?.emblemPath);
   const characters: PlayerCharacter[] = Object.values<any>(charData).map((c) => ({
     characterId: c.characterId,
     classType: c.classType,
@@ -634,7 +645,7 @@ export async function getPlayerExtras(
   const fl = metrics?.[FLAWLESS_TICKETS]?.objectiveProgress?.progress;
   const flawlessCount = typeof fl === "number" ? fl : null;
 
-  return { characters, ranks, flawlessCount };
+  return { name, platform, emblemPath: icon(emblemPath), characters, ranks, flawlessCount };
 }
 
 // --- Recente wedstrijden (match history) ---
