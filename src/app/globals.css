@@ -111,6 +111,16 @@ h3 {
   border: 1px solid var(--border);
   color: var(--text);
 }
+.btn-logout {
+  background: var(--danger);
+  color: #fff;
+}
+.btn-logout:hover {
+  filter: brightness(1.08);
+}
+.btn-logout svg {
+  display: block;
+}
 
 /* ---- Cards / grid ---- */
 .grid {
