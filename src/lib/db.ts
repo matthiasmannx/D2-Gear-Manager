@@ -1,17 +1,47 @@
 import "server-only";
-import { sql } from "@vercel/postgres";
+import { createPool, type VercelPool } from "@vercel/postgres";
 
 /**
  * Vercel Postgres (Neon) — opslag voor Community Builds (likes/favorites/comments
- * /forks). De env-vars worden door de Vercel-integratie ingespoten. Zolang er
- * geen DB gekoppeld is, geeft dbConfigured() false en degraderen de pagina's
- * netjes i.p.v. te crashen.
+ * /forks). De connectie-string komt uit de Vercel-integratie. We accepteren
+ * meerdere namen (oude "Vercel Postgres" gebruikt POSTGRES_URL, de nieuwe Neon-
+ * integratie soms DATABASE_URL), pooled varianten eerst. Zonder DB geeft
+ * dbConfigured() false en degraderen de pagina's netjes i.p.v. te crashen.
  */
-export { sql };
+const CONN_VARS = [
+  "POSTGRES_URL",
+  "POSTGRES_PRISMA_URL",
+  "DATABASE_URL",
+  "POSTGRES_URL_NON_POOLING",
+  "DATABASE_URL_UNPOOLED",
+];
+
+function connectionString(): string | undefined {
+  for (const k of CONN_VARS) {
+    const v = process.env[k];
+    if (v) return v;
+  }
+  return undefined;
+}
 
 export function dbConfigured(): boolean {
-  return !!(process.env.POSTGRES_URL || process.env.POSTGRES_PRISMA_URL || process.env.POSTGRES_URL_NON_POOLING);
+  return !!connectionString();
 }
+
+let _pool: VercelPool | null = null;
+function getPool(): VercelPool {
+  if (!_pool) _pool = createPool({ connectionString: connectionString() });
+  return _pool;
+}
+
+// Proxy zodat bestaande call-sites `sql\`...\`` en `sql.query(text, params)`
+// blijven werken, ongeacht welke env-var de connectie levert.
+type SqlFn = VercelPool["sql"];
+export const sql = ((strings: TemplateStringsArray, ...values: unknown[]) =>
+  // @ts-expect-error tagged template doorgeven aan de pool
+  getPool().sql(strings, ...values)) as unknown as SqlFn & { query: VercelPool["query"] };
+// @ts-expect-error query op de proxy hangen
+sql.query = (text: string, params?: unknown[]) => getPool().query(text as never, params as never);
 
 let schemaReady = false;
 
