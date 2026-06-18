@@ -388,6 +388,8 @@ export default function GearBoard({
   const [mwOnly, setMwOnly] = useState(false);
   const [lockedOnly, setLockedOnly] = useState(false);
   const [favOnly, setFavOnly] = useState(false);
+  const [tierFilter, setTierFilter] = useState<"all" | "1" | "2" | "3" | "4" | "5">("all");
+  const [powerSort, setPowerSort] = useState<"none" | "desc" | "asc">("none");
   const [page, setPage] = useState(0);
   const PAGE = 60;
 
@@ -564,7 +566,7 @@ export default function GearBoard({
 
   const filteredVault = useMemo(() => {
     const ql = q.trim().toLowerCase();
-    return vault.filter((it) => {
+    let filtered = vault.filter((it) => {
       if (ql && !it.name.toLowerCase().includes(ql)) return false;
       if (typeFilter === "weapon" && it.itemType !== 3) return false;
       if (typeFilter === "armor" && it.itemType !== 2) return false;
@@ -572,9 +574,18 @@ export default function GearBoard({
       if (mwOnly && !it.masterwork) return false;
       if (lockedOnly && !it.locked) return false;
       if (favOnly && !favGear.has(it.hash)) return false;
+      if (tierFilter !== "all" && (it.gearTier ?? 0) !== Number(tierFilter)) return false;
       return true;
     });
-  }, [vault, q, typeFilter, rarity, mwOnly, lockedOnly, favOnly, favGear]);
+    if (powerSort !== "none") {
+      filtered = [...filtered].sort((a, b) => {
+        const pa = a.power ?? 0;
+        const pb = b.power ?? 0;
+        return powerSort === "desc" ? pb - pa : pa - pb;
+      });
+    }
+    return filtered;
+  }, [vault, q, typeFilter, rarity, mwOnly, lockedOnly, favOnly, tierFilter, powerSort, favGear]);
 
   const pageCount = Math.max(1, Math.ceil(filteredVault.length / PAGE));
   const safePage = Math.min(page, pageCount - 1);
@@ -791,6 +802,19 @@ export default function GearBoard({
             <option value="all">{t("allRarities")}</option>
             <option value="Exotic">{t("exotic")}</option>
             <option value="Legendary">{t("legendary")}</option>
+          </select>
+          <select value={tierFilter} onChange={(e) => { setTierFilter(e.target.value as any); setPage(0); }}>
+            <option value="all">{t("allTiers")}</option>
+            <option value="5">T5</option>
+            <option value="4">T4</option>
+            <option value="3">T3</option>
+            <option value="2">T2</option>
+            <option value="1">T1</option>
+          </select>
+          <select value={powerSort} onChange={(e) => { setPowerSort(e.target.value as any); setPage(0); }}>
+            <option value="none">{t("sortDefault")}</option>
+            <option value="desc">{t("byPower")} ↓</option>
+            <option value="asc">{t("byPower")} ↑</option>
           </select>
           <label className="vault-toggle"><input type="checkbox" checked={mwOnly} onChange={(e) => { setMwOnly(e.target.checked); setPage(0); }} /> MW</label>
           <label className="vault-toggle"><input type="checkbox" checked={lockedOnly} onChange={(e) => { setLockedOnly(e.target.checked); setPage(0); }} /> 🔒</label>

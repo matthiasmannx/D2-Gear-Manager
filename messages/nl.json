@@ -170,7 +170,10 @@
     "next": "Volgende →",
     "page": "Pagina {n} / {total}",
     "anyClass": "Elke class",
-    "favorite": "Favoriet"
+    "favorite": "Favoriet",
+    "allTiers": "Alle tiers",
+    "sortDefault": "Standaard",
+    "byPower": "Op power"
   },
   "builds": {
     "title": "Meta Builds",

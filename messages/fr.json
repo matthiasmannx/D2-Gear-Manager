@@ -170,7 +170,10 @@
     "next": "Suivant →",
     "page": "Page {n} / {total}",
     "anyClass": "Toute classe",
-    "favorite": "Favori"
+    "favorite": "Favori",
+    "allTiers": "Tous les tiers",
+    "sortDefault": "Défaut",
+    "byPower": "Par power"
   },
   "builds": {
     "title": "Builds méta",
