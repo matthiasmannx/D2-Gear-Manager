@@ -23,6 +23,11 @@ const VENDOR_PRIORITY: Record<number, number> = {
   3361454721: 10, // Tess Everis (Eververse)
 };
 
+export interface VendorCost {
+  name: string;
+  icon: string | null;
+  quantity: number;
+}
 export interface VendorItem {
   hash: number;
   name: string;
@@ -30,11 +35,14 @@ export interface VendorItem {
   type: string;
   tier: string;
   itemType: number;
+  classType: number;
+  cost: VendorCost[];
 }
 export interface VendorView {
   hash: number;
   name: string;
   icon: string | null;
+  banner: string | null; // achtergrond-banner van de vendor-locatie
   location: string; // destination-naam (bv. "The Last City" = Tower)
   items: VendorItem[];
 }
@@ -70,31 +78,58 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
       const sales = salesData[vendorHash]?.saleItems;
       if (!sales) return null;
 
-      const saleHashes = [...new Set(Object.values<any>(sales).map((s) => s.itemHash).filter(Boolean))];
-      const defs = await lookupItems(saleHashes); // in-memory index, snel
+      const saleEntries = Object.values<any>(sales).filter((s) => s.itemHash);
+      const itemHashes = [...new Set(saleEntries.map((s) => s.itemHash))];
+      const defs = await lookupItems(itemHashes); // items via in-memory index (snel)
+
+      // Kosten (currencies) via entity-def — weinig unieke, globaal gecached.
+      const costHashes = [...new Set(saleEntries.flatMap((s) => (s.costs ?? []).map((c: any) => c.itemHash)).filter(Boolean))];
+      const costMap = new Map<number, { name: string; icon: string | null }>();
+      await Promise.all(
+        costHashes.map(async (ch) => {
+          try {
+            const cd = await getEntityDefinition("DestinyInventoryItemDefinition", ch as number);
+            if (cd?.displayProperties?.name) costMap.set(ch as number, { name: cd.displayProperties.name, icon: icon(cd.displayProperties.icon) });
+          } catch {
+            /* negeer */
+          }
+        })
+      );
 
       const items: VendorItem[] = [];
-      for (const h of saleHashes) {
-        const d = defs.get(h as number);
-        if (d && d.name) {
-          items.push({ hash: d.hash, name: d.name, icon: icon(d.icon), type: d.type, tier: d.tier, itemType: d.itemType });
-        }
+      const seen = new Set<number>();
+      for (const s of saleEntries) {
+        if (seen.has(s.itemHash)) continue;
+        seen.add(s.itemHash);
+        const d = defs.get(s.itemHash);
+        if (!d || !d.name) continue;
+        const cost: VendorCost[] = (s.costs ?? [])
+          .map((c: any) => {
+            const cm = costMap.get(c.itemHash);
+            return cm ? { name: cm.name, icon: cm.icon, quantity: c.quantity } : null;
+          })
+          .filter((c: VendorCost | null): c is VendorCost => c !== null && c.quantity > 0);
+        items.push({ hash: d.hash, name: d.name, icon: icon(d.icon), type: d.type, tier: d.tier, itemType: d.itemType, classType: d.classType, cost });
       }
       if (items.length === 0) return null;
       items.sort((a, b) => gearRank(b) - gearRank(a));
 
       let name = "";
       let vicon: string | null = null;
+      let banner: string | null = null;
       let location = "";
       try {
         const def = await getEntityDefinition("DestinyVendorDefinition", Number(vendorHash));
-        name = def?.displayProperties?.name ?? "";
-        vicon = icon(def?.displayProperties?.icon);
+        const dp = def?.displayProperties ?? {};
+        name = dp.name ?? "";
+        // Logo: icon met fallback op de transparante varianten.
+        vicon = icon(dp.icon || dp.smallTransparentIcon || dp.largeTransparentIcon);
         const locs = def?.locations ?? [];
         const idx = vendorsData[vendorHash]?.vendorLocationIndex ?? 0;
-        const destHash = locs[idx]?.destinationHash ?? locs[0]?.destinationHash;
-        if (destHash) {
-          const dd = await getEntityDefinition("DestinyDestinationDefinition", destHash);
+        const loc = locs[idx] ?? locs[0];
+        if (loc?.backgroundImagePath) banner = icon(loc.backgroundImagePath);
+        if (loc?.destinationHash) {
+          const dd = await getEntityDefinition("DestinyDestinationDefinition", loc.destinationHash);
           location = dd?.displayProperties?.name ?? "";
         }
       } catch {
@@ -102,7 +137,7 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
       }
       if (!name) return null;
 
-      return { hash: Number(vendorHash), name, icon: vicon, location, items: items.slice(0, 30) };
+      return { hash: Number(vendorHash), name, icon: vicon, banner, location, items: items.slice(0, 30) };
     })
   );
   const views = built.filter((v): v is VendorView => v !== null);

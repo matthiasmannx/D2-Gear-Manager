@@ -247,7 +247,8 @@
     "groupRaids": "Incursiones",
     "groupDungeons": "Mazmorras",
     "groupWeekly": "Semanal",
-    "resetsIn": "Todo se reinicia en"
+    "resetsIn": "Todo se reinicia en",
+    "vendorOther": "Otros"
   },
   "changelog": {
     "title": "Changelog",

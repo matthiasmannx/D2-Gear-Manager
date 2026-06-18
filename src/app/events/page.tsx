@@ -176,8 +176,37 @@ async function ThisWeek() {
   );
 }
 
+const TIER_COLOR: Record<string, string> = {
+  Exotic: "#ceae33",
+  Legendary: "#b58cf6",
+  Rare: "#5076a3",
+  Uncommon: "#5b9e4d",
+  Common: "#c3bcb4",
+};
+
+interface CatLabels {
+  weapons: string;
+  armor: string;
+  titan: string;
+  hunter: string;
+  warlock: string;
+  other: string;
+}
+
+// In welke sub-groep valt een vendor-item?
+function bucketOf(it: { itemType: number; classType: number }): keyof CatLabels {
+  if (it.itemType === 3) return "weapons";
+  if (it.itemType === 2) return "armor";
+  if (it.classType === 0) return "titan";
+  if (it.classType === 1) return "hunter";
+  if (it.classType === 2) return "warlock";
+  return "other";
+}
+const BUCKET_ORDER: (keyof CatLabels)[] = ["weapons", "armor", "titan", "hunter", "warlock", "other"];
+
 async function Vendors() {
   const t = await getTranslations("events");
+  const tg = await getTranslations("gear");
   const token = await getValidAccessToken();
   if (!token) {
     return (
@@ -197,18 +226,27 @@ async function Vendors() {
     vendors = [];
   }
 
+  const labels: CatLabels = {
+    weapons: tg("weapons"),
+    armor: tg("armor"),
+    titan: "Titan",
+    hunter: "Hunter",
+    warlock: "Warlock",
+    other: t("vendorOther"),
+  };
+
   // Groeperen op locatie: Tower ("The Last City") eerst, daarna planeten.
   const groups = new Map<string, VendorView[]>();
   for (const v of vendors ?? []) {
-    const key = v.location || "Overig";
+    const key = v.location || labels.other;
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key)!.push(v);
   }
   const order = [...groups.keys()].sort((a, b) => {
     if (a === "The Last City") return -1;
     if (b === "The Last City") return 1;
-    if (a === "Overig") return 1;
-    if (b === "Overig") return -1;
+    if (a === labels.other) return 1;
+    if (b === labels.other) return -1;
     return a.localeCompare(b);
   });
 
@@ -222,7 +260,7 @@ async function Vendors() {
           <section key={loc} style={{ marginTop: "1rem" }}>
             <h3 className="vendor-loc-h">{loc}</h3>
             {groups.get(loc)!.map((v) => (
-              <VendorCard key={v.hash} v={v} />
+              <VendorCard key={v.hash} v={v} labels={labels} />
             ))}
           </section>
         ))
@@ -231,35 +269,71 @@ async function Vendors() {
   );
 }
 
-function VendorCard({ v }: { v: VendorView }) {
+function VendorCard({ v, labels }: { v: VendorView; labels: CatLabels }) {
+  const exotics = v.items.filter((it) => it.tier === "Exotic").length;
+  const legendaries = v.items.filter((it) => it.tier === "Legendary").length;
+
   return (
     <details className="vendor-details">
-      <summary className="vendor-summary">
+      <summary className="vendor-summary" style={v.banner ? { backgroundImage: `linear-gradient(90deg, rgba(20,25,37,0.92), rgba(20,25,37,0.55)), url(${v.banner})` } : undefined}>
         {v.icon && (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={v.icon} alt="" className="vendor-icon" />
         )}
         <span className="vendor-name">{v.name}</span>
-        <span className="muted vendor-count">({v.items.length})</span>
+        <span className="muted vendor-count">
+          {v.items.length}
+          {exotics > 0 && <span className="vendor-ex"> · ✦{exotics}</span>}
+          {legendaries > 0 && <span className="vendor-leg"> · {legendaries}L</span>}
+        </span>
         <span className="vendor-chevron">▸</span>
       </summary>
-      <div className="grid">
-        {v.items.map((it) => (
-          <Link key={it.hash} href={`/items/${it.hash}`} className="card card-link">
-            <div className="item">
-              {it.icon ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img className="item-icon" src={it.icon} alt="" />
-              ) : (
-                <div className="item-icon" />
-              )}
-              <div>
-                <div className="item-name">{it.name}</div>
-                <div className="item-type">{[it.tier, it.type].filter(Boolean).join(" · ")}</div>
+      <div className="vendor-body">
+        {BUCKET_ORDER.map((bk) => {
+          const group = v.items.filter((it) => bucketOf(it) === bk);
+          if (group.length === 0) return null;
+          return (
+            <div key={bk} className="vendor-cat">
+              <span className="vendor-cat-h">{labels[bk]}</span>
+              <div className="grid">
+                {group.map((it) => (
+                  <Link
+                    key={it.hash}
+                    href={`/items/${it.hash}`}
+                    className={`card card-link vendor-item ${it.tier === "Exotic" ? "is-exotic" : ""}`}
+                    style={{ borderLeft: `3px solid ${TIER_COLOR[it.tier] ?? "var(--border)"}` }}
+                  >
+                    <div className="item">
+                      {it.icon ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img className="item-icon" src={it.icon} alt="" />
+                      ) : (
+                        <div className="item-icon" />
+                      )}
+                      <div style={{ minWidth: 0 }}>
+                        <div className="item-name">{it.name}</div>
+                        <div className="item-type">{[it.tier, it.type].filter(Boolean).join(" · ")}</div>
+                        {it.cost.length > 0 && (
+                          <div className="vendor-cost">
+                            {it.cost.map((c, i) => (
+                              <span key={i} className="vendor-cost-i">
+                                {c.icon && (
+                                  // eslint-disable-next-line @next/next/no-img-element
+                                  <img src={c.icon} alt="" />
+                                )}
+                                {c.quantity.toLocaleString()} {c.name}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
               </div>
             </div>
-          </Link>
-        ))}
+          );
+        })}
       </div>
     </details>
   );

@@ -247,7 +247,8 @@
     "groupRaids": "Raids",
     "groupDungeons": "Donjons",
     "groupWeekly": "Hebdomadaire",
-    "resetsIn": "Tout se réinitialise dans"
+    "resetsIn": "Tout se réinitialise dans",
+    "vendorOther": "Autre"
   },
   "changelog": {
     "title": "Changelog",

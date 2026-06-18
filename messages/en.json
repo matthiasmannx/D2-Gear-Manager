@@ -247,7 +247,8 @@
     "groupRaids": "Raids",
     "groupDungeons": "Dungeons",
     "groupWeekly": "Weekly",
-    "resetsIn": "Everything resets in"
+    "resetsIn": "Everything resets in",
+    "vendorOther": "Other"
   },
   "changelog": {
     "title": "Changelog",
