@@ -12,6 +12,7 @@ const LINKS = [
   { href: "/gear", key: "gear" },
   { href: "/builds", key: "builds" },
   { href: "/players", key: "players" },
+  { href: "/profile", key: "profile" },
   { href: "/events", key: "events" },
   { href: "/changelog", key: "changelog" },
   { href: "/sandbox", key: "sandbox" },

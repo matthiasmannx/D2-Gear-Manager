@@ -7,6 +7,7 @@
     "events": "Suivi des events",
     "changelog": "Changelog",
     "sandbox": "Buffs & Nerfs",
+    "profile": "Mon profil",
     "login": "Connexion",
     "loginExtra": " avec Bungie",
     "logout": "Déconnexion",
@@ -25,7 +26,8 @@
       "players": { "title": "Joueurs", "desc": "Cherchez des joueurs et voyez leur K/D, victoires, Épreuves, Bannière de fer et nombre de Flawless." },
       "events": { "title": "Suivi des events", "desc": "Reset hebdomadaire, jalons, marchands et activités actives." },
       "changelog": { "title": "Changelog", "desc": "Mises à jour, patchs et rotations de Destiny 2 — les plus récents en haut." },
-      "sandbox": { "title": "Buffs & Nerfs", "desc": "Changements du sandbox selon Bungie — buffs, nerfs et ajustements." }
+      "sandbox": { "title": "Buffs & Nerfs", "desc": "Changements du sandbox selon Bungie — buffs, nerfs et ajustements." },
+      "profile": { "title": "Mon profil", "desc": "Vos propres gardiens, stats et équipement — visibles une fois connecté." }
     }
   },
   "players": {
@@ -263,5 +265,18 @@
   "common": {
     "search": "Chercher",
     "searchPlaceholder": "Chercher…"
+  },
+  "profile": {
+    "title": "Mon profil",
+    "intro": "Vos gardiens, stats et équipement en un coup d'œil.",
+    "loginPrompt": "Connectez-vous avec Bungie pour voir votre propre profil.",
+    "loginBtn": "Se connecter avec Bungie",
+    "loadFailed": "Impossible de charger votre profil.",
+    "guardians": "Gardiens",
+    "manageGear": "Gérer l'équipement →",
+    "fullStats": "Stats complètes →",
+    "statKd": "K/D à vie",
+    "statWinRate": "Taux de victoire",
+    "statFlawless": "Tickets Flawless"
   }
 }

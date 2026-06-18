@@ -7,6 +7,7 @@
     "events": "Events Tracker",
     "changelog": "Changelog",
     "sandbox": "Buffs & Nerfs",
+    "profile": "My Profile",
     "login": "Login",
     "loginExtra": " with Bungie",
     "logout": "Log out",
@@ -25,7 +26,8 @@
       "players": { "title": "Players", "desc": "Search players and view their K/D, wins, Trials, Iron Banner and Flawless count." },
       "events": { "title": "Events Tracker", "desc": "Weekly reset, milestones, vendors and active activities." },
       "changelog": { "title": "Changelog", "desc": "Destiny 2 updates, patches and rotations — newest on top." },
-      "sandbox": { "title": "Buffs & Nerfs", "desc": "Sandbox changes per Bungie — buffs, nerfs and adjustments." }
+      "sandbox": { "title": "Buffs & Nerfs", "desc": "Sandbox changes per Bungie — buffs, nerfs and adjustments." },
+      "profile": { "title": "My Profile", "desc": "Your own guardians, stats and gear — visible when logged in." }
     }
   },
   "players": {
@@ -263,5 +265,18 @@
   "common": {
     "search": "Search",
     "searchPlaceholder": "Search…"
+  },
+  "profile": {
+    "title": "My Profile",
+    "intro": "Your guardians, stats and gear at a glance.",
+    "loginPrompt": "Log in with Bungie to see your own profile.",
+    "loginBtn": "Log in with Bungie",
+    "loadFailed": "Couldn't load your profile.",
+    "guardians": "Guardians",
+    "manageGear": "Manage gear →",
+    "fullStats": "Full stats →",
+    "statKd": "Lifetime K/D",
+    "statWinRate": "Win rate",
+    "statFlawless": "Flawless tickets"
   }
 }

@@ -7,6 +7,7 @@ export const SECTION_COLORS: Record<string, string> = {
   "/events": "#b58cf6", // paars
   "/changelog": "#4ad6c8", // teal
   "/sandbox": "#ff7eb6", // roze
+  "/profile": "#7c6cff", // indigo
 };
 
 export function sectionColor(href: string): string {

@@ -7,6 +7,7 @@
     "events": "Events-Tracker",
     "changelog": "Changelog",
     "sandbox": "Buffs & Nerfs",
+    "profile": "Mein Profil",
     "login": "Anmelden",
     "loginExtra": " mit Bungie",
     "logout": "Abmelden",
@@ -25,7 +26,8 @@
       "players": { "title": "Spieler", "desc": "Suche Spieler und sieh ihre K/D, Siege, Trials, Eisenbanner und Makellos-Zahl." },
       "events": { "title": "Events-Tracker", "desc": "Wöchentlicher Reset, Meilensteine, Händler und aktive Aktivitäten." },
       "changelog": { "title": "Changelog", "desc": "Destiny-2-Updates, Patches und Rotationen — Neuestes zuerst." },
-      "sandbox": { "title": "Buffs & Nerfs", "desc": "Sandbox-Änderungen laut Bungie — Buffs, Nerfs und Anpassungen." }
+      "sandbox": { "title": "Buffs & Nerfs", "desc": "Sandbox-Änderungen laut Bungie — Buffs, Nerfs und Anpassungen." },
+      "profile": { "title": "Mein Profil", "desc": "Deine eigenen Guardians, Statistiken und Ausrüstung — sichtbar wenn angemeldet." }
     }
   },
   "players": {
@@ -263,5 +265,18 @@
   "common": {
     "search": "Suchen",
     "searchPlaceholder": "Suchen…"
+  },
+  "profile": {
+    "title": "Mein Profil",
+    "intro": "Deine Guardians, Statistiken und Ausrüstung auf einen Blick.",
+    "loginPrompt": "Melde dich mit Bungie an, um dein eigenes Profil zu sehen.",
+    "loginBtn": "Mit Bungie anmelden",
+    "loadFailed": "Dein Profil konnte nicht geladen werden.",
+    "guardians": "Guardians",
+    "manageGear": "Ausrüstung verwalten →",
+    "fullStats": "Vollständige Statistiken →",
+    "statKd": "Lifetime-K/D",
+    "statWinRate": "Siegrate",
+    "statFlawless": "Makellos-Tickets"
   }
 }

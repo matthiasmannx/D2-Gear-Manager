@@ -1335,6 +1335,26 @@ input:focus {
   line-height: 1;
   text-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
 }
+/* My Profile — guardian-kaartjes + outline-knop */
+.prof-guardian {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.prof-emblem {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.btn-outline:hover {
+  border-color: var(--accent-2);
+}
 .ih-tip-stats {
   padding: 0.3rem 0.7rem 0.6rem;
   display: grid;

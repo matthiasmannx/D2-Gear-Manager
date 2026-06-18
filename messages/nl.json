@@ -7,6 +7,7 @@
     "events": "Events Tracker",
     "changelog": "Changelog",
     "sandbox": "Buffs & Nerfs",
+    "profile": "My Profile",
     "login": "Login",
     "loginExtra": " met Bungie",
     "logout": "Uitloggen",
@@ -25,7 +26,8 @@
       "players": { "title": "Players", "desc": "Zoek spelers en bekijk hun K/D, wins, Trials, Iron Banner en Flawless-count." },
       "events": { "title": "Events Tracker", "desc": "Wekelijkse reset, milestones, vendors en actieve activiteiten." },
       "changelog": { "title": "Changelog", "desc": "Destiny 2 updates, patches en rotaties — nieuwste bovenaan." },
-      "sandbox": { "title": "Buffs & Nerfs", "desc": "Sandbox-wijzigingen volgens Bungie — buffs, nerfs en aanpassingen." }
+      "sandbox": { "title": "Buffs & Nerfs", "desc": "Sandbox-wijzigingen volgens Bungie — buffs, nerfs en aanpassingen." },
+      "profile": { "title": "My Profile", "desc": "Je eigen guardians, stats en gear — zichtbaar als je bent ingelogd." }
     }
   },
   "players": {
@@ -263,5 +265,18 @@
   "common": {
     "search": "Zoek",
     "searchPlaceholder": "Zoeken…"
+  },
+  "profile": {
+    "title": "Mijn profiel",
+    "intro": "Je guardians, stats en gear in één overzicht.",
+    "loginPrompt": "Log in met Bungie om je eigen profiel te zien.",
+    "loginBtn": "Login met Bungie",
+    "loadFailed": "Kon je profiel niet laden.",
+    "guardians": "Guardians",
+    "manageGear": "Gear beheren →",
+    "fullStats": "Volledige stats →",
+    "statKd": "Lifetime K/D",
+    "statWinRate": "Win rate",
+    "statFlawless": "Flawless tickets"
   }
 }

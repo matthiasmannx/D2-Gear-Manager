@@ -7,6 +7,7 @@
     "events": "Eventos",
     "changelog": "Changelog",
     "sandbox": "Buffs y Nerfs",
+    "profile": "Mi perfil",
     "login": "Iniciar sesión",
     "loginExtra": " con Bungie",
     "logout": "Cerrar sesión",
@@ -25,7 +26,8 @@
       "players": { "title": "Jugadores", "desc": "Busca jugadores y mira su K/D, victorias, Pruebas, Estandarte de Hierro y cuenta de Impecables." },
       "events": { "title": "Eventos", "desc": "Reinicio semanal, hitos, vendedores y actividades activas." },
       "changelog": { "title": "Changelog", "desc": "Actualizaciones, parches y rotaciones de Destiny 2: lo más reciente arriba." },
-      "sandbox": { "title": "Buffs y Nerfs", "desc": "Cambios del sandbox según Bungie: buffs, nerfs y ajustes." }
+      "sandbox": { "title": "Buffs y Nerfs", "desc": "Cambios del sandbox según Bungie: buffs, nerfs y ajustes." },
+      "profile": { "title": "Mi perfil", "desc": "Tus propios guardianes, estadísticas y equipo — visibles al iniciar sesión." }
     }
   },
   "players": {
@@ -263,5 +265,18 @@
   "common": {
     "search": "Buscar",
     "searchPlaceholder": "Buscar…"
+  },
+  "profile": {
+    "title": "Mi perfil",
+    "intro": "Tus guardianes, estadísticas y equipo de un vistazo.",
+    "loginPrompt": "Inicia sesión con Bungie para ver tu propio perfil.",
+    "loginBtn": "Iniciar sesión con Bungie",
+    "loadFailed": "No se pudo cargar tu perfil.",
+    "guardians": "Guardianes",
+    "manageGear": "Gestionar equipo →",
+    "fullStats": "Estadísticas completas →",
+    "statKd": "K/D de por vida",
+    "statWinRate": "Tasa de victorias",
+    "statFlawless": "Tickets de Impecable"
   }
 }
