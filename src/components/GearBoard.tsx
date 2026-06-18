@@ -228,12 +228,14 @@ function Tile({
             <div className="gear-panel-actions">
               <button onClick={() => a.pull(item, source)} disabled={a.busy}>⤓ {t("pull")}</button>
               {canAct && (
-                <button className={`gear-fav-btn ${isFav ? "on" : ""}`} onClick={() => a.toggleFavGear(item.hash)} disabled={a.busy}>
-                  {isFav ? "★" : "☆"} {t("favorite")}
-                </button>
-                <button className="gear-lock-btn" onClick={() => a.toggleLock(item, source, item.locked)} disabled={a.busy}>
-                  {item.locked ? `🔓 ${t("unlock")}` : `🔒 ${t("lock")}`}
-                </button>
+                <>
+                  <button className={`gear-fav-btn ${isFav ? "on" : ""}`} onClick={() => a.toggleFavGear(item.hash)} disabled={a.busy}>
+                    {isFav ? "★" : "☆"} {t("favorite")}
+                  </button>
+                  <button className="gear-lock-btn" onClick={() => a.toggleLock(item, source, item.locked)} disabled={a.busy}>
+                    {item.locked ? `🔓 ${t("unlock")}` : `🔒 ${t("lock")}`}
+                  </button>
+                </>
               )}
             </div>
           ) : (
