@@ -137,6 +137,14 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
       }
       if (!name) return null;
 
+      // Subclass-customisatie (Aspects/Fragments/Supers/Melees/Grenades/Movement/
+      // Class Abilities) koop je bij Ikora → groepeer onder "Ikora Rey".
+      const SUBCLASS = new Set([
+        "aspects", "fragments", "fragment", "super", "supers", "grenade", "grenades",
+        "melee", "melees", "movement", "class ability", "class abilities", "abilities",
+      ]);
+      if (SUBCLASS.has(name.trim().toLowerCase())) location = "Ikora Rey";
+
       return { hash: Number(vendorHash), name, icon: vicon, banner, location, items: items.slice(0, 30) };
     })
   );
