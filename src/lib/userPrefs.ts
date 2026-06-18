@@ -2,9 +2,21 @@ import "server-only";
 import { sql, ensureSchema, dbConfigured } from "./db";
 
 /** Per-account instellingen die over apparaten synchroniseren (favorieten e.d.). */
+export interface VaultView {
+  typeFilter?: string;
+  rarity?: string;
+  mwOnly?: boolean;
+  lockedOnly?: boolean;
+  favOnly?: boolean;
+  tierFilter?: string;
+  powerSort?: string;
+}
+
 export interface UserPrefs {
   favPlayers?: { type: number; id: string; name: string }[];
   favGear?: number[];
+  locale?: string;
+  vaultView?: VaultView;
 }
 
 export async function getUserPrefs(userId: string): Promise<UserPrefs | null> {

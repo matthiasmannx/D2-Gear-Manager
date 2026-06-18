@@ -4,6 +4,7 @@ import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { LOCALES, LOCALE_LABELS, LOCALE_FLAGS, LOCALE_COOKIE, type Locale } from "@/i18n/config";
+import { saveMyPrefs } from "@/app/settings-actions";
 
 export default function LanguageSwitcher() {
   const locale = useLocale() as Locale;
@@ -22,6 +23,7 @@ export default function LanguageSwitcher() {
   const pick = (l: Locale) => {
     document.cookie = `${LOCALE_COOKIE}=${l};path=/;max-age=31536000;samesite=lax`;
     setOpen(false);
+    saveMyPrefs({ locale: l }).catch(() => {}); // sync naar account (no-op indien uitgelogd)
     router.refresh();
   };
 

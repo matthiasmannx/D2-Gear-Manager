@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { VAULT_EVT, readVaultView, writeVaultView } from "@/lib/vaultView";
 import { useTranslations } from "next-intl";
 import { useGearFavorites } from "@/lib/useGearFavorites";
 
@@ -392,6 +393,29 @@ export default function GearBoard({
   const [powerSort, setPowerSort] = useState<"none" | "desc" | "asc">("none");
   const [page, setPage] = useState(0);
   const PAGE = 60;
+
+  // Vault-filters bewaren (lokaal + per account via SettingsSync).
+  const vvHydrated = useRef(false);
+  useEffect(() => {
+    const apply = () => {
+      const v = readVaultView();
+      if (v.typeFilter) setTypeFilter(v.typeFilter as typeof typeFilter);
+      if (v.rarity) setRarity(v.rarity as typeof rarity);
+      if (v.tierFilter) setTierFilter(v.tierFilter as typeof tierFilter);
+      if (v.powerSort) setPowerSort(v.powerSort as typeof powerSort);
+      setMwOnly(!!v.mwOnly);
+      setLockedOnly(!!v.lockedOnly);
+      setFavOnly(!!v.favOnly);
+    };
+    apply();
+    vvHydrated.current = true;
+    window.addEventListener(VAULT_EVT, apply);
+    return () => window.removeEventListener(VAULT_EVT, apply);
+  }, []);
+  useEffect(() => {
+    if (!vvHydrated.current) return;
+    writeVaultView({ typeFilter, rarity, tierFilter, powerSort, mwOnly, lockedOnly, favOnly });
+  }, [typeFilter, rarity, tierFilter, powerSort, mwOnly, lockedOnly, favOnly]);
 
   async function postJson(url: string, body: object) {
     setBusy(true);
