@@ -238,7 +238,8 @@
     "rewardPool": "Loot uit de activiteit-pool + wekelijkse beloning",
     "groupRaids": "Raids",
     "groupDungeons": "Dungeons",
-    "groupWeekly": "Wekelijks"
+    "groupWeekly": "Wekelijks",
+    "resetsIn": "Alles reset over"
   },
   "changelog": {
     "title": "Changelog",

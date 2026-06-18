@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import Countdown from "./Countdown";
@@ -22,27 +22,17 @@ export interface MilestoneView {
 
 export default function MilestoneBoard({ milestones }: { milestones: MilestoneView[] }) {
   const t = useTranslations("events");
-  const [sort, setSort] = useState<"default" | "ending">("default");
-  const [endingSoon, setEndingSoon] = useState(false);
   const [open, setOpen] = useState<number | null>(null);
 
-  const list = useMemo(() => {
-    let l = [...milestones];
-    if (endingSoon) {
-      const cutoff = Date.now() + 24 * 3600 * 1000;
-      l = l.filter((m) => m.endDate && new Date(m.endDate).getTime() <= cutoff);
-    }
-    if (sort === "ending") {
-      l.sort((a, b) => {
-        const ax = a.endDate ? new Date(a.endDate).getTime() : Infinity;
-        const bx = b.endDate ? new Date(b.endDate).getTime() : Infinity;
-        return ax - bx;
-      });
-    } else {
-      l.sort((a, b) => a.order - b.order);
-    }
-    return l;
-  }, [milestones, sort, endingSoon]);
+  const list = [...milestones].sort((a, b) => a.order - b.order);
+
+  // De meeste milestones eindigen bij dezelfde wekelijkse reset → toon die teller
+  // één keer bovenaan i.p.v. dezelfde aftelling op elke kaart.
+  const freq = new Map<string, number>();
+  for (const m of list) if (m.endDate) freq.set(m.endDate, (freq.get(m.endDate) ?? 0) + 1);
+  let commonEnd: string | undefined;
+  let best = 1;
+  for (const [d, n] of freq) if (n > best) { best = n; commonEnd = d; }
 
   const groups: { key: "raid" | "dungeon" | "weekly"; label: string }[] = [
     { key: "raid", label: t("groupRaids") },
@@ -52,6 +42,8 @@ export default function MilestoneBoard({ milestones }: { milestones: MilestoneVi
 
   function renderCard(m: MilestoneView) {
     const expanded = open === m.hash;
+    // Alleen een eigen eindtijd tonen als die afwijkt van de gezamenlijke reset.
+    const showEnd = m.endDate && m.endDate !== commonEnd;
     return (
       <div key={m.hash} className={`card ms-card ${expanded ? "open" : ""}`}>
         <button className="ms-toggle" onClick={() => setOpen(expanded ? null : m.hash)}>
@@ -61,9 +53,9 @@ export default function MilestoneBoard({ milestones }: { milestones: MilestoneVi
           )}
           <div className="ms-toggle-info">
             <div className="item-name">{m.name}</div>
-            {m.endDate && (
+            {showEnd && (
               <div className="item-type">
-                {t("endsIn")} <Countdown to={m.endDate} />
+                {t("endsIn")} <Countdown to={m.endDate!} />
               </div>
             )}
           </div>
@@ -120,31 +112,22 @@ export default function MilestoneBoard({ milestones }: { milestones: MilestoneVi
 
   return (
     <>
-      <div className="ms-controls">
-        <select value={sort} onChange={(e) => setSort(e.target.value as any)}>
-          <option value="default">{t("sortDefault")}</option>
-          <option value="ending">{t("sortEnding")}</option>
-        </select>
-        <label className="vault-toggle">
-          <input type="checkbox" checked={endingSoon} onChange={(e) => setEndingSoon(e.target.checked)} />
-          {t("endingSoon")}
-        </label>
-      </div>
-
-      {list.length === 0 ? (
-        <div className="empty">{t("noFilterMilestones")}</div>
-      ) : (
-        groups.map((g) => {
-          const items = list.filter((m) => (m.group ?? "weekly") === g.key);
-          if (items.length === 0) return null;
-          return (
-            <section key={g.key} className="ms-group">
-              <h3 className="ms-group-h">{g.label} <span className="muted">({items.length})</span></h3>
-              <div className="section-list">{items.map(renderCard)}</div>
-            </section>
-          );
-        })
+      {commonEnd && (
+        <div className="ms-reset muted">
+          {t("resetsIn")} <Countdown to={commonEnd} />
+        </div>
       )}
+
+      {groups.map((g) => {
+        const items = list.filter((m) => (m.group ?? "weekly") === g.key);
+        if (items.length === 0) return null;
+        return (
+          <section key={g.key} className="ms-group">
+            <h3 className="ms-group-h">{g.label} <span className="muted">({items.length})</span></h3>
+            <div className="section-list">{items.map(renderCard)}</div>
+          </section>
+        );
+      })}
     </>
   );
 }

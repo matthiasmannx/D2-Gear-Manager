@@ -1635,6 +1635,10 @@ input:focus {
   align-items: center;
   margin: 0.75rem 0 1rem;
 }
+.ms-reset {
+  font-size: 0.85rem;
+  margin: 0.5rem 0 0.25rem;
+}
 .ms-group {
   margin-top: 1.25rem;
 }

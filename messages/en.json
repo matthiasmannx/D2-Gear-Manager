@@ -238,7 +238,8 @@
     "rewardPool": "Loot from the activity pool + weekly reward",
     "groupRaids": "Raids",
     "groupDungeons": "Dungeons",
-    "groupWeekly": "Weekly"
+    "groupWeekly": "Weekly",
+    "resetsIn": "Everything resets in"
   },
   "changelog": {
     "title": "Changelog",

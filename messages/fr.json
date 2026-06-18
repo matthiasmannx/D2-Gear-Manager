@@ -238,7 +238,8 @@
     "rewardPool": "Butin du pool d'activité + récompense hebdomadaire",
     "groupRaids": "Raids",
     "groupDungeons": "Donjons",
-    "groupWeekly": "Hebdomadaire"
+    "groupWeekly": "Hebdomadaire",
+    "resetsIn": "Tout se réinitialise dans"
   },
   "changelog": {
     "title": "Changelog",

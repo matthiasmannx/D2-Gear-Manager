@@ -238,7 +238,8 @@
     "rewardPool": "Botín del grupo de actividad + recompensa semanal",
     "groupRaids": "Incursiones",
     "groupDungeons": "Mazmorras",
-    "groupWeekly": "Semanal"
+    "groupWeekly": "Semanal",
+    "resetsIn": "Todo se reinicia en"
   },
   "changelog": {
     "title": "Changelog",

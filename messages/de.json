@@ -238,7 +238,8 @@
     "rewardPool": "Beute aus dem Aktivitäts-Pool + wöchentliche Belohnung",
     "groupRaids": "Raids",
     "groupDungeons": "Dungeons",
-    "groupWeekly": "Wöchentlich"
+    "groupWeekly": "Wöchentlich",
+    "resetsIn": "Alles resettet in"
   },
   "changelog": {
     "title": "Changelog",
