@@ -45,9 +45,11 @@ export default async function EventsPage() {
       enriched
         .filter((m) => m.def?.displayProperties?.name)
         .map(async (m): Promise<MilestoneView> => {
-          // Activiteit + aanbevolen power uit de eerste activity.
+          // Activiteit + aanbevolen power + banner + loot-pool uit de activity.
           let activity: string | undefined;
           let power: number | undefined;
+          let banner: string | undefined;
+          const lootHashes: number[] = [];
           const actHash = m.activities?.[0]?.activityHash;
           if (actHash) {
             try {
@@ -55,12 +57,19 @@ export default async function EventsPage() {
               activity = ad?.displayProperties?.name;
               const lvl = ad?.activityLightLevel;
               if (lvl && lvl > 100) power = lvl;
+              if (ad?.pgcrImage) banner = icon(ad.pgcrImage) ?? undefined;
+              // Loot-pool: de reward-items die deze activity kan geven.
+              for (const block of ad?.rewards ?? []) {
+                for (const ri of block.rewardItems ?? []) {
+                  if (ri.itemHash) lootHashes.push(ri.itemHash);
+                }
+              }
             } catch {
               /* negeer */
             }
           }
 
-          // Concrete reward-items uit de def (vaak leeg).
+          // Concrete reward-items uit de milestone-def (vaak leeg) + activity-loot.
           const rewardHashes: number[] = [];
           const cats = m.def.rewards ?? {};
           for (const cat of Object.values<any>(cats)) {
@@ -70,10 +79,11 @@ export default async function EventsPage() {
               }
             }
           }
-          let rewards: string[] = [];
-          if (rewardHashes.length > 0) {
-            const defs = await lookupItems(rewardHashes);
-            rewards = [...defs.values()].map((d) => d.name).slice(0, 4);
+          const allLoot = [...new Set([...rewardHashes, ...lootHashes])];
+          let loot: { hash: number; name: string; icon: string | null }[] = [];
+          if (allLoot.length > 0) {
+            const defs = await lookupItems(allLoot);
+            loot = [...defs.values()].map((d) => ({ hash: d.hash, name: d.name, icon: icon(d.icon) })).slice(0, 12);
           }
 
           return {
@@ -85,8 +95,9 @@ export default async function EventsPage() {
             order: m.order ?? 999,
             activity,
             power,
-            rewards,
-            rewardLabel: rewards.length === 0 && activity ? t("rewardPool") : undefined,
+            banner,
+            loot,
+            rewardLabel: loot.length === 0 && activity ? t("rewardPool") : undefined,
           };
         })
     );

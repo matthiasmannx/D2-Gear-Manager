@@ -1635,6 +1635,90 @@ input:focus {
   align-items: center;
   margin: 0.75rem 0 1rem;
 }
+/* Uitklapbare milestone-kaart */
+.ms-card {
+  padding: 0;
+  overflow: hidden;
+}
+.ms-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0.85rem 1rem;
+}
+.ms-toggle:hover {
+  background: var(--bg-elev);
+}
+.ms-toggle-info {
+  flex: 1;
+  min-width: 0;
+}
+.ms-chevron {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+.ms-detail {
+  padding: 0 1rem 1rem;
+}
+.ms-banner {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.6rem;
+}
+.ms-loot-wrap {
+  margin-top: 0.6rem;
+}
+.ms-loot-h {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.ms-loot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+.ms-loot-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+  color: inherit;
+  max-width: 200px;
+}
+.ms-loot-item:hover {
+  border-color: var(--accent-2);
+}
+.ms-loot-item img,
+.ms-loot-noicon {
+  width: 32px;
+  height: 32px;
+  border-radius: 5px;
+  flex-shrink: 0;
+  background: #11151f;
+}
+.ms-loot-name {
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ms-desc {
+  font-size: 0.85rem;
+  margin-top: 0.6rem;
+}
 .ms-controls select {
   background: var(--bg-elev);
   border: 1px solid var(--border);
