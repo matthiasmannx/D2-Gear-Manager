@@ -242,7 +242,8 @@ async function Vendors() {
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key)!.push(v);
   }
-  const rank = (loc: string) => (loc === "The Last City" ? 0 : loc === "Ikora Rey" ? 1 : loc === labels.other ? 99 : 50);
+  const rank = (loc: string) =>
+    loc === "The Last City" ? 0 : loc === "Ikora Rey" ? 1 : loc === "Monument to Lost Lights" ? 2 : loc === labels.other ? 99 : 50;
   const order = [...groups.keys()].sort((a, b) => {
     const ra = rank(a);
     const rb = rank(b);

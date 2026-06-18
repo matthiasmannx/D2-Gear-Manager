@@ -139,11 +139,17 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
 
       // Subclass-customisatie (Aspects/Fragments/Supers/Melees/Grenades/Movement/
       // Class Abilities) koop je bij Ikora → groepeer onder "Ikora Rey".
+      const lname = name.trim().toLowerCase();
       const SUBCLASS = new Set([
         "aspects", "fragments", "fragment", "super", "supers", "grenade", "grenades",
         "melee", "melees", "movement", "class ability", "class abilities", "abilities",
       ]);
-      if (SUBCLASS.has(name.trim().toLowerCase())) location = "Ikora Rey";
+      // Exotic Archive / Legacy Gear / Pinnacle & Ritual Weapons → Monument to Lost Lights.
+      const MONUMENT = new Set([
+        "exotic archive", "legacy gear", "pinnacle weapons", "ritual weapons",
+      ]);
+      if (SUBCLASS.has(lname)) location = "Ikora Rey";
+      else if (MONUMENT.has(lname)) location = "Monument to Lost Lights";
 
       return { hash: Number(vendorHash), name, icon: vicon, banner, location, items: items.slice(0, 30) };
     })
