@@ -57,13 +57,19 @@ function decode(value: string): Session | null {
 
 export async function setSession(session: Session): Promise<void> {
   const jar = await cookies();
-  jar.set(COOKIE_NAME, encode(session), {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 30, // 30 dagen (refresh token leeft zo lang)
-  });
+  try {
+    jar.set(COOKIE_NAME, encode(session), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30, // 30 dagen (refresh token leeft zo lang)
+    });
+  } catch {
+    // Cookies kunnen niet geschreven worden tijdens een puur server-component
+    // render (alleen in actions/route handlers). De ververste token geldt dan
+    // voor deze request; een volgende action/route persisteert 'm alsnog.
+  }
 }
 
 export async function getSession(): Promise<Session | null> {

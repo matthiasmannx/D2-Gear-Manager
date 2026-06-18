@@ -31,6 +31,10 @@ export async function getValidAccessToken(): Promise<string | null> {
   }
 }
 
+/**
+ * Echt ingelogd = er is een bruikbaar (geldig of verversbaar) token. Voorkomt
+ * dat de nav "Uitloggen" toont terwijl het token dood is en API-calls falen.
+ */
 export async function isLoggedIn(): Promise<boolean> {
-  return (await getSession()) !== null;
+  return (await getValidAccessToken()) !== null;
 }
