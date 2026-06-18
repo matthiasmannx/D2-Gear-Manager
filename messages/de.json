@@ -369,6 +369,7 @@
     "required": "Titel, Klasse und Subklasse sind erforderlich.",
     "dbMissing": "Die Datenbank ist noch nicht verbunden. Community Builds folgt in Kürze.",
     "like": "Like",
-    "favorite": "Favorit"
+    "favorite": "Favorit",
+    "clearFilters": "Zurücksetzen"
   }
 }

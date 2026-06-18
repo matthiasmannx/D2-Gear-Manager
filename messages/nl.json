@@ -369,6 +369,7 @@
     "required": "Titel, class en subclass zijn verplicht.",
     "dbMissing": "De database is nog niet gekoppeld. Community Builds is binnenkort beschikbaar.",
     "like": "Like",
-    "favorite": "Favoriet"
+    "favorite": "Favoriet",
+    "clearFilters": "Wis filters"
   }
 }

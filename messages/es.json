@@ -369,6 +369,7 @@
     "required": "El título, la clase y la subclase son obligatorios.",
     "dbMissing": "La base de datos aún no está conectada. Community Builds llegará pronto.",
     "like": "Me gusta",
-    "favorite": "Favorito"
+    "favorite": "Favorito",
+    "clearFilters": "Limpiar"
   }
 }

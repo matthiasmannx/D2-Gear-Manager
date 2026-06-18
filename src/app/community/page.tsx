@@ -4,13 +4,11 @@ import { listBuilds, SortKey } from "@/lib/communityBuilds";
 import { dbConfigured } from "@/lib/db";
 import { isLoggedIn } from "@/lib/auth";
 import BuildCard from "@/components/BuildCard";
+import BuildFilters from "@/components/BuildFilters";
 
 export const dynamic = "force-dynamic";
 
 const SORTS: SortKey[] = ["trending", "top", "newest", "verified"];
-const CLASSES = ["Titan", "Hunter", "Warlock"];
-const SUBCLASSES = ["Solar", "Arc", "Void", "Strand", "Stasis", "Prismatic"];
-const ACTIVITIES = ["PvE", "PvP", "Raid", "Dungeon", "Solo", "GM Nightfall"];
 
 export default async function CommunityPage({
   searchParams,
@@ -57,11 +55,7 @@ export default async function CommunityPage({
         ))}
       </div>
 
-      <div className="cb-filters">
-        <Filter current={sp.class} options={CLASSES} any={t("anyClass")} build={(v) => qs({ class: v })} />
-        <Filter current={sp.subclass} options={SUBCLASSES} any={t("anySubclass")} build={(v) => qs({ subclass: v })} />
-        <Filter current={sp.activity} options={ACTIVITIES} any={t("anyActivity")} build={(v) => qs({ activity: v })} />
-      </div>
+      <BuildFilters labels={{ anyClass: t("anyClass"), anySubclass: t("anySubclass"), anyActivity: t("anyActivity"), clear: t("clearFilters") }} />
 
       {builds.length === 0 ? (
         <p className="muted" style={{ marginTop: "1.5rem" }}>{dbConfigured() ? t("empty") : ""}</p>
@@ -70,17 +64,6 @@ export default async function CommunityPage({
           {builds.map((b) => <BuildCard key={b.id} build={b} labels={labels} />)}
         </div>
       )}
-    </div>
-  );
-}
-
-function Filter({ current, options, any, build }: { current?: string; options: string[]; any: string; build: (v?: string) => string }) {
-  return (
-    <div className="cb-filter">
-      <Link href={build(undefined)} className={`cb-chip ${!current ? "on" : ""}`}>{any}</Link>
-      {options.map((o) => (
-        <Link key={o} href={build(o)} className={`cb-chip ${current === o ? "on" : ""}`}>{o}</Link>
-      ))}
     </div>
   );
 }
