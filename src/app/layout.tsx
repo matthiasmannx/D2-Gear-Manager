@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Nav from "@/components/Nav";
+import SettingsSync from "@/components/SettingsSync";
 import { isLoggedIn } from "@/lib/auth";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
@@ -24,6 +25,7 @@ export default async function RootLayout({
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Nav loggedIn={loggedIn} />
+          <SettingsSync loggedIn={loggedIn} />
           <main className="container">{children}</main>
           <footer className="site-footer">
             DESIGNED &amp; DEVELOPED BY <strong className="footer-name">MATTHIAS MANN</strong>

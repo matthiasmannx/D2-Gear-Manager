@@ -86,6 +86,13 @@ export async function ensureSchema(): Promise<void> {
       PRIMARY KEY (build_id, user_id)
     )
   `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS user_prefs (
+      user_id    TEXT PRIMARY KEY,
+      prefs      JSONB NOT NULL DEFAULT '{}',
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    )
+  `;
   await sql`CREATE INDEX IF NOT EXISTS idx_likes_build ON build_likes (build_id)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_favs_build ON build_favorites (build_id)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_likes_recent ON build_likes (created_at)`;
