@@ -163,12 +163,9 @@ function Tile({
           <div className="gear-tile-empty" />
         )}
         {item.power != null && <span className="gear-power">{item.power}</span>}
-        {(item.locked || (item.gearTier ?? 0) > 0) && (
+        {(item.gearTier ?? 0) > 0 && (
           <span className="gear-tl">
-            {(item.gearTier ?? 0) > 0 && (
-              <span className="gear-tier-badge" title={`Gear Tier ${item.gearTier}`}>T{item.gearTier}</span>
-            )}
-            {item.locked && <span className="gear-lock-i" title="Locked">🔒</span>}
+            <span className="gear-tier-badge" title={`Gear Tier ${item.gearTier}`}>T{item.gearTier}</span>
           </span>
         )}
         {item.masterwork && <span className="gear-mw" title="Masterwork">MW</span>}
