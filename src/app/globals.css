@@ -1784,6 +1784,15 @@ input:focus {
   width: 14px;
   height: 14px;
 }
+.vendor-free {
+  color: #38d39f;
+  font-weight: 600;
+}
+.vendor-req {
+  margin-top: 0.15rem;
+  font-size: 0.7rem;
+  color: var(--accent);
+}
 .vendor-ex {
   color: #ceae33;
   font-weight: 700;

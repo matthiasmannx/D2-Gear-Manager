@@ -27,7 +27,10 @@ const VENDOR_PRIORITY: Record<number, number> = {
 };
 
 // Subclass-customisatie-vendors → samenvoegen tot één Ikora-kaart (in de Tower).
+// Bungie levert deze deels als element-vendors (Arc/Solar/Void/…) en deels als
+// categorie-vendors (Aspects/Supers/…).
 const SUBCLASS_VENDORS = new Set([
+  "arc", "solar", "void", "stasis", "strand", "prismatic",
   "aspects", "fragments", "fragment", "super", "supers", "grenade", "grenades",
   "melee", "melees", "movement", "class ability", "class abilities", "abilities",
 ]);
@@ -50,6 +53,8 @@ export interface VendorItem {
   itemType: number;
   classType: number;
   cost: VendorCost[];
+  subcat?: string; // bron-categorie bij Ikora (element/categorie-naam)
+  requirement?: string; // bv. "Requires Rank X" (gratis reward op een level)
 }
 export interface VendorView {
   hash: number;
@@ -111,6 +116,7 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
 
       const items: VendorItem[] = [];
       const seen = new Set<number>();
+      const failByHash = new Map<number, number[]>();
       for (const s of saleEntries) {
         if (seen.has(s.itemHash)) continue;
         seen.add(s.itemHash);
@@ -122,6 +128,7 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
             return cm ? { name: cm.name, icon: cm.icon, quantity: c.quantity } : null;
           })
           .filter((c: VendorCost | null): c is VendorCost => c !== null && c.quantity > 0);
+        if (Array.isArray(s.failureIndexes) && s.failureIndexes.length) failByHash.set(d.hash, s.failureIndexes);
         items.push({ hash: d.hash, name: d.name, icon: icon(d.icon), type: d.type, tier: d.tier, itemType: d.itemType, classType: d.classType, cost });
       }
       if (items.length === 0) return null;
@@ -145,6 +152,15 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
           const dd = await getEntityDefinition("DestinyDestinationDefinition", loc.destinationHash);
           location = dd?.displayProperties?.name ?? "";
         }
+        // Unlock-eis per item (bv. "Requires Rank X") uit de failureStrings.
+        const failStrings: string[] = def?.failureStrings ?? [];
+        if (failStrings.length) {
+          for (const it of items) {
+            const fi = failByHash.get(it.hash);
+            const msg = fi ? failStrings[fi[0]] : "";
+            if (msg) it.requirement = msg;
+          }
+        }
       } catch {
         /* negeer */
       }
@@ -167,7 +183,7 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
       for (const it of sv.items) {
         if (seen.has(it.hash)) continue;
         seen.add(it.hash);
-        merged.push(it);
+        merged.push({ ...it, subcat: sv.name }); // tag met bron (element/categorie)
       }
     }
     views = views.filter((v) => !SUBCLASS_VENDORS.has(v.name.trim().toLowerCase()));

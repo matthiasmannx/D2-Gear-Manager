@@ -248,7 +248,8 @@
     "groupDungeons": "Mazmorras",
     "groupWeekly": "Semanal",
     "resetsIn": "Todo se reinicia en",
-    "vendorOther": "Otros"
+    "vendorOther": "Otros",
+    "free": "Gratis"
   },
   "changelog": {
     "title": "Changelog",

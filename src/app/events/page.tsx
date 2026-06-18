@@ -191,6 +191,7 @@ interface CatLabels {
   hunter: string;
   warlock: string;
   other: string;
+  free: string;
 }
 
 // Elementen — subclass-items (Aspects/Supers/Melees…) hebben dit in hun type,
@@ -198,7 +199,8 @@ interface CatLabels {
 const ELEMENTS = ["Arc", "Solar", "Void", "Stasis", "Strand", "Prismatic", "Kinetic"];
 
 // In welke sub-groep valt een vendor-item?
-function bucketOf(it: { itemType: number; classType: number; type: string }): string {
+function bucketOf(it: { itemType: number; classType: number; type: string; subcat?: string }): string {
+  if (it.subcat) return it.subcat; // bron-element/categorie (Ikora)
   if (it.itemType === 3) return "weapons";
   if (it.itemType === 2) return "armor";
   const el = ELEMENTS.find((e) => (it.type || "").startsWith(e));
@@ -208,7 +210,13 @@ function bucketOf(it: { itemType: number; classType: number; type: string }): st
   if (it.classType === 2) return "warlock";
   return "other";
 }
-const BUCKET_ORDER: string[] = ["weapons", "armor", ...ELEMENTS, "titan", "hunter", "warlock", "other"];
+const BUCKET_RANK: Record<string, number> = {
+  weapons: 0, armor: 1,
+  Arc: 2, Solar: 3, Void: 4, Stasis: 5, Strand: 6, Prismatic: 7, Kinetic: 8,
+  Supers: 10, "Class Abilities": 11, Aspects: 12, Fragments: 13, Grenades: 14, Melees: 15, Movement: 16,
+  titan: 30, hunter: 31, warlock: 32, other: 99,
+};
+const rankBucket = (k: string) => BUCKET_RANK[k] ?? 50;
 
 function bucketLabel(key: string, labels: CatLabels): string {
   if (key === "weapons") return labels.weapons;
@@ -249,6 +257,7 @@ async function Vendors() {
     hunter: "Hunter",
     warlock: "Warlock",
     other: t("vendorOther"),
+    free: t("free"),
   };
 
   // Groeperen op locatie: Tower ("The Last City") eerst, daarna planeten.
@@ -306,7 +315,7 @@ function VendorCard({ v, labels }: { v: VendorView; labels: CatLabels }) {
         <span className="vendor-chevron">▸</span>
       </summary>
       <div className="vendor-body">
-        {BUCKET_ORDER.map((bk) => {
+        {[...new Set(v.items.map(bucketOf))].sort((a, b) => rankBucket(a) - rankBucket(b)).map((bk) => {
           const group = v.items.filter((it) => bucketOf(it) === bk);
           if (group.length === 0) return null;
           return (
@@ -330,7 +339,7 @@ function VendorCard({ v, labels }: { v: VendorView; labels: CatLabels }) {
                       <div style={{ minWidth: 0 }}>
                         <div className="item-name">{it.name}</div>
                         <div className="item-type">{[it.tier, it.type].filter(Boolean).join(" · ")}</div>
-                        {it.cost.length > 0 && (
+                        {it.cost.length > 0 ? (
                           <div className="vendor-cost">
                             {it.cost.map((c, i) => (
                               <span key={i} className="vendor-cost-i">
@@ -342,7 +351,10 @@ function VendorCard({ v, labels }: { v: VendorView; labels: CatLabels }) {
                               </span>
                             ))}
                           </div>
+                        ) : (
+                          <div className="vendor-cost vendor-free">{labels.free}</div>
                         )}
+                        {it.requirement && <div className="vendor-req">🔒 {it.requirement}</div>}
                       </div>
                     </div>
                   </Link>

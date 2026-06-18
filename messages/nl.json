@@ -248,7 +248,8 @@
     "groupDungeons": "Dungeons",
     "groupWeekly": "Wekelijks",
     "resetsIn": "Alles reset over",
-    "vendorOther": "Overig"
+    "vendorOther": "Overig",
+    "free": "Gratis"
   },
   "changelog": {
     "title": "Changelog",
