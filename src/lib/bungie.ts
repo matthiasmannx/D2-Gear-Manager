@@ -5,6 +5,8 @@
  * API-docs: https://bungie-net.github.io/
  */
 import "server-only";
+import { getLocale } from "next-intl/server";
+import { bungieLang } from "@/i18n/config";
 
 export const BUNGIE_ROOT = "https://www.bungie.net";
 export const PLATFORM = `${BUNGIE_ROOT}/Platform`;
@@ -283,8 +285,6 @@ export async function getEntityDefinition(
   // index-build of cron) → Engels.
   let lc = "en";
   try {
-    const { getLocale } = await import("next-intl/server");
-    const { bungieLang } = await import("@/i18n/config");
     lc = bungieLang(await getLocale());
   } catch {
     /* geen request-context → en */

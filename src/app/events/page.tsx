@@ -30,98 +30,76 @@ export default async function EventsPage() {
   try {
     const data = await getPublicMilestones();
     const list: RawMilestone[] = Object.values(data ?? {});
-    const enriched = await Promise.all(
-      list.map(async (m) => {
-        try {
-          const def = await getEntityDefinition("DestinyMilestoneDefinition", m.milestoneHash);
-          return { ...m, def };
-        } catch {
-          return m;
+
+    // Eén parallelle golf per milestone: milestone-def + activity-def tegelijk.
+    // Groep (raid/dungeon) leiden we af uit de banner/naam — geen extra fetch.
+    const built = await Promise.all(
+      list.map(async (m): Promise<MilestoneView | null> => {
+        const actHash = m.activities?.[0]?.activityHash;
+        const [def, ad] = await Promise.all([
+          getEntityDefinition("DestinyMilestoneDefinition", m.milestoneHash).catch(() => null),
+          actHash ? getEntityDefinition("DestinyActivityDefinition", actHash).catch(() => null) : Promise.resolve(null),
+        ]);
+        if (!def?.displayProperties?.name) return null;
+
+        let activity: string | undefined;
+        let power: number | undefined;
+        let banner: string | undefined;
+        let group: "raid" | "dungeon" | "weekly" = "weekly";
+        const lootHashes: number[] = [];
+        if (ad) {
+          activity = ad.displayProperties?.name;
+          const lvl = ad.activityLightLevel;
+          if (lvl && lvl > 100) power = lvl;
+          if (ad.pgcrImage) banner = icon(ad.pgcrImage) ?? undefined;
+          for (const block of ad.rewards ?? []) {
+            for (const ri of block.rewardItems ?? []) {
+              if (ri.itemHash) lootHashes.push(ri.itemHash);
+            }
+          }
+          const probe = `${ad.displayProperties?.name ?? ""} ${ad.pgcrImage ?? ""}`.toLowerCase();
+          if (/raid/.test(probe)) group = "raid";
+          else if (/dungeon/.test(probe)) group = "dungeon";
         }
+
+        const rewardHashes: number[] = [];
+        for (const cat of Object.values<any>(def.rewards ?? {})) {
+          for (const entry of Object.values<any>(cat.rewardEntries ?? {})) {
+            for (const it of entry.items ?? []) {
+              if (it.itemHash) rewardHashes.push(it.itemHash);
+            }
+          }
+        }
+        const allLoot = [...new Set([...rewardHashes, ...lootHashes])];
+        let loot: { hash: number; name: string; icon: string | null }[] = [];
+        if (allLoot.length > 0) {
+          const defs = await lookupItems(allLoot);
+          loot = [...defs.values()].map((d) => ({ hash: d.hash, name: d.name, icon: icon(d.icon) })).slice(0, 12);
+        }
+
+        return {
+          hash: m.milestoneHash,
+          name: def.displayProperties.name,
+          icon: icon(def.displayProperties.icon),
+          description: def.displayProperties.description ?? "",
+          endDate: m.endDate,
+          order: m.order ?? 999,
+          activity,
+          power,
+          banner,
+          loot,
+          group,
+          rewardLabel: loot.length === 0 && activity ? t("rewardPool") : undefined,
+        };
       })
     );
+    milestones = built.filter((m): m is MilestoneView => m !== null);
 
-    milestones = await Promise.all(
-      enriched
-        .filter((m) => m.def?.displayProperties?.name)
-        .map(async (m): Promise<MilestoneView> => {
-          // Activiteit + aanbevolen power + banner + loot-pool uit de activity.
-          let activity: string | undefined;
-          let power: number | undefined;
-          let banner: string | undefined;
-          let group: "raid" | "dungeon" | "weekly" = "weekly";
-          const lootHashes: number[] = [];
-          const actHash = m.activities?.[0]?.activityHash;
-          if (actHash) {
-            try {
-              const ad = await getEntityDefinition("DestinyActivityDefinition", actHash);
-              activity = ad?.displayProperties?.name;
-              const lvl = ad?.activityLightLevel;
-              if (lvl && lvl > 100) power = lvl;
-              if (ad?.pgcrImage) banner = icon(ad.pgcrImage) ?? undefined;
-              // Loot-pool: de reward-items die deze activity kan geven.
-              for (const block of ad?.rewards ?? []) {
-                for (const ri of block.rewardItems ?? []) {
-                  if (ri.itemHash) lootHashes.push(ri.itemHash);
-                }
-              }
-              // Groep bepalen via het activiteitstype (Raid/Dungeon/overig).
-              let typeName = "";
-              if (ad?.activityTypeHash) {
-                try {
-                  const td = await getEntityDefinition("DestinyActivityTypeDefinition", ad.activityTypeHash);
-                  typeName = td?.displayProperties?.name ?? "";
-                } catch {
-                  /* val terug op naam/banner */
-                }
-              }
-              const probe = `${typeName} ${ad?.pgcrImage ?? ""}`.toLowerCase();
-              if (/raid/.test(probe)) group = "raid";
-              else if (/dungeon/.test(probe)) group = "dungeon";
-            } catch {
-              /* negeer */
-            }
-          }
-
-          // Concrete reward-items uit de milestone-def (vaak leeg) + activity-loot.
-          const rewardHashes: number[] = [];
-          const cats = m.def.rewards ?? {};
-          for (const cat of Object.values<any>(cats)) {
-            for (const entry of Object.values<any>(cat.rewardEntries ?? {})) {
-              for (const it of entry.items ?? []) {
-                if (it.itemHash) rewardHashes.push(it.itemHash);
-              }
-            }
-          }
-          const allLoot = [...new Set([...rewardHashes, ...lootHashes])];
-          let loot: { hash: number; name: string; icon: string | null }[] = [];
-          if (allLoot.length > 0) {
-            const defs = await lookupItems(allLoot);
-            loot = [...defs.values()].map((d) => ({ hash: d.hash, name: d.name, icon: icon(d.icon) })).slice(0, 12);
-          }
-
-          return {
-            hash: m.milestoneHash,
-            name: m.def.displayProperties.name,
-            icon: icon(m.def.displayProperties.icon),
-            description: m.def.displayProperties.description ?? "",
-            endDate: m.endDate,
-            order: m.order ?? 999,
-            activity,
-            power,
-            banner,
-            loot,
-            group,
-            rewardLabel: loot.length === 0 && activity ? t("rewardPool") : undefined,
-          };
-        })
-    );
-
-    // Iron Banner detecteren: actief (uit milestone, met datums) of komende
-    // datum uit de onderhoudbare lijst.
-    const ibRaw = enriched.find((m) => /iron banner/i.test(m.def?.displayProperties?.name ?? ""));
-    if (ibRaw) {
-      ironBanner = { active: true, startDate: ibRaw.startDate, endDate: ibRaw.endDate };
+    // Iron Banner: actief (milestone aanwezig) of komende datum uit de lijst.
+    const ibBuilt = milestones.find((b) => /iron banner/i.test(b.name));
+    if (ibBuilt) {
+      const ibRaw = list.find((m) => m.milestoneHash === ibBuilt.hash);
+      ironBanner = { active: true, startDate: ibRaw?.startDate, endDate: ibBuilt.endDate };
     } else {
       const next = nextIronBanner();
       ironBanner = { active: false, nextDate: next?.toISOString() };
