@@ -235,7 +235,10 @@
     "endsIn": "Termina en",
     "doLabel": "Hacer:",
     "lootLabel": "Botín:",
-    "rewardPool": "Botín del grupo de actividad + recompensa semanal"
+    "rewardPool": "Botín del grupo de actividad + recompensa semanal",
+    "groupRaids": "Incursiones",
+    "groupDungeons": "Mazmorras",
+    "groupWeekly": "Semanal"
   },
   "changelog": {
     "title": "Changelog",

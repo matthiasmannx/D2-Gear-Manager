@@ -1635,6 +1635,18 @@ input:focus {
   align-items: center;
   margin: 0.75rem 0 1rem;
 }
+.ms-group {
+  margin-top: 1.25rem;
+}
+.ms-group-h {
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-2);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.3rem;
+  margin: 0 0 0.6rem;
+}
 /* Uitklapbare milestone-kaart */
 .ms-card {
   padding: 0;

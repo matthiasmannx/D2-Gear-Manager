@@ -235,7 +235,10 @@
     "endsIn": "Eindigt over",
     "doLabel": "Doen:",
     "lootLabel": "Loot:",
-    "rewardPool": "Loot uit de activiteit-pool + wekelijkse beloning"
+    "rewardPool": "Loot uit de activiteit-pool + wekelijkse beloning",
+    "groupRaids": "Raids",
+    "groupDungeons": "Dungeons",
+    "groupWeekly": "Wekelijks"
   },
   "changelog": {
     "title": "Changelog",

@@ -235,7 +235,10 @@
     "endsIn": "Endet in",
     "doLabel": "Tun:",
     "lootLabel": "Beute:",
-    "rewardPool": "Beute aus dem Aktivitäts-Pool + wöchentliche Belohnung"
+    "rewardPool": "Beute aus dem Aktivitäts-Pool + wöchentliche Belohnung",
+    "groupRaids": "Raids",
+    "groupDungeons": "Dungeons",
+    "groupWeekly": "Wöchentlich"
   },
   "changelog": {
     "title": "Changelog",

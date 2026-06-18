@@ -235,7 +235,10 @@
     "endsIn": "Ends in",
     "doLabel": "Do:",
     "lootLabel": "Loot:",
-    "rewardPool": "Loot from the activity pool + weekly reward"
+    "rewardPool": "Loot from the activity pool + weekly reward",
+    "groupRaids": "Raids",
+    "groupDungeons": "Dungeons",
+    "groupWeekly": "Weekly"
   },
   "changelog": {
     "title": "Changelog",

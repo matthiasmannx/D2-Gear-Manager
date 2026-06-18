@@ -49,6 +49,7 @@ export default async function EventsPage() {
           let activity: string | undefined;
           let power: number | undefined;
           let banner: string | undefined;
+          let group: "raid" | "dungeon" | "weekly" = "weekly";
           const lootHashes: number[] = [];
           const actHash = m.activities?.[0]?.activityHash;
           if (actHash) {
@@ -64,6 +65,19 @@ export default async function EventsPage() {
                   if (ri.itemHash) lootHashes.push(ri.itemHash);
                 }
               }
+              // Groep bepalen via het activiteitstype (Raid/Dungeon/overig).
+              let typeName = "";
+              if (ad?.activityTypeHash) {
+                try {
+                  const td = await getEntityDefinition("DestinyActivityTypeDefinition", ad.activityTypeHash);
+                  typeName = td?.displayProperties?.name ?? "";
+                } catch {
+                  /* val terug op naam/banner */
+                }
+              }
+              const probe = `${typeName} ${ad?.pgcrImage ?? ""}`.toLowerCase();
+              if (/raid/.test(probe)) group = "raid";
+              else if (/dungeon/.test(probe)) group = "dungeon";
             } catch {
               /* negeer */
             }
@@ -97,6 +111,7 @@ export default async function EventsPage() {
             power,
             banner,
             loot,
+            group,
             rewardLabel: loot.length === 0 && activity ? t("rewardPool") : undefined,
           };
         })
@@ -120,15 +135,8 @@ export default async function EventsPage() {
       <h1>{t("title")}</h1>
       <p className="muted">{t("intro")}</p>
 
-      <h2 style={{ marginTop: "1.25rem" }}>{t("schedule")}</h2>
-      <EventSchedule ironBanner={ironBanner} />
-
-      <ThisWeek />
-
-      {/* Vendors (vereist login) */}
-      <Vendors />
-
-      <h2 style={{ marginTop: "2rem" }}>{t("activeMilestones")}</h2>
+      {/* Active milestones bovenaan — dat wil je als eerste zien */}
+      <h2 style={{ marginTop: "1.25rem" }}>{t("activeMilestones")}</h2>
       {loadError ? (
         <div className="notice error">{t("milestonesFailed", { error: loadError })}</div>
       ) : milestones.length === 0 ? (
@@ -136,6 +144,14 @@ export default async function EventsPage() {
       ) : (
         <MilestoneBoard milestones={milestones} />
       )}
+
+      <h2 style={{ marginTop: "2rem" }}>{t("schedule")}</h2>
+      <EventSchedule ironBanner={ironBanner} />
+
+      <ThisWeek />
+
+      {/* Vendors (vereist login) */}
+      <Vendors />
     </>
   );
 }

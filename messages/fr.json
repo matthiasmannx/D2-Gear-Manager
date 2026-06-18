@@ -235,7 +235,10 @@
     "endsIn": "Se termine dans",
     "doLabel": "À faire :",
     "lootLabel": "Butin :",
-    "rewardPool": "Butin du pool d'activité + récompense hebdomadaire"
+    "rewardPool": "Butin du pool d'activité + récompense hebdomadaire",
+    "groupRaids": "Raids",
+    "groupDungeons": "Donjons",
+    "groupWeekly": "Hebdomadaire"
   },
   "changelog": {
     "title": "Changelog",
