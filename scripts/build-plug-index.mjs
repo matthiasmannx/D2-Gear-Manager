@@ -6,8 +6,10 @@ import fs from "node:fs/promises";
 
 const ROOT = "https://www.bungie.net";
 const env = await fs.readFile(".env.local", "utf8").catch(() => "");
+// API-key is optioneel: het manifest-endpoint is publiek bereikbaar. We sturen
+// de key mee als die er is (lokaal), maar in de cloud-routine werkt het zonder.
 const key = (process.env.BUNGIE_API_KEY || (env.match(/BUNGIE_API_KEY=(.+)/) || [])[1] || "").trim();
-if (!key) throw new Error("BUNGIE_API_KEY ontbreekt (.env.local).");
+const headers = key ? { "X-API-Key": key } : {};
 
 const ELEMENTS = ["arc", "solar", "void", "stasis", "strand", "prismatic"];
 const WEAPON_CATS = ["barrels", "blades", "scopes", "tubes", "bowstrings", "hafts", "arrows", "batteries", "magazines", "magazines_gl", "sights", "stocks", "grips", "frames", "guards", "origins", "intrinsics", "masterworks"];
@@ -27,7 +29,7 @@ function categorize(pci) {
 }
 
 console.log("Manifest ophalen...");
-const m = await (await fetch(`${ROOT}/Platform/Destiny2/Manifest/`, { headers: { "X-API-Key": key } })).json();
+const m = await (await fetch(`${ROOT}/Platform/Destiny2/Manifest/`, { headers })).json();
 const rel = m.Response?.jsonWorldComponentContentPaths?.en?.DestinyInventoryItemDefinition;
 if (!rel) throw new Error("Geen DestinyInventoryItemDefinition-pad in manifest.");
 console.log("Item-tabel downloaden:", rel);
