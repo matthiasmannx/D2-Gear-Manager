@@ -379,6 +379,7 @@
     "loginToComment": "Log in to comment.",
     "adminTitle": "Admin",
     "fAbilities": "Abilities",
-    "fMods": "Mods"
+    "fMods": "Mods",
+    "fArtifact": "Artifact"
   }
 }

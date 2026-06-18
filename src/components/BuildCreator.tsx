@@ -48,6 +48,7 @@ export default function BuildCreator({ forkOf, initial }: { forkOf?: string; ini
   const [fragments, setFragments] = useState<string[]>(initial?.fragments ?? []);
   const [abilities, setAbilities] = useState<NonNullable<BuildLoadout["abilities"]>>(ld?.abilities ?? {});
   const [mods, setMods] = useState<Record<string, string[]>>(ld?.mods ?? {});
+  const [artifact, setArtifact] = useState<string[]>(ld?.artifact ?? []);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
@@ -73,6 +74,7 @@ export default function BuildCreator({ forkOf, initial }: { forkOf?: string; ini
       exoticArmor: exotic ? { hash: exotic.hash, name: exotic.name, icon: exotic.icon } : undefined,
       abilities: cleanAbilities(abilities),
       mods: cleanMods(mods),
+      artifact: artifact.length ? artifact : undefined,
     };
     setSaving(true);
     const res = await createBuildAction({
@@ -205,6 +207,10 @@ export default function BuildCreator({ forkOf, initial }: { forkOf?: string; ini
             </div>
           </div>
         ))}
+      </section>
+
+      <section className="card cb-section">
+        <ChipInput label={t("fArtifact")} chips={artifact} setChips={setArtifact} placeholder={t("chipPh")} max={12} />
       </section>
 
       {error && <div className="notice error">{error}</div>}

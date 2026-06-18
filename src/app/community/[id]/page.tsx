@@ -149,6 +149,15 @@ export default async function BuildDetail({ params }: { params: Promise<{ id: st
         );
       })()}
 
+      {build.loadout?.artifact && build.loadout.artifact.length > 0 && (
+        <section className="card cb-section">
+          <h2>{t("fArtifact")}</h2>
+          <div className="cb-tags">
+            {build.loadout.artifact.map((a) => <span key={a} className="bc-tag">{a}</span>)}
+          </div>
+        </section>
+      )}
+
       <Comments buildId={build.id} comments={comments} currentUserId={uid} admin={admin} loggedIn={loggedIn} />
     </div>
   );
