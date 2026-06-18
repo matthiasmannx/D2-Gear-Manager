@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 import { getValidAccessToken } from "@/lib/auth";
 import {
   getMemberships,
@@ -16,6 +16,8 @@ const CLASS_COLOR: Record<number, string> = { 0: "#e0564b", 1: "#4aa3c7", 2: "#e
 
 export default async function ProfilePage() {
   const t = await getTranslations("profile");
+  const tp = await getTranslations("players");
+  const locale = await getLocale();
   const token = await getValidAccessToken();
   if (!token) return <LoginPrompt />;
 
@@ -69,7 +71,7 @@ export default async function ProfilePage() {
         ))}
       </div>
 
-      {/* Guardians */}
+      {/* Guardians met banner */}
       {extras.characters.length > 0 && (
         <>
           <h2 style={{ marginTop: "2rem" }}>{t("guardians")}</h2>
@@ -78,22 +80,44 @@ export default async function ProfilePage() {
               <div
                 key={c.characterId}
                 className="card prof-guardian"
-                style={{ borderLeft: `3px solid ${CLASS_COLOR[c.classType] ?? "var(--border)"}` }}
+                style={{
+                  borderLeft: `3px solid ${CLASS_COLOR[c.classType] ?? "var(--border)"}`,
+                  ...bannerBg(c.emblemBackground),
+                }}
               >
-                {c.emblemPath && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={c.emblemPath} alt="" className="prof-emblem" />
-                )}
-                <div>
-                  <div className="item-name" style={{ color: CLASS_COLOR[c.classType] }}>
-                    {CLASS_NAMES[c.classType] ?? "Guardian"}
-                  </div>
-                  <div className="item-type">◆ {c.light}</div>
+                <div className="prof-guardian-class" style={{ color: CLASS_COLOR[c.classType] }}>
+                  {CLASS_NAMES[c.classType] ?? "Guardian"}
                 </div>
+                <div className="prof-guardian-power">◆ {c.light}</div>
               </div>
             ))}
           </div>
         </>
+      )}
+
+      {/* Career highlights */}
+      {h && (
+        <div className="card" style={{ marginTop: "1.5rem" }}>
+          <h3>{tp("careerHighlights")}</h3>
+          <div className="hl-grid">
+            <Mini label={tp("hlTotalKills")} value={h.totalKills} />
+            <Mini label={tp("hlKda")} value={h.kda} />
+            <Mini label={tp("hlPrecision")} value={h.precisionPct} />
+            <Mini label={tp("hlBestGame")} value={h.bestGameKills} />
+            <Mini label={tp("hlLongestSpree")} value={h.longestSpree} />
+            <Mini label={tp("hlLongestLife")} value={h.longestLife} />
+            <Mini label={tp("hlCombatRating")} value={h.combatRating} />
+            <Mini label={tp("hlTimePlayed")} value={h.timePlayed} />
+          </div>
+        </div>
+      )}
+
+      {/* Favoriete wapentypes */}
+      {stats && stats.weapons.length > 0 && (
+        <div className="card" style={{ marginTop: "1.5rem" }}>
+          <h3>{tp("favWeapons")}</h3>
+          <WeaponBars weapons={stats.weapons} locale={locale} />
+        </div>
       )}
 
       {/* Snelkoppelingen */}
@@ -102,6 +126,39 @@ export default async function ProfilePage() {
         <Link href={`/players/${mType}/${mId}`} className="btn btn-outline">{t("fullStats")}</Link>
       </div>
     </>
+  );
+}
+
+function bannerBg(url?: string): React.CSSProperties {
+  if (!url) return {};
+  return {
+    backgroundImage: `linear-gradient(90deg, rgba(10,12,18,0.92) 0%, rgba(10,12,18,0.55) 55%, rgba(10,12,18,0.35) 100%), url(${url})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  };
+}
+
+function Mini({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <div className="muted" style={{ fontSize: "0.78rem" }}>{label}</div>
+      <div style={{ fontWeight: 700 }}>{value}</div>
+    </div>
+  );
+}
+
+function WeaponBars({ weapons, locale }: { weapons: { label: string; kills: number; isAbility: boolean }[]; locale: string }) {
+  const max = Math.max(...weapons.map((w) => w.kills), 1);
+  return (
+    <div style={{ display: "grid", gap: "0.5rem" }}>
+      {weapons.slice(0, 12).map((w) => (
+        <div key={w.label} style={{ display: "grid", gridTemplateColumns: "130px 1fr 70px", alignItems: "center", gap: "0.6rem" }}>
+          <span style={{ fontSize: "0.85rem" }}>{w.label}</span>
+          <div className="bar-track"><div className="bar-fill" style={{ width: `${(w.kills / max) * 100}%`, background: w.isAbility ? "var(--accent-2)" : "var(--accent)" }} /></div>
+          <span className="muted" style={{ fontSize: "0.82rem", textAlign: "right" }}>{w.kills.toLocaleString(locale)}</span>
+        </div>
+      ))}
+    </div>
   );
 }
 

@@ -1335,17 +1335,21 @@ input:focus {
   line-height: 1;
   text-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
 }
-/* My Profile — guardian-kaartjes + outline-knop */
+/* My Profile — guardian-banners + outline-knop */
 .prof-guardian {
+  min-height: 84px;
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.15rem;
 }
-.prof-emblem {
-  width: 44px;
-  height: 44px;
-  border-radius: 6px;
-  flex-shrink: 0;
+.prof-guardian-class {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+.prof-guardian-power {
+  color: var(--accent);
+  font-weight: 700;
 }
 .btn-outline {
   background: transparent;

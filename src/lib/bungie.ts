@@ -588,6 +588,7 @@ export interface PlayerCharacter {
   classType: number;
   light: number;
   emblemPath?: string;
+  emblemBackground?: string;
 }
 export interface PlayerExtras {
   name: string | null;
@@ -627,7 +628,8 @@ export async function getPlayerExtras(
     characterId: c.characterId,
     classType: c.classType,
     light: c.light,
-    emblemPath: c.emblemPath,
+    emblemPath: icon(c.emblemPath) ?? undefined,
+    emblemBackground: icon(c.emblemBackgroundPath) ?? undefined,
   }));
 
   // Progressions zitten per character; pak de eerste character met data.
