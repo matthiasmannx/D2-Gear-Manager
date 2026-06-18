@@ -16,7 +16,9 @@
   "home": {
     "tag": "Powered by de Bungie API",
     "title": "Guardian Hub",
-    "intro": "Welkom, Guardian. Guardian Hub is je centrale plek voor Destiny 2, doorzoek items en god rolls, beheer je gear en loadouts, volg de wekelijkse reset en events, bestudeer meta-builds en bekijk de stats van jou en je fireteam. Eyes up, Guardian: alles op één plek, in jouw taal.",
+    "greeting": "Welkom, Guardian.",
+    "intro": "Guardian Hub is je centrale plek voor Destiny 2, doorzoek items en god rolls, beheer je gear en loadouts, volg de wekelijkse reset en events, bestudeer meta-builds en bekijk de stats van jou en je fireteam.",
+    "tagline": "Eyes up, Guardian: alles op één plek, in jouw taal.",
     "open": "Open →",
     "error": "Er ging iets mis: {error}",
     "sections": {

@@ -16,7 +16,9 @@ export default async function Home({
       <section className="home-hero">
         <span className="tag">{t("tag")}</span>
         <h1 className="home-title"><Brand /></h1>
-        <p className="muted">{t("intro")}</p>
+        <p className="home-greeting">{t("greeting")}</p>
+        <p className="muted home-intro">{t("intro")}</p>
+        <p className="home-tagline">{t("tagline")}</p>
       </section>
 
       <ErrorBanner searchParams={searchParams} />

@@ -16,7 +16,9 @@
   "home": {
     "tag": "Con la API de Bungie",
     "title": "Guardian Hub",
-    "intro": "Bienvenido, Guardián. Guardian Hub es tu centro para Destiny 2, busca items y god rolls, gestiona tu equipo y configuraciones, sigue el reinicio semanal y los eventos, estudia builds meta, y consulta tus estadísticas y las de tu fireteam. Eyes up, Guardian: todo en un solo lugar, en tu idioma.",
+    "greeting": "Bienvenido, Guardián.",
+    "intro": "Guardian Hub es tu centro para Destiny 2, busca items y god rolls, gestiona tu equipo y configuraciones, sigue el reinicio semanal y los eventos, estudia builds meta, y consulta tus estadísticas y las de tu fireteam.",
+    "tagline": "Eyes up, Guardian: todo en un solo lugar, en tu idioma.",
     "open": "Abrir →",
     "error": "Algo salió mal: {error}",
     "sections": {
