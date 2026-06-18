@@ -204,14 +204,16 @@ async function Vendors() {
         <div className="empty">{t("noVendors")}</div>
       ) : (
         vendors.map((v) => (
-          <section key={v.hash} style={{ marginTop: "1rem" }}>
-            <h3 style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <details key={v.hash} className="vendor-details">
+            <summary className="vendor-summary">
               {v.icon && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={v.icon} alt="" style={{ width: 28, height: 28, borderRadius: 6 }} />
+                <img src={v.icon} alt="" className="vendor-icon" />
               )}
-              {v.name}
-            </h3>
+              <span className="vendor-name">{v.name}</span>
+              <span className="muted vendor-count">({v.items.length})</span>
+              <span className="vendor-chevron">▸</span>
+            </summary>
             <div className="grid">
               {v.items.map((it) => (
                 <Link key={it.hash} href={`/items/${it.hash}`} className="card card-link">
@@ -230,7 +232,7 @@ async function Vendors() {
                 </Link>
               ))}
             </div>
-          </section>
+          </details>
         ))
       )}
     </>

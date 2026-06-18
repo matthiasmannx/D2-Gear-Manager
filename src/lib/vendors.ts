@@ -25,6 +25,7 @@ export interface VendorItem {
   icon: string | null;
   type: string;
   tier: string;
+  itemType: number;
 }
 export interface VendorView {
   hash: number;
@@ -64,15 +65,17 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
     const saleHashes = [...new Set(Object.values<any>(sales).map((s) => s.itemHash).filter(Boolean))];
     const defs = await lookupItems(saleHashes);
 
-    // Alleen wapens/armor tonen (geen materialen/engrams/cosmetics-rommel).
+    // Toon alle resolvebare items; wapens/armor eerst zodat gear bovenaan staat.
     const items: VendorItem[] = [];
     for (const h of saleHashes) {
       const d = defs.get(h as number);
-      if (d && (d.itemType === 2 || d.itemType === 3)) {
-        items.push({ hash: d.hash, name: d.name, icon: icon(d.icon), type: d.type, tier: d.tier });
+      if (d && d.name) {
+        items.push({ hash: d.hash, name: d.name, icon: icon(d.icon), type: d.type, tier: d.tier, itemType: d.itemType });
       }
     }
-    if (items.length === 0) continue; // vendor verkoopt geen gear → overslaan
+    if (items.length === 0) continue; // niets resolvebaars → overslaan
+    const gearRank = (it: VendorItem) => (it.itemType === 3 ? 2 : it.itemType === 2 ? 1 : 0);
+    items.sort((a, b) => gearRank(b) - gearRank(a));
 
     // Vendor-naam/icoon; sla naamloze/interne vendors over.
     let name = "";
