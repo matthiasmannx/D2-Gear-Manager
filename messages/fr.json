@@ -377,6 +377,8 @@
     "noComments": "Aucun commentaire.",
     "deleteC": "Supprimer",
     "loginToComment": "Connecte-toi pour commenter.",
-    "adminTitle": "Admin"
+    "adminTitle": "Admin",
+    "fAbilities": "Capacités",
+    "fMods": "Mods"
   }
 }

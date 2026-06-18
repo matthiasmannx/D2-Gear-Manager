@@ -377,6 +377,8 @@
     "noComments": "Nog geen reacties.",
     "deleteC": "Verwijderen",
     "loginToComment": "Log in om te reageren.",
-    "adminTitle": "Admin"
+    "adminTitle": "Admin",
+    "fAbilities": "Abilities",
+    "fMods": "Mods"
   }
 }

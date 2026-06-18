@@ -2707,3 +2707,10 @@ input:focus {
 .cb-perk { padding: 0.4rem 0.5rem; font-size: 0.82rem; }
 .cb-slot-perks { font-size: 0.75rem; color: var(--accent-2, var(--muted)); margin-top: 0.15rem; }
 @media (max-width: 640px) { .cb-perks { grid-template-columns: 1fr 1fr; } }
+
+/* ===== Build Creator: mods + abilities ===== */
+.cb-mod-row { display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
+.cb-mod-piece { font-size: 0.85rem; color: var(--muted); }
+.cb-mod-line { font-size: 0.9rem; margin: 0.2rem 0; }
+.cb-mod-line b { color: var(--muted); font-weight: 600; }
+@media (max-width: 640px) { .cb-mod-row { grid-template-columns: 1fr; } }

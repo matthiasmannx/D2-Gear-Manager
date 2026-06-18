@@ -121,6 +121,34 @@ export default async function BuildDetail({ params }: { params: Promise<{ id: st
         </section>
       )}
 
+      {(() => {
+        const ab = build.loadout?.abilities;
+        const abItems = ab ? ([["Class Ability", ab.classAbility], ["Movement", ab.movement], ["Grenade", ab.grenade], ["Melee", ab.melee]] as [string, string | undefined][]).filter(([, v]) => v) : [];
+        const mods = build.loadout?.mods ?? {};
+        const modPieces = Object.keys(mods).filter((p) => (mods[p] ?? []).length > 0);
+        if (abItems.length === 0 && modPieces.length === 0) return null;
+        return (
+          <section className="card cb-section">
+            {abItems.length > 0 && (
+              <>
+                <h2>{t("fAbilities")}</h2>
+                <div className="cb-tags">
+                  {abItems.map(([l, v]) => <span key={l} className="bc-tag">{l}: {v}</span>)}
+                </div>
+              </>
+            )}
+            {modPieces.length > 0 && (
+              <>
+                <h2 style={{ marginTop: abItems.length ? "1rem" : 0 }}>{t("fMods")}</h2>
+                {modPieces.map((p) => (
+                  <div key={p} className="cb-mod-line"><b>{p}:</b> {mods[p].join(" · ")}</div>
+                ))}
+              </>
+            )}
+          </section>
+        );
+      })()}
+
       <Comments buildId={build.id} comments={comments} currentUserId={uid} admin={admin} loggedIn={loggedIn} />
     </div>
   );

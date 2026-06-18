@@ -9,6 +9,13 @@ const CLASSES = ["Titan", "Hunter", "Warlock"];
 const SUBCLASSES = ["Solar", "Arc", "Void", "Strand", "Stasis", "Prismatic"];
 const ACTIVITIES = ["PvE", "PvP", "Raid", "Dungeon", "Solo", "GM Nightfall"];
 const STAT_KEYS: (keyof BuildStats)[] = ["Weapons", "Health", "Class", "Grenade", "Melee", "Super"];
+const ARMOR_PIECES = ["Helmet", "Arms", "Chest", "Legs", "Class Item"];
+const ABILITY_SLOTS: { key: "classAbility" | "movement" | "grenade" | "melee"; label: string }[] = [
+  { key: "classAbility", label: "Class Ability" },
+  { key: "movement", label: "Movement" },
+  { key: "grenade", label: "Grenade" },
+  { key: "melee", label: "Melee" },
+];
 
 interface ItemHit {
   hash: number;
@@ -39,6 +46,8 @@ export default function BuildCreator({ forkOf, initial }: { forkOf?: string; ini
   const [stats, setStats] = useState<BuildStats>(initial?.stats ?? {});
   const [aspects, setAspects] = useState<string[]>(initial?.aspects ?? []);
   const [fragments, setFragments] = useState<string[]>(initial?.fragments ?? []);
+  const [abilities, setAbilities] = useState<NonNullable<BuildLoadout["abilities"]>>(ld?.abilities ?? {});
+  const [mods, setMods] = useState<Record<string, string[]>>(ld?.mods ?? {});
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
@@ -62,6 +71,8 @@ export default function BuildCreator({ forkOf, initial }: { forkOf?: string; ini
       energy: wp(energy, energyPerks),
       power: wp(power, powerPerks),
       exoticArmor: exotic ? { hash: exotic.hash, name: exotic.name, icon: exotic.icon } : undefined,
+      abilities: cleanAbilities(abilities),
+      mods: cleanMods(mods),
     };
     setSaving(true);
     const res = await createBuildAction({
@@ -157,6 +168,45 @@ export default function BuildCreator({ forkOf, initial }: { forkOf?: string; ini
         </div>
       </section>
 
+      <section className="card cb-section">
+        <h2>{t("fAbilities")}</h2>
+        <div className="cb-stats">
+          {ABILITY_SLOTS.map(({ key, label }) => (
+            <label key={key} className="cb-stat">
+              <span>{label}</span>
+              <input className="cb-input cb-perk" maxLength={60} value={abilities[key] ?? ""} placeholder={label} onChange={(e) => setAbilities((a) => ({ ...a, [key]: e.target.value }))} />
+            </label>
+          ))}
+        </div>
+      </section>
+
+      <section className="card cb-section">
+        <h2>{t("fMods")}</h2>
+        {ARMOR_PIECES.map((piece) => (
+          <div key={piece} className="cb-mod-row">
+            <span className="cb-mod-piece">{piece}</span>
+            <div className="cb-perks">
+              {[0, 1, 2].map((i) => (
+                <input
+                  key={i}
+                  className="cb-input cb-perk"
+                  maxLength={60}
+                  value={mods[piece]?.[i] ?? ""}
+                  placeholder={`${t("fMods")} ${i + 1}`}
+                  onChange={(e) => {
+                    setMods((m) => {
+                      const arr = [...(m[piece] ?? ["", "", ""])];
+                      arr[i] = e.target.value;
+                      return { ...m, [piece]: arr };
+                    });
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+      </section>
+
       {error && <div className="notice error">{error}</div>}
       <div className="cb-actions">
         <button type="button" className="btn btn-primary" onClick={submit} disabled={saving}>{saving ? t("saving") : t("save")}</button>
@@ -164,6 +214,24 @@ export default function BuildCreator({ forkOf, initial }: { forkOf?: string; ini
       </div>
     </div>
   );
+}
+
+function cleanAbilities(a: NonNullable<BuildLoadout["abilities"]>): BuildLoadout["abilities"] {
+  const out: NonNullable<BuildLoadout["abilities"]> = {};
+  (Object.keys(a) as (keyof typeof a)[]).forEach((k) => {
+    const v = (a[k] ?? "").trim().slice(0, 60);
+    if (v) out[k] = v;
+  });
+  return Object.keys(out).length ? out : undefined;
+}
+
+function cleanMods(m: Record<string, string[]>): Record<string, string[]> | undefined {
+  const out: Record<string, string[]> = {};
+  for (const piece of Object.keys(m)) {
+    const arr = (m[piece] ?? []).map((s) => (s ?? "").trim().slice(0, 60)).filter(Boolean);
+    if (arr.length) out[piece] = arr;
+  }
+  return Object.keys(out).length ? out : undefined;
 }
 
 function cleanPerks(p: WeaponPerks): WeaponPerks | undefined {
