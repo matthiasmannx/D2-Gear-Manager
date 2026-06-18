@@ -16,7 +16,7 @@
   "home": {
     "tag": "Powered by die Bungie-API",
     "title": "Guardian Hub",
-    "intro": "Deine zentrale Anlaufstelle für Destiny 2: Items durchsuchen, deine Ausrüstung verwalten, Events verfolgen und schnell finden, wo du hinmusst.",
+    "intro": "Willkommen, Guardian. Guardian Hub ist deine zentrale Anlaufstelle für Destiny 2 — durchsuche Items und God-Rolls, verwalte Ausrüstung und Loadouts, verfolge den wöchentlichen Reset und Events, studiere Meta-Builds und sieh die Statistiken von dir und deinem Fireteam. Eyes up, Guardian: alles an einem Ort, in deiner Sprache.",
     "open": "Öffnen →",
     "error": "Etwas ist schiefgelaufen: {error}",
     "sections": {

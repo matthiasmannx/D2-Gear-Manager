@@ -16,7 +16,7 @@
   "home": {
     "tag": "Powered by the Bungie API",
     "title": "Guardian Hub",
-    "intro": "Your central hub for Destiny 2: search items, manage your gear, track events and quickly find where to go.",
+    "intro": "Welcome, Guardian. Guardian Hub is your central hub for Destiny 2 — search items and god rolls, manage your gear and loadouts, track the weekly reset and events, study meta builds, and check your own and your fireteam's stats. Eyes up, Guardian: everything in one place, in your language.",
     "open": "Open →",
     "error": "Something went wrong: {error}",
     "sections": {

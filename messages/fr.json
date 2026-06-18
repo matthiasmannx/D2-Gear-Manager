@@ -16,7 +16,7 @@
   "home": {
     "tag": "Propulsé par l'API Bungie",
     "title": "Guardian Hub",
-    "intro": "Votre plateforme centrale pour Destiny 2 : cherchez des items, gérez votre équipement, suivez les events et trouvez vite où aller.",
+    "intro": "Bienvenue, Gardien. Guardian Hub est votre plateforme centrale pour Destiny 2 — cherchez des items et god rolls, gérez votre équipement et vos loadouts, suivez le reset hebdomadaire et les events, étudiez les builds méta, et consultez vos stats et celles de votre fireteam. Eyes up, Guardian : tout au même endroit, dans votre langue.",
     "open": "Ouvrir →",
     "error": "Une erreur est survenue : {error}",
     "sections": {
