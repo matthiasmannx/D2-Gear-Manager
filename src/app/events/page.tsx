@@ -161,11 +161,12 @@ async function ThisWeek() {
   const t = await getTranslations("events");
   const w = WEEKLY;
   const has = w.nightfall || w.legendLostSector || w.featuredDungeon || w.featuredRaid;
+  // Niets tonen als er geen weekly-data is (lege placeholder verbergen).
+  if (!has) return null;
   return (
     <>
       <h2 style={{ marginTop: "2rem" }}>{t("thisWeek")}</h2>
-      {has ? (
-        <div className="sched-grid">
+      <div className="sched-grid">
           {w.nightfall && (
             <div className="sched-card soon">
               <div className="sched-title">{t("nightfall")}</div>
@@ -192,14 +193,7 @@ async function ThisWeek() {
               <div style={{ fontWeight: 700 }}>{w.featuredDungeon}</div>
             </div>
           )}
-        </div>
-      ) : (
-        <div className="notice" style={{ fontSize: "0.86rem" }}>
-          {t("weeklyMissing")}{" "}
-          <a href="https://www.bungie.net/7/en/News" target="_blank" rel="noopener noreferrer">Bungie TWID</a>,{" "}
-          <a href="https://www.blueberries.gg/leveling/lost-sectors/" target="_blank" rel="noopener noreferrer">blueberries.gg</a>.
-        </div>
-      )}
+      </div>
     </>
   );
 }
