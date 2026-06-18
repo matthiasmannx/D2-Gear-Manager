@@ -193,16 +193,32 @@ interface CatLabels {
   other: string;
 }
 
+// Elementen — subclass-items (Aspects/Supers/Melees…) hebben dit in hun type,
+// bv. "Arc Melee", "Void Aspect". Zo groeperen we ze per subclass.
+const ELEMENTS = ["Arc", "Solar", "Void", "Stasis", "Strand", "Prismatic", "Kinetic"];
+
 // In welke sub-groep valt een vendor-item?
-function bucketOf(it: { itemType: number; classType: number }): keyof CatLabels {
+function bucketOf(it: { itemType: number; classType: number; type: string }): string {
   if (it.itemType === 3) return "weapons";
   if (it.itemType === 2) return "armor";
+  const el = ELEMENTS.find((e) => (it.type || "").startsWith(e));
+  if (el) return el; // per element (subclass)
   if (it.classType === 0) return "titan";
   if (it.classType === 1) return "hunter";
   if (it.classType === 2) return "warlock";
   return "other";
 }
-const BUCKET_ORDER: (keyof CatLabels)[] = ["weapons", "armor", "titan", "hunter", "warlock", "other"];
+const BUCKET_ORDER: string[] = ["weapons", "armor", ...ELEMENTS, "titan", "hunter", "warlock", "other"];
+
+function bucketLabel(key: string, labels: CatLabels): string {
+  if (key === "weapons") return labels.weapons;
+  if (key === "armor") return labels.armor;
+  if (key === "titan") return labels.titan;
+  if (key === "hunter") return labels.hunter;
+  if (key === "warlock") return labels.warlock;
+  if (key === "other") return labels.other;
+  return key; // element-naam (Arc/Solar/…)
+}
 
 async function Vendors() {
   const t = await getTranslations("events");
@@ -295,7 +311,7 @@ function VendorCard({ v, labels }: { v: VendorView; labels: CatLabels }) {
           if (group.length === 0) return null;
           return (
             <div key={bk} className="vendor-cat">
-              <span className="vendor-cat-h">{labels[bk]}</span>
+              <span className="vendor-cat-h">{bucketLabel(bk, labels)}</span>
               <div className="grid">
                 {group.map((it) => (
                   <Link

@@ -9,6 +9,8 @@ import { lookupItems } from "./manifest";
  * event, plus Banshee, Ada, bestemmings-vendors, enz.).
  */
 
+const IKORA_HASH = 1976548992; // synthetische/echte Ikora-kaart (subclass-customisatie)
+
 // Bekende vendors die we vooraan willen tonen (rest komt erachter, op aantal items).
 const VENDOR_PRIORITY: Record<number, number> = {
   2190858386: 1, // Xûr
@@ -19,9 +21,20 @@ const VENDOR_PRIORITY: Record<number, number> = {
   895295461: 6, // Lord Saladin (Iron Banner)
   672118013: 7, // Banshee-44 (Gunsmith)
   350061650: 8, // Ada-1
-  2255782930: 9, // Master Rahool (Cryptarch)
-  3361454721: 10, // Tess Everis (Eververse)
+  [IKORA_HASH]: 9, // Ikora Rey (subclass)
+  2255782930: 10, // Master Rahool (Cryptarch)
+  3361454721: 11, // Tess Everis (Eververse)
 };
+
+// Subclass-customisatie-vendors → samenvoegen tot één Ikora-kaart (in de Tower).
+const SUBCLASS_VENDORS = new Set([
+  "aspects", "fragments", "fragment", "super", "supers", "grenade", "grenades",
+  "melee", "melees", "movement", "class ability", "class abilities", "abilities",
+]);
+// Monument to Lost Lights-categorieën.
+const MONUMENT_VENDORS = new Set([
+  "exotic archive", "legacy gear", "pinnacle weapons", "ritual weapons",
+]);
 
 export interface VendorCost {
   name: string;
@@ -137,24 +150,36 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
       }
       if (!name) return null;
 
-      // Subclass-customisatie (Aspects/Fragments/Supers/Melees/Grenades/Movement/
-      // Class Abilities) koop je bij Ikora → groepeer onder "Ikora Rey".
-      const lname = name.trim().toLowerCase();
-      const SUBCLASS = new Set([
-        "aspects", "fragments", "fragment", "super", "supers", "grenade", "grenades",
-        "melee", "melees", "movement", "class ability", "class abilities", "abilities",
-      ]);
-      // Exotic Archive / Legacy Gear / Pinnacle & Ritual Weapons → Monument to Lost Lights.
-      const MONUMENT = new Set([
-        "exotic archive", "legacy gear", "pinnacle weapons", "ritual weapons",
-      ]);
-      if (SUBCLASS.has(lname)) location = "Ikora Rey";
-      else if (MONUMENT.has(lname)) location = "Monument to Lost Lights";
+      // Monument to Lost Lights-categorieën onder één locatie-kopje.
+      if (MONUMENT_VENDORS.has(name.trim().toLowerCase())) location = "Monument to Lost Lights";
 
       return { hash: Number(vendorHash), name, icon: vicon, banner, location, items: items.slice(0, 30) };
     })
   );
-  const views = built.filter((v): v is VendorView => v !== null);
+  let views = built.filter((v): v is VendorView => v !== null);
+
+  // Subclass-customisatie-vendors samenvoegen tot één Ikora-kaart in de Tower.
+  const subViews = views.filter((v) => SUBCLASS_VENDORS.has(v.name.trim().toLowerCase()));
+  if (subViews.length > 0) {
+    const merged: VendorItem[] = [];
+    const seen = new Set<number>();
+    for (const sv of subViews) {
+      for (const it of sv.items) {
+        if (seen.has(it.hash)) continue;
+        seen.add(it.hash);
+        merged.push(it);
+      }
+    }
+    views = views.filter((v) => !SUBCLASS_VENDORS.has(v.name.trim().toLowerCase()));
+    views.push({
+      hash: IKORA_HASH,
+      name: "Ikora Rey",
+      icon: subViews[0].icon,
+      banner: subViews[0].banner,
+      location: "The Last City", // Ikora staat in de Tower
+      items: merged,
+    });
+  }
 
   // Belangrijke vendors eerst, daarna op aantal gear-items.
   views.sort((a, b) => {
