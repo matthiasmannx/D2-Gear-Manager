@@ -56,41 +56,42 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
 
   const salesData = res?.sales?.data ?? {};
 
-  const views: VendorView[] = [];
-  // Loop over ÁLLE vendors die de API teruggeeft (niet hardcoded).
-  for (const vendorHash of Object.keys(salesData)) {
-    const sales = salesData[vendorHash]?.saleItems;
-    if (!sales) continue;
+  // Alle vendors PARALLEL verwerken (vendor-definities tegelijk ophalen i.p.v.
+  // tientallen na elkaar — dat maakte de pagina traag).
+  const gearRank = (it: VendorItem) => (it.itemType === 3 ? 2 : it.itemType === 2 ? 1 : 0);
+  const built = await Promise.all(
+    Object.keys(salesData).map(async (vendorHash): Promise<VendorView | null> => {
+      const sales = salesData[vendorHash]?.saleItems;
+      if (!sales) return null;
 
-    const saleHashes = [...new Set(Object.values<any>(sales).map((s) => s.itemHash).filter(Boolean))];
-    const defs = await lookupItems(saleHashes);
+      const saleHashes = [...new Set(Object.values<any>(sales).map((s) => s.itemHash).filter(Boolean))];
+      const defs = await lookupItems(saleHashes); // in-memory index, snel
 
-    // Toon alle resolvebare items; wapens/armor eerst zodat gear bovenaan staat.
-    const items: VendorItem[] = [];
-    for (const h of saleHashes) {
-      const d = defs.get(h as number);
-      if (d && d.name) {
-        items.push({ hash: d.hash, name: d.name, icon: icon(d.icon), type: d.type, tier: d.tier, itemType: d.itemType });
+      const items: VendorItem[] = [];
+      for (const h of saleHashes) {
+        const d = defs.get(h as number);
+        if (d && d.name) {
+          items.push({ hash: d.hash, name: d.name, icon: icon(d.icon), type: d.type, tier: d.tier, itemType: d.itemType });
+        }
       }
-    }
-    if (items.length === 0) continue; // niets resolvebaars → overslaan
-    const gearRank = (it: VendorItem) => (it.itemType === 3 ? 2 : it.itemType === 2 ? 1 : 0);
-    items.sort((a, b) => gearRank(b) - gearRank(a));
+      if (items.length === 0) return null;
+      items.sort((a, b) => gearRank(b) - gearRank(a));
 
-    // Vendor-naam/icoon; sla naamloze/interne vendors over.
-    let name = "";
-    let vicon: string | null = null;
-    try {
-      const def = await getEntityDefinition("DestinyVendorDefinition", Number(vendorHash));
-      name = def?.displayProperties?.name ?? "";
-      vicon = icon(def?.displayProperties?.icon);
-    } catch {
-      /* negeer */
-    }
-    if (!name) continue;
+      let name = "";
+      let vicon: string | null = null;
+      try {
+        const def = await getEntityDefinition("DestinyVendorDefinition", Number(vendorHash));
+        name = def?.displayProperties?.name ?? "";
+        vicon = icon(def?.displayProperties?.icon);
+      } catch {
+        /* negeer */
+      }
+      if (!name) return null;
 
-    views.push({ hash: Number(vendorHash), name, icon: vicon, items: items.slice(0, 30) });
-  }
+      return { hash: Number(vendorHash), name, icon: vicon, items: items.slice(0, 30) };
+    })
+  );
+  const views = built.filter((v): v is VendorView => v !== null);
 
   // Belangrijke vendors eerst, daarna op aantal gear-items.
   views.sort((a, b) => {
