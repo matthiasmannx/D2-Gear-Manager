@@ -2,8 +2,11 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { sectionColor } from "@/lib/sectionColors";
 import Brand from "@/components/Brand";
+import BuildCard from "@/components/BuildCard";
+import { listBuilds } from "@/lib/communityBuilds";
+import { dbConfigured } from "@/lib/db";
 
-const SECTION_KEYS = ["items", "gear", "builds", "players", "profile", "events", "changelog"] as const;
+const SECTION_KEYS = ["items", "gear", "builds", "community", "players", "profile", "events", "changelog"] as const;
 
 export default async function Home({
   searchParams,
@@ -22,6 +25,8 @@ export default async function Home({
       </section>
 
       <ErrorBanner searchParams={searchParams} />
+
+      <TrendingBuilds />
 
       <div className="home-cards">
         {SECTION_KEYS.map((key) => {
@@ -42,6 +47,25 @@ export default async function Home({
         })}
       </div>
     </>
+  );
+}
+
+async function TrendingBuilds() {
+  if (!dbConfigured()) return null;
+  const builds = await listBuilds({ sort: "trending", limit: 3 });
+  if (builds.length === 0) return null;
+  const t = await getTranslations("community");
+  const labels = { by: t("by"), views: t("views"), verifiedBadge: t("verifiedBadge"), featuredBadge: t("featuredBadge") };
+  return (
+    <section className="tw">
+      <div className="tw-head">
+        <h2>🔥 {t("widgetTitle")}</h2>
+        <Link href="/community" className="muted">{t("title")} →</Link>
+      </div>
+      <div className="bc-grid">
+        {builds.map((b, i) => <BuildCard key={b.id} build={b} labels={labels} rank={i + 1} />)}
+      </div>
+    </section>
   );
 }
 

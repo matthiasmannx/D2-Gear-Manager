@@ -11,6 +11,7 @@ const LINKS = [
   { href: "/items", key: "items" },
   { href: "/gear", key: "gear" },
   { href: "/builds", key: "builds" },
+  { href: "/community", key: "community" },
   { href: "/players", key: "players" },
   { href: "/profile", key: "profile" },
   { href: "/events", key: "events" },

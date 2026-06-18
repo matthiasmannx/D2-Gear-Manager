@@ -11,7 +11,8 @@
     "login": "Login",
     "loginExtra": " met Bungie",
     "logout": "Uitloggen",
-    "language": "Taal"
+    "language": "Taal",
+    "community": "Community"
   },
   "home": {
     "tag": "Powered by de Bungie API",
@@ -22,14 +23,42 @@
     "open": "Open →",
     "error": "Er ging iets mis: {error}",
     "sections": {
-      "items": { "title": "Items", "desc": "Zoek door alle wapens, armor en mods uit de Destiny 2 database." },
-      "gear": { "title": "Gear", "desc": "Bekijk je eigen characters en uitrusting (login vereist)." },
-      "builds": { "title": "Meta Builds", "desc": "Sterkste PvE- en PvP-builds voor de huidige seizoens-meta." },
-      "players": { "title": "Players", "desc": "Zoek spelers en bekijk hun K/D, wins, Trials, Iron Banner en Flawless-count." },
-      "events": { "title": "Events Tracker", "desc": "Wekelijkse reset, milestones, vendors en actieve activiteiten." },
-      "changelog": { "title": "Changelog", "desc": "Destiny 2 updates, patches en rotaties, nieuwste bovenaan." },
-      "sandbox": { "title": "Buffs & Nerfs", "desc": "Sandbox-wijzigingen volgens Bungie, buffs, nerfs en aanpassingen." },
-      "profile": { "title": "My Profile", "desc": "Je eigen guardians, stats en gear, zichtbaar als je bent ingelogd." }
+      "items": {
+        "title": "Items",
+        "desc": "Zoek door alle wapens, armor en mods uit de Destiny 2 database."
+      },
+      "gear": {
+        "title": "Gear",
+        "desc": "Bekijk je eigen characters en uitrusting (login vereist)."
+      },
+      "builds": {
+        "title": "Meta Builds",
+        "desc": "Sterkste PvE- en PvP-builds voor de huidige seizoens-meta."
+      },
+      "players": {
+        "title": "Players",
+        "desc": "Zoek spelers en bekijk hun K/D, wins, Trials, Iron Banner en Flawless-count."
+      },
+      "events": {
+        "title": "Events Tracker",
+        "desc": "Wekelijkse reset, milestones, vendors en actieve activiteiten."
+      },
+      "changelog": {
+        "title": "Changelog",
+        "desc": "Destiny 2 updates, patches en rotaties, nieuwste bovenaan."
+      },
+      "sandbox": {
+        "title": "Buffs & Nerfs",
+        "desc": "Sandbox-wijzigingen volgens Bungie, buffs, nerfs en aanpassingen."
+      },
+      "profile": {
+        "title": "My Profile",
+        "desc": "Je eigen guardians, stats en gear, zichtbaar als je bent ingelogd."
+      },
+      "community": {
+        "title": "Community Builds",
+        "desc": "Ontdek, deel en favoriet builds van de community."
+      }
     }
   },
   "players": {
@@ -285,5 +314,61 @@
     "statKd": "Lifetime K/D",
     "statWinRate": "Win rate",
     "statFlawless": "Flawless tickets"
+  },
+  "community": {
+    "title": "Community Builds",
+    "tagline": "Door spelers gemaakte loadouts, gerangschikt op wat werkt.",
+    "meta": "Meta Builds",
+    "metaDesc": "Door admins samengestelde, gecontroleerde builds.",
+    "communityHead": "Community Builds",
+    "communityDesc": "Door spelers aangemaakt. Like, favoriet en ontdek de actuele meta.",
+    "create": "Build maken",
+    "trending": "Trending",
+    "top": "Hoogst gewaardeerd",
+    "newest": "Nieuwste",
+    "verified": "Geverifieerd",
+    "anyClass": "Alle classes",
+    "anySubclass": "Alle subclasses",
+    "anyActivity": "Alle activiteiten",
+    "views": "weergaven",
+    "verifiedBadge": "Geverifieerd",
+    "featuredBadge": "Uitgelicht",
+    "communityFav": "Community-favoriet",
+    "by": "door",
+    "empty": "Nog geen builds. Maak de eerste!",
+    "loginCta": "Log in om builds te maken, te liken en te favorieten.",
+    "back": "Terug naar overzicht",
+    "widgetTitle": "Trending Community Builds",
+    "fork": "Fork",
+    "forkedFrom": "Fork van",
+    "save": "Build publiceren",
+    "saving": "Bezig met opslaan...",
+    "cancel": "Annuleren",
+    "needLogin": "Je moet ingelogd zijn om een build te maken.",
+    "fBasics": "Basisinformatie",
+    "fTitle": "Titel",
+    "fTitlePh": "bv. Prismatic Hunter DPS",
+    "fDesc": "Beschrijving",
+    "fDescPh": "Hoe speel je deze build, en waarom werkt het?",
+    "fActivities": "Activiteiten",
+    "fClass": "Class",
+    "fSubclass": "Subclass",
+    "fSuper": "Super",
+    "fSuperPh": "bv. Golden Gun",
+    "fLoadout": "Wapens",
+    "fKinetic": "Kinetic",
+    "fEnergy": "Energy",
+    "fPower": "Power",
+    "fExotic": "Exotic armor",
+    "fExoticPh": "Zoek exotic armor...",
+    "searchPh": "Zoek wapen...",
+    "fStats": "Stats",
+    "fAspects": "Aspects",
+    "fFragments": "Fragments",
+    "chipPh": "Typ en druk op Enter",
+    "required": "Titel, class en subclass zijn verplicht.",
+    "dbMissing": "De database is nog niet gekoppeld. Community Builds is binnenkort beschikbaar.",
+    "like": "Like",
+    "favorite": "Favoriet"
   }
 }

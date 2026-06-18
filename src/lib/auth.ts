@@ -1,6 +1,6 @@
 import "server-only";
 import { getSession, setSession, Session } from "./session";
-import { refreshTokens } from "./bungie";
+import { refreshTokens, getMemberships } from "./bungie";
 
 /**
  * Geeft een geldig access token terug. Ververst automatisch als het verlopen
@@ -37,4 +37,23 @@ export async function getValidAccessToken(): Promise<string | null> {
  */
 export async function isLoggedIn(): Promise<boolean> {
   return (await getValidAccessToken()) !== null;
+}
+
+/** Stabiel account-id van de ingelogde gebruiker (geen API-call). */
+export async function getCurrentUserId(): Promise<string | null> {
+  const session = await getSession();
+  return session?.bungieMembershipId ?? null;
+}
+
+/** Account-id + Bungie-naam (haalt de naam via de Bungie API op). */
+export async function getCurrentUser(): Promise<{ id: string; name: string } | null> {
+  const token = await getValidAccessToken();
+  const session = await getSession();
+  if (!token || !session) return null;
+  try {
+    const m = await getMemberships(token);
+    return { id: session.bungieMembershipId, name: m.bungieGlobalDisplayName };
+  } catch {
+    return { id: session.bungieMembershipId, name: "Guardian" };
+  }
 }

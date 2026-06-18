@@ -11,7 +11,8 @@
     "login": "Anmelden",
     "loginExtra": " mit Bungie",
     "logout": "Abmelden",
-    "language": "Sprache"
+    "language": "Sprache",
+    "community": "Community"
   },
   "home": {
     "tag": "Powered by die Bungie-API",
@@ -22,14 +23,42 @@
     "open": "Öffnen →",
     "error": "Etwas ist schiefgelaufen: {error}",
     "sections": {
-      "items": { "title": "Items", "desc": "Durchsuche alle Waffen, Rüstungen und Mods aus der Destiny-2-Datenbank." },
-      "gear": { "title": "Ausrüstung", "desc": "Sieh dir deine eigenen Charaktere und Ausrüstung an (Anmeldung erforderlich)." },
-      "builds": { "title": "Meta-Builds", "desc": "Die stärksten PvE- und PvP-Builds für die aktuelle Season-Meta." },
-      "players": { "title": "Spieler", "desc": "Suche Spieler und sieh ihre K/D, Siege, Trials, Eisenbanner und Makellos-Zahl." },
-      "events": { "title": "Events-Tracker", "desc": "Wöchentlicher Reset, Meilensteine, Händler und aktive Aktivitäten." },
-      "changelog": { "title": "Changelog", "desc": "Destiny-2-Updates, Patches und Rotationen, Neuestes zuerst." },
-      "sandbox": { "title": "Buffs & Nerfs", "desc": "Sandbox-Änderungen laut Bungie, Buffs, Nerfs und Anpassungen." },
-      "profile": { "title": "Mein Profil", "desc": "Deine eigenen Guardians, Statistiken und Ausrüstung, sichtbar wenn angemeldet." }
+      "items": {
+        "title": "Items",
+        "desc": "Durchsuche alle Waffen, Rüstungen und Mods aus der Destiny-2-Datenbank."
+      },
+      "gear": {
+        "title": "Ausrüstung",
+        "desc": "Sieh dir deine eigenen Charaktere und Ausrüstung an (Anmeldung erforderlich)."
+      },
+      "builds": {
+        "title": "Meta-Builds",
+        "desc": "Die stärksten PvE- und PvP-Builds für die aktuelle Season-Meta."
+      },
+      "players": {
+        "title": "Spieler",
+        "desc": "Suche Spieler und sieh ihre K/D, Siege, Trials, Eisenbanner und Makellos-Zahl."
+      },
+      "events": {
+        "title": "Events-Tracker",
+        "desc": "Wöchentlicher Reset, Meilensteine, Händler und aktive Aktivitäten."
+      },
+      "changelog": {
+        "title": "Changelog",
+        "desc": "Destiny-2-Updates, Patches und Rotationen, Neuestes zuerst."
+      },
+      "sandbox": {
+        "title": "Buffs & Nerfs",
+        "desc": "Sandbox-Änderungen laut Bungie, Buffs, Nerfs und Anpassungen."
+      },
+      "profile": {
+        "title": "Mein Profil",
+        "desc": "Deine eigenen Guardians, Statistiken und Ausrüstung, sichtbar wenn angemeldet."
+      },
+      "community": {
+        "title": "Community Builds",
+        "desc": "Entdecke, teile und favorisiere Builds der Community."
+      }
     }
   },
   "players": {
@@ -285,5 +314,61 @@
     "statKd": "Lifetime-K/D",
     "statWinRate": "Siegrate",
     "statFlawless": "Makellos-Tickets"
+  },
+  "community": {
+    "title": "Community Builds",
+    "tagline": "Von Spielern erstellte Loadouts, sortiert nach dem was funktioniert.",
+    "meta": "Meta Builds",
+    "metaDesc": "Kuratierte, geprüfte Builds der Admins.",
+    "communityHead": "Community Builds",
+    "communityDesc": "Von Spielern erstellt. Like, favorisiere und entdecke die aktuelle Meta.",
+    "create": "Build erstellen",
+    "trending": "Trending",
+    "top": "Beste Bewertung",
+    "newest": "Neueste",
+    "verified": "Verifiziert",
+    "anyClass": "Alle Klassen",
+    "anySubclass": "Alle Subklassen",
+    "anyActivity": "Alle Aktivitäten",
+    "views": "Aufrufe",
+    "verifiedBadge": "Verifiziert",
+    "featuredBadge": "Vorgestellt",
+    "communityFav": "Community-Favorit",
+    "by": "von",
+    "empty": "Noch keine Builds. Erstelle den ersten!",
+    "loginCta": "Melde dich an, um Builds zu erstellen, zu liken und zu favorisieren.",
+    "back": "Zurück zur Übersicht",
+    "widgetTitle": "Trending Community Builds",
+    "fork": "Fork",
+    "forkedFrom": "Fork von",
+    "save": "Build veröffentlichen",
+    "saving": "Wird gespeichert...",
+    "cancel": "Abbrechen",
+    "needLogin": "Du musst angemeldet sein, um einen Build zu erstellen.",
+    "fBasics": "Grundlagen",
+    "fTitle": "Titel",
+    "fTitlePh": "z. B. Prismatic Hunter DPS",
+    "fDesc": "Beschreibung",
+    "fDescPh": "Wie spielst du diesen Build und warum funktioniert er?",
+    "fActivities": "Aktivitäten",
+    "fClass": "Class",
+    "fSubclass": "Subclass",
+    "fSuper": "Super",
+    "fSuperPh": "z. B. Golden Gun",
+    "fLoadout": "Waffen",
+    "fKinetic": "Kinetic",
+    "fEnergy": "Energy",
+    "fPower": "Power",
+    "fExotic": "Exotische Rüstung",
+    "fExoticPh": "Exotische Rüstung suchen...",
+    "searchPh": "Waffe suchen...",
+    "fStats": "Stats",
+    "fAspects": "Aspects",
+    "fFragments": "Fragments",
+    "chipPh": "Tippen und Enter drücken",
+    "required": "Titel, Klasse und Subklasse sind erforderlich.",
+    "dbMissing": "Die Datenbank ist noch nicht verbunden. Community Builds folgt in Kürze.",
+    "like": "Like",
+    "favorite": "Favorit"
   }
 }

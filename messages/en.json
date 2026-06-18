@@ -11,7 +11,8 @@
     "login": "Login",
     "loginExtra": " with Bungie",
     "logout": "Log out",
-    "language": "Language"
+    "language": "Language",
+    "community": "Community"
   },
   "home": {
     "tag": "Powered by the Bungie API",
@@ -22,14 +23,42 @@
     "open": "Open →",
     "error": "Something went wrong: {error}",
     "sections": {
-      "items": { "title": "Items", "desc": "Search all weapons, armor and mods from the Destiny 2 database." },
-      "gear": { "title": "Gear", "desc": "View your own characters and equipment (login required)." },
-      "builds": { "title": "Meta Builds", "desc": "Strongest PvE and PvP builds for the current seasonal meta." },
-      "players": { "title": "Players", "desc": "Search players and view their K/D, wins, Trials, Iron Banner and Flawless count." },
-      "events": { "title": "Events Tracker", "desc": "Weekly reset, milestones, vendors and active activities." },
-      "changelog": { "title": "Changelog", "desc": "Destiny 2 updates, patches and rotations, newest on top." },
-      "sandbox": { "title": "Buffs & Nerfs", "desc": "Sandbox changes per Bungie, buffs, nerfs and adjustments." },
-      "profile": { "title": "My Profile", "desc": "Your own guardians, stats and gear, visible when logged in." }
+      "items": {
+        "title": "Items",
+        "desc": "Search all weapons, armor and mods from the Destiny 2 database."
+      },
+      "gear": {
+        "title": "Gear",
+        "desc": "View your own characters and equipment (login required)."
+      },
+      "builds": {
+        "title": "Meta Builds",
+        "desc": "Strongest PvE and PvP builds for the current seasonal meta."
+      },
+      "players": {
+        "title": "Players",
+        "desc": "Search players and view their K/D, wins, Trials, Iron Banner and Flawless count."
+      },
+      "events": {
+        "title": "Events Tracker",
+        "desc": "Weekly reset, milestones, vendors and active activities."
+      },
+      "changelog": {
+        "title": "Changelog",
+        "desc": "Destiny 2 updates, patches and rotations, newest on top."
+      },
+      "sandbox": {
+        "title": "Buffs & Nerfs",
+        "desc": "Sandbox changes per Bungie, buffs, nerfs and adjustments."
+      },
+      "profile": {
+        "title": "My Profile",
+        "desc": "Your own guardians, stats and gear, visible when logged in."
+      },
+      "community": {
+        "title": "Community Builds",
+        "desc": "Discover, share and favorite builds from the community."
+      }
     }
   },
   "players": {
@@ -285,5 +314,61 @@
     "statKd": "Lifetime K/D",
     "statWinRate": "Win rate",
     "statFlawless": "Flawless tickets"
+  },
+  "community": {
+    "title": "Community Builds",
+    "tagline": "Player-made loadouts, ranked by what works.",
+    "meta": "Meta Builds",
+    "metaDesc": "Curated, vetted builds by the admins.",
+    "communityHead": "Community Builds",
+    "communityDesc": "Made by players. Like, favorite and discover the current meta.",
+    "create": "Create Build",
+    "trending": "Trending",
+    "top": "Top rated",
+    "newest": "Newest",
+    "verified": "Verified",
+    "anyClass": "All classes",
+    "anySubclass": "All subclasses",
+    "anyActivity": "All activities",
+    "views": "views",
+    "verifiedBadge": "Verified",
+    "featuredBadge": "Featured",
+    "communityFav": "Community Favorite",
+    "by": "by",
+    "empty": "No builds yet. Be the first to create one!",
+    "loginCta": "Log in to create, like and favorite builds.",
+    "back": "Back to overview",
+    "widgetTitle": "Trending Community Builds",
+    "fork": "Fork",
+    "forkedFrom": "Forked from",
+    "save": "Publish build",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "needLogin": "You must be logged in to create a build.",
+    "fBasics": "Basics",
+    "fTitle": "Title",
+    "fTitlePh": "e.g. Prismatic Hunter DPS",
+    "fDesc": "Description",
+    "fDescPh": "How do you play this build, and why does it work?",
+    "fActivities": "Activities",
+    "fClass": "Class",
+    "fSubclass": "Subclass",
+    "fSuper": "Super",
+    "fSuperPh": "e.g. Golden Gun",
+    "fLoadout": "Weapons",
+    "fKinetic": "Kinetic",
+    "fEnergy": "Energy",
+    "fPower": "Power",
+    "fExotic": "Exotic armor",
+    "fExoticPh": "Search exotic armor...",
+    "searchPh": "Search weapon...",
+    "fStats": "Stats",
+    "fAspects": "Aspects",
+    "fFragments": "Fragments",
+    "chipPh": "Type and press Enter",
+    "required": "Title, class and subclass are required.",
+    "dbMissing": "The database isn't connected yet. Community Builds is coming soon.",
+    "like": "Like",
+    "favorite": "Favorite"
   }
 }
