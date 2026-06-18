@@ -3,15 +3,21 @@ import { getMemberships, getProfile, bungieFetch, getEntityDefinition, icon } fr
 import { lookupItems } from "./manifest";
 
 /**
- * Vendor-inventory (wat verkopen Xûr / Banshee / Ada nu?). Vereist OAuth +
- * een character-context. Xûr is alleen in het weekend aanwezig.
+ * Vendor-inventory: wat verkopen de vendors nu? Vereist OAuth + character-context.
+ * We tonen ÁLLE vendors die de API voor deze character teruggeeft en die wapens
+ * of armor verkopen (Xûr alleen in het weekend, Saint-14/Saladin tijdens hun
+ * event, plus Banshee, Ada, bestemmings-vendors, enz.).
  */
 
-const VENDORS: { hash: number; key: string }[] = [
-  { hash: 2190858386, key: "xur" }, // Xûr
-  { hash: 672118013, key: "banshee" }, // Banshee-44 (Gunsmith)
-  { hash: 350061650, key: "ada" }, // Ada-1
-];
+// Bekende vendors die we vooraan willen tonen (rest komt erachter, op aantal items).
+const VENDOR_PRIORITY: Record<number, number> = {
+  2190858386: 1, // Xûr
+  765357505: 2, // Saint-14 (Trials)
+  895295461: 3, // Lord Saladin (Iron Banner)
+  672118013: 4, // Banshee-44 (Gunsmith)
+  350061650: 5, // Ada-1
+  3361454721: 6, // Tess Everis (Eververse)
+};
 
 export interface VendorItem {
   hash: number;
@@ -47,41 +53,49 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
     return [];
   }
 
-  const vendorData = res?.vendors?.data ?? {};
   const salesData = res?.sales?.data ?? {};
 
   const views: VendorView[] = [];
-  for (const v of VENDORS) {
-    const sales = salesData[v.hash]?.saleItems;
-    if (!sales) continue; // vendor niet beschikbaar (bv. Xûr in de week)
+  // Loop over ÁLLE vendors die de API teruggeeft (niet hardcoded).
+  for (const vendorHash of Object.keys(salesData)) {
+    const sales = salesData[vendorHash]?.saleItems;
+    if (!sales) continue;
 
-    const saleHashes = Object.values<any>(sales)
-      .map((s) => s.itemHash)
-      .filter(Boolean);
+    const saleHashes = [...new Set(Object.values<any>(sales).map((s) => s.itemHash).filter(Boolean))];
     const defs = await lookupItems(saleHashes);
 
-    // Alleen wapens/armor tonen (geen materialen/engrams-rommel).
+    // Alleen wapens/armor tonen (geen materialen/engrams/cosmetics-rommel).
     const items: VendorItem[] = [];
     for (const h of saleHashes) {
-      const d = defs.get(h);
+      const d = defs.get(h as number);
       if (d && (d.itemType === 2 || d.itemType === 3)) {
-        items.push({ hash: h, name: d.name, icon: icon(d.icon), type: d.type, tier: d.tier });
+        items.push({ hash: d.hash, name: d.name, icon: icon(d.icon), type: d.type, tier: d.tier });
       }
     }
-    if (items.length === 0) continue;
+    if (items.length === 0) continue; // vendor verkoopt geen gear → overslaan
 
-    let name = v.key;
+    // Vendor-naam/icoon; sla naamloze/interne vendors over.
+    let name = "";
     let vicon: string | null = null;
     try {
-      const def = await getEntityDefinition("DestinyVendorDefinition", v.hash);
-      name = def?.displayProperties?.name ?? v.key;
+      const def = await getEntityDefinition("DestinyVendorDefinition", Number(vendorHash));
+      name = def?.displayProperties?.name ?? "";
       vicon = icon(def?.displayProperties?.icon);
     } catch {
-      /* val terug op key */
+      /* negeer */
     }
+    if (!name) continue;
 
-    views.push({ hash: v.hash, name, icon: vicon, items });
+    views.push({ hash: Number(vendorHash), name, icon: vicon, items: items.slice(0, 30) });
   }
+
+  // Belangrijke vendors eerst, daarna op aantal gear-items.
+  views.sort((a, b) => {
+    const pa = VENDOR_PRIORITY[a.hash] ?? 99;
+    const pb = VENDOR_PRIORITY[b.hash] ?? 99;
+    if (pa !== pb) return pa - pb;
+    return b.items.length - a.items.length;
+  });
 
   return views;
 }
