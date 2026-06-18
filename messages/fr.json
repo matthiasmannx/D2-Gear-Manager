@@ -381,5 +381,28 @@
     "fAbilities": "Capacités",
     "fMods": "Mods",
     "fArtifact": "Artefact"
+  },
+  "cleanup": {
+    "title": "Nettoyer le coffre",
+    "intro": "On marque les god rolls (wishlist communautaire DIM) et les exotiques à garder, et le reste comme candidats au nettoyage. Verrouille les keepers et démantèle en jeu tout ce qui n'est pas verrouillé.",
+    "sumGod": "God rolls",
+    "sumExotic": "Exotiques",
+    "sumJunk": "Déchets",
+    "sumReview": "À revoir",
+    "lock": "Verrouiller",
+    "locking": "En cours...",
+    "lockNone": "Déjà tout verrouillé",
+    "godTitle": "God rolls (à garder)",
+    "godDesc": "Correspond à la wishlist communautaire. Vérifie sur light.gg.",
+    "junkTitle": "Candidats au nettoyage",
+    "junkDesc": "Équipement bleu/rare et ancien, sans risque à démanteler.",
+    "reviewTitle": "À regarder",
+    "reviewDesc": "Légendaire sans correspondance, juge toi-même via light.gg.",
+    "lockedTag": "Verrouillé",
+    "dupeTag": "Doublon",
+    "open": "Nettoyer le coffre",
+    "loginPrompt": "Connecte-toi pour analyser ton coffre.",
+    "noVault": "Aucun objet de coffre trouvé.",
+    "powerNote": "L'API Bungie ne peut pas démanteler ; on verrouille les keepers, tu démantèles le reste en jeu."
   }
 }

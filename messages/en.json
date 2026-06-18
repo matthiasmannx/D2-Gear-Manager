@@ -381,5 +381,28 @@
     "fAbilities": "Abilities",
     "fMods": "Mods",
     "fArtifact": "Artifact"
+  },
+  "cleanup": {
+    "title": "Vault cleanup",
+    "intro": "We flag god rolls (DIM community wishlist) and exotics as keepers, and the rest as cleanup candidates. Lock the keepers and dismantle everything unlocked in-game.",
+    "sumGod": "God rolls",
+    "sumExotic": "Exotics",
+    "sumJunk": "Junk",
+    "sumReview": "Review",
+    "lock": "Lock keepers",
+    "locking": "Working...",
+    "lockNone": "All already locked",
+    "godTitle": "God rolls (keep)",
+    "godDesc": "Matches the community wishlist. Double-check on light.gg.",
+    "junkTitle": "Cleanup candidates",
+    "junkDesc": "Blue/rare and old gear, safe to dismantle.",
+    "reviewTitle": "Worth a look",
+    "reviewDesc": "Legendary without a wishlist match, judge yourself via light.gg.",
+    "lockedTag": "Locked",
+    "dupeTag": "Duplicate",
+    "open": "Vault cleanup",
+    "loginPrompt": "Log in to analyze your vault.",
+    "noVault": "No vault items found.",
+    "powerNote": "The Bungie API can't dismantle; we lock the keepers, you dismantle the rest in-game."
   }
 }

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Suspense } from "react";
 import { getValidAccessToken } from "@/lib/auth";
 import { loadGear, GearData } from "@/lib/gear";
@@ -44,9 +45,13 @@ async function GearContent() {
   if (error) return <div className="notice error">{t("loadFailed", { error })}</div>;
   if (!data || data.characters.length === 0) return <div className="empty">{t("noChars")}</div>;
 
+  const tc = await getTranslations("cleanup");
   return (
     <>
-      <p className="muted">{t("intro", { name: data.name })}</p>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap" }}>
+        <p className="muted" style={{ margin: 0 }}>{t("intro", { name: data.name })}</p>
+        <Link href="/gear/cleanup" className="btn">🧹 {tc("open")}</Link>
+      </div>
       <GearBoard characters={data.characters} vault={data.vault} membershipType={data.membershipType} />
     </>
   );

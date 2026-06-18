@@ -381,5 +381,28 @@
     "fAbilities": "Habilidades",
     "fMods": "Mods",
     "fArtifact": "Artefacto"
+  },
+  "cleanup": {
+    "title": "Limpiar la bóveda",
+    "intro": "Marcamos god rolls (wishlist de la comunidad DIM) y exóticos como conservar, y el resto como candidatos a limpiar. Bloquea los keepers y desmantela en el juego todo lo que no esté bloqueado.",
+    "sumGod": "God rolls",
+    "sumExotic": "Exóticos",
+    "sumJunk": "Basura",
+    "sumReview": "Revisar",
+    "lock": "Bloquear keepers",
+    "locking": "Procesando...",
+    "lockNone": "Todo ya bloqueado",
+    "godTitle": "God rolls (conservar)",
+    "godDesc": "Coincide con la wishlist de la comunidad. Verifica en light.gg.",
+    "junkTitle": "Candidatos a limpiar",
+    "junkDesc": "Equipo azul/raro y antiguo, seguro de desmantelar.",
+    "reviewTitle": "Para mirar",
+    "reviewDesc": "Legendario sin coincidencia, juzga tú mismo en light.gg.",
+    "lockedTag": "Bloqueado",
+    "dupeTag": "Duplicado",
+    "open": "Limpiar la bóveda",
+    "loginPrompt": "Inicia sesión para analizar tu bóveda.",
+    "noVault": "No se encontraron objetos de la bóveda.",
+    "powerNote": "La API de Bungie no puede desmantelar; bloqueamos los keepers, tú desmantelas el resto en el juego."
   }
 }

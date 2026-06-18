@@ -381,5 +381,28 @@
     "fAbilities": "Abilities",
     "fMods": "Mods",
     "fArtifact": "Artifact"
+  },
+  "cleanup": {
+    "title": "Vault opruimen",
+    "intro": "We markeren god rolls (DIM community-wishlist) en exotics als houden, en de rest als opruim-kandidaten. Lock de keepers en dismantle in-game alles wat niet gelockt is.",
+    "sumGod": "God rolls",
+    "sumExotic": "Exotics",
+    "sumJunk": "Junk",
+    "sumReview": "Bekijken",
+    "lock": "Lock keepers",
+    "locking": "Bezig...",
+    "lockNone": "Alles al gelockt",
+    "godTitle": "God rolls (houden)",
+    "godDesc": "Match met de community-wishlist. Dubbelcheck op light.gg.",
+    "junkTitle": "Opruim-kandidaten",
+    "junkDesc": "Blauwe/zeldzame en oude gear, veilig om te dismantlen.",
+    "reviewTitle": "Twijfelgevallen",
+    "reviewDesc": "Legendary zonder wishlist-match, beoordeel zelf via light.gg.",
+    "lockedTag": "Gelockt",
+    "dupeTag": "Duplicaat",
+    "open": "Vault opruimen",
+    "loginPrompt": "Log in om je vault te analyseren.",
+    "noVault": "Geen vault-items gevonden.",
+    "powerNote": "De Bungie API kan niet dismantlen; we locken de keepers, jij dismantled de rest in-game."
   }
 }

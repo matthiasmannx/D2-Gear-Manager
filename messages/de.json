@@ -381,5 +381,28 @@
     "fAbilities": "Fähigkeiten",
     "fMods": "Mods",
     "fArtifact": "Artefakt"
+  },
+  "cleanup": {
+    "title": "Tresor aufräumen",
+    "intro": "Wir markieren God Rolls (DIM-Community-Wishlist) und Exotics als Behalten und den Rest als Aufräum-Kandidaten. Sperre die Keeper und zerlege im Spiel alles Ungesperrte.",
+    "sumGod": "God Rolls",
+    "sumExotic": "Exotics",
+    "sumJunk": "Müll",
+    "sumReview": "Prüfen",
+    "lock": "Keeper sperren",
+    "locking": "Läuft...",
+    "lockNone": "Alles bereits gesperrt",
+    "godTitle": "God Rolls (behalten)",
+    "godDesc": "Passt zur Community-Wishlist. Auf light.gg gegenprüfen.",
+    "junkTitle": "Aufräum-Kandidaten",
+    "junkDesc": "Blaue/seltene und alte Ausrüstung, sicher zu zerlegen.",
+    "reviewTitle": "Genauer ansehen",
+    "reviewDesc": "Legendär ohne Wishlist-Treffer, selbst beurteilen via light.gg.",
+    "lockedTag": "Gesperrt",
+    "dupeTag": "Duplikat",
+    "open": "Tresor aufräumen",
+    "loginPrompt": "Melde dich an, um deinen Tresor zu analysieren.",
+    "noVault": "Keine Tresor-Items gefunden.",
+    "powerNote": "Die Bungie-API kann nicht zerlegen; wir sperren die Keeper, du zerlegst den Rest im Spiel."
   }
 }

@@ -2714,3 +2714,18 @@ input:focus {
 .cb-mod-line { font-size: 0.9rem; margin: 0.2rem 0; }
 .cb-mod-line b { color: var(--muted); font-weight: 600; }
 @media (max-width: 640px) { .cb-mod-row { grid-template-columns: 1fr; } }
+
+/* ===== Vault cleanup ===== */
+.cleanup-bar { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
+.cleanup-note { font-size: 0.8rem; max-width: 560px; }
+.cleanup-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.5rem; }
+.cleanup-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0.6rem; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; }
+.cleanup-row .item-icon { width: 36px; height: 36px; border-radius: 6px; }
+.cleanup-info { min-width: 0; flex: 1; }
+.cleanup-name { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cleanup-meta { font-size: 0.75rem; }
+.cleanup-tag { font-size: 0.7rem; padding: 0 0.3rem; border-radius: 4px; }
+.cleanup-tag.dupe { background: rgba(255,159,28,0.18); color: #ff9f1c; }
+.cleanup-tag.locked { color: var(--accent-2, #4ad6c8); }
+.cleanup-lgg { font-size: 0.75rem; white-space: nowrap; color: var(--accent-2, #4ad6c8); }
+.cleanup-summary { cursor: pointer; }
