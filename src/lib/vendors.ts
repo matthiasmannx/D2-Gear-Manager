@@ -12,11 +12,15 @@ import { lookupItems } from "./manifest";
 // Bekende vendors die we vooraan willen tonen (rest komt erachter, op aantal items).
 const VENDOR_PRIORITY: Record<number, number> = {
   2190858386: 1, // Xûr
-  765357505: 2, // Saint-14 (Trials)
-  895295461: 3, // Lord Saladin (Iron Banner)
-  672118013: 4, // Banshee-44 (Gunsmith)
-  350061650: 5, // Ada-1
-  3361454721: 6, // Tess Everis (Eververse)
+  69482069: 2, // Commander Zavala (Vanguard)
+  3603221665: 3, // Lord Shaxx (Crucible)
+  248695599: 4, // The Drifter (Gambit)
+  765357505: 5, // Saint-14 (Trials)
+  895295461: 6, // Lord Saladin (Iron Banner)
+  672118013: 7, // Banshee-44 (Gunsmith)
+  350061650: 8, // Ada-1
+  2255782930: 9, // Master Rahool (Cryptarch)
+  3361454721: 10, // Tess Everis (Eververse)
 };
 
 export interface VendorItem {
