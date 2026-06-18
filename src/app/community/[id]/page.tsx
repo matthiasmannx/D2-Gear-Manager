@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations, getLocale } from "next-intl/server";
-import { getBuild, getUserStates } from "@/lib/communityBuilds";
+import { getBuild, getUserStates, listComments } from "@/lib/communityBuilds";
 import { dbConfigured } from "@/lib/db";
-import { isLoggedIn, getCurrentUserId } from "@/lib/auth";
+import { isLoggedIn, getCurrentUserId, isAdmin } from "@/lib/auth";
 import LikeFavorite from "@/components/LikeFavorite";
+import Comments from "@/components/Comments";
+import AdminControls from "@/components/AdminControls";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +22,11 @@ export default async function BuildDetail({ params }: { params: Promise<{ id: st
   const locale = await getLocale();
   const loggedIn = await isLoggedIn();
   const uid = await getCurrentUserId();
-  const states = uid ? await getUserStates(uid, [build.id]) : {};
+  const [states, comments, admin] = await Promise.all([
+    uid ? getUserStates(uid, [build.id]) : Promise.resolve({} as Record<string, { liked: boolean; favorited: boolean }>),
+    listComments(build.id),
+    isAdmin(),
+  ]);
   const st = states[build.id] ?? { liked: false, favorited: false };
 
   const created = (() => {
@@ -53,6 +59,7 @@ export default async function BuildDetail({ params }: { params: Promise<{ id: st
         <div className="cb-detail-actions">
           <LikeFavorite buildId={build.id} likes={build.likes} favorites={build.favorites} liked={st.liked} favorited={st.favorited} loggedIn={loggedIn} labels={{ like: t("like"), favorite: t("favorite") }} />
           <Link href={`/community/create?fork=${build.id}`} className="btn">⑂ {t("fork")}</Link>
+          {admin && <AdminControls buildId={build.id} verified={build.verified} featured={build.featured} />}
         </div>
       </header>
 
@@ -109,6 +116,8 @@ export default async function BuildDetail({ params }: { params: Promise<{ id: st
           {build.fragments.length > 0 && <><h2 style={{ marginTop: "1rem" }}>{t("fFragments")}</h2><div className="cb-tags">{build.fragments.map((f) => <span key={f} className="bc-tag">{f}</span>)}</div></>}
         </section>
       )}
+
+      <Comments buildId={build.id} comments={comments} currentUserId={uid} admin={admin} loggedIn={loggedIn} />
     </div>
   );
 }

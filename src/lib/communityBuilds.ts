@@ -47,8 +47,18 @@ export interface CommunityBuild extends CommunityBuildInput {
   createdAt: string;
   likes: number;
   favorites: number;
+  comments: number;
   score: number;
   trendingScore: number;
+}
+
+export interface BuildComment {
+  id: string;
+  buildId: string;
+  userId: string;
+  authorName: string;
+  body: string;
+  createdAt: string;
 }
 
 export type SortKey = "trending" | "top" | "newest" | "verified";
@@ -64,6 +74,7 @@ export interface BuildFilters {
 function rowToBuild(r: any): CommunityBuild {
   const likes = Number(r.likes ?? 0);
   const favorites = Number(r.favorites ?? 0);
+  const comments = Number(r.comments ?? 0);
   const views = Number(r.views ?? 0);
   const likes7 = Number(r.likes7 ?? 0);
   const favs7 = Number(r.favs7 ?? 0);
@@ -88,7 +99,8 @@ function rowToBuild(r: any): CommunityBuild {
     createdAt: typeof r.created_at === "string" ? r.created_at : new Date(r.created_at).toISOString(),
     likes,
     favorites,
-    score: likes * 3 + favorites * 5 + views * 0.1,
+    comments,
+    score: likes * 3 + favorites * 5 + views * 0.1 + comments * 2,
     trendingScore: likes7 * 3 + favs7 * 5,
   };
 }
@@ -96,6 +108,7 @@ function rowToBuild(r: any): CommunityBuild {
 const COUNT_COLS = `
   (SELECT count(*)::int FROM build_likes l WHERE l.build_id = b.id) AS likes,
   (SELECT count(*)::int FROM build_favorites f WHERE f.build_id = b.id) AS favorites,
+  (SELECT count(*)::int FROM build_comments c WHERE c.build_id = b.id) AS comments,
   (SELECT count(*)::int FROM build_likes l WHERE l.build_id = b.id AND l.created_at > now() - interval '7 days') AS likes7,
   (SELECT count(*)::int FROM build_favorites f WHERE f.build_id = b.id AND f.created_at > now() - interval '7 days') AS favs7
 `;
@@ -117,11 +130,13 @@ export async function listBuilds(filters: BuildFilters = {}): Promise<CommunityB
     SELECT b.*,
       COALESCE(l.c, 0)::int  AS likes,
       COALESCE(f.c, 0)::int  AS favorites,
+      COALESCE(cm.c, 0)::int AS comments,
       COALESCE(l7.c, 0)::int AS likes7,
       COALESCE(f7.c, 0)::int AS favs7
     FROM builds b
     LEFT JOIN (SELECT build_id, count(*) c FROM build_likes GROUP BY build_id) l ON l.build_id = b.id
     LEFT JOIN (SELECT build_id, count(*) c FROM build_favorites GROUP BY build_id) f ON f.build_id = b.id
+    LEFT JOIN (SELECT build_id, count(*) c FROM build_comments GROUP BY build_id) cm ON cm.build_id = b.id
     LEFT JOIN (SELECT build_id, count(*) c FROM build_likes WHERE created_at > now() - interval '7 days' GROUP BY build_id) l7 ON l7.build_id = b.id
     LEFT JOIN (SELECT build_id, count(*) c FROM build_favorites WHERE created_at > now() - interval '7 days' GROUP BY build_id) f7 ON f7.build_id = b.id
     ${whereSql}`;
@@ -197,6 +212,38 @@ export async function toggleFavorite(buildId: string, userId: string): Promise<b
   }
   await sql`INSERT INTO build_favorites (build_id, user_id) VALUES (${buildId}, ${userId}) ON CONFLICT DO NOTHING`;
   return true;
+}
+
+export async function listComments(buildId: string): Promise<BuildComment[]> {
+  if (!dbConfigured()) return [];
+  await ensureSchema();
+  const { rows } = await sql`SELECT * FROM build_comments WHERE build_id = ${buildId} ORDER BY created_at ASC`;
+  return rows.map((r: any) => ({
+    id: r.id,
+    buildId: r.build_id,
+    userId: r.user_id,
+    authorName: r.author_name,
+    body: r.body,
+    createdAt: typeof r.created_at === "string" ? r.created_at : new Date(r.created_at).toISOString(),
+  }));
+}
+
+export async function addComment(buildId: string, userId: string, authorName: string, body: string): Promise<void> {
+  await ensureSchema();
+  await sql`INSERT INTO build_comments (id, build_id, user_id, author_name, body) VALUES (${randomUUID()}, ${buildId}, ${userId}, ${authorName}, ${body})`;
+}
+
+/** Verwijdert een comment als de gebruiker de auteur is (of admin). */
+export async function deleteComment(commentId: string, userId: string, isAdmin: boolean): Promise<void> {
+  await ensureSchema();
+  if (isAdmin) await sql`DELETE FROM build_comments WHERE id = ${commentId}`;
+  else await sql`DELETE FROM build_comments WHERE id = ${commentId} AND user_id = ${userId}`;
+}
+
+export async function setBuildFlags(buildId: string, flags: { verified?: boolean; featured?: boolean }): Promise<void> {
+  await ensureSchema();
+  if (flags.verified !== undefined) await sql`UPDATE builds SET verified = ${flags.verified} WHERE id = ${buildId}`;
+  if (flags.featured !== undefined) await sql`UPDATE builds SET featured = ${flags.featured} WHERE id = ${buildId}`;
 }
 
 /** Welke van deze builds heeft de gebruiker geliked/gefavorit? */

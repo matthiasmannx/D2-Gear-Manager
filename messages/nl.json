@@ -370,6 +370,13 @@
     "dbMissing": "De database is nog niet gekoppeld. Community Builds is binnenkort beschikbaar.",
     "like": "Like",
     "favorite": "Favoriet",
-    "clearFilters": "Wis filters"
+    "clearFilters": "Wis filters",
+    "commentsTitle": "Reacties",
+    "commentPh": "Deel feedback, een alternatief wapen of een tweak...",
+    "post": "Plaatsen",
+    "noComments": "Nog geen reacties.",
+    "deleteC": "Verwijderen",
+    "loginToComment": "Log in om te reageren.",
+    "adminTitle": "Admin"
   }
 }

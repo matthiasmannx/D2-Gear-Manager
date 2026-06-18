@@ -45,6 +45,14 @@ export async function getCurrentUserId(): Promise<string | null> {
   return session?.bungieMembershipId ?? null;
 }
 
+/** Admin = membership id staat in de ADMIN_IDS env (komma-gescheiden). */
+export async function isAdmin(): Promise<boolean> {
+  const uid = await getCurrentUserId();
+  if (!uid) return false;
+  const ids = (process.env.ADMIN_IDS ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+  return ids.includes(uid);
+}
+
 /** Account-id + Bungie-naam (haalt de naam via de Bungie API op). */
 export async function getCurrentUser(): Promise<{ id: string; name: string } | null> {
   const token = await getValidAccessToken();

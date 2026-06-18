@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { createBuildAction } from "@/app/community/actions";
-import type { BuildLoadout, BuildStats, BuildWeapon } from "@/lib/communityBuilds";
+import type { BuildLoadout, BuildStats, BuildWeapon, CommunityBuildInput } from "@/lib/communityBuilds";
 
 const CLASSES = ["Titan", "Hunter", "Warlock"];
 const SUBCLASSES = ["Solar", "Arc", "Void", "Strand", "Stasis", "Prismatic"];
@@ -18,22 +18,24 @@ interface ItemHit {
   tier: string;
 }
 
-export default function BuildCreator({ forkOf }: { forkOf?: string }) {
+export default function BuildCreator({ forkOf, initial }: { forkOf?: string; initial?: CommunityBuildInput }) {
   const t = useTranslations("community");
+  const ld = initial?.loadout;
+  const ex = ld?.exoticArmor;
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [activities, setActivities] = useState<string[]>([]);
-  const [guardianClass, setGuardianClass] = useState("");
-  const [subclass, setSubclass] = useState("");
-  const [superName, setSuperName] = useState("");
-  const [kinetic, setKinetic] = useState<BuildWeapon | null>(null);
-  const [energy, setEnergy] = useState<BuildWeapon | null>(null);
-  const [power, setPower] = useState<BuildWeapon | null>(null);
-  const [exotic, setExotic] = useState<ItemHit | null>(null);
-  const [stats, setStats] = useState<BuildStats>({});
-  const [aspects, setAspects] = useState<string[]>([]);
-  const [fragments, setFragments] = useState<string[]>([]);
+  const [title, setTitle] = useState(initial?.title ?? "");
+  const [description, setDescription] = useState(initial?.description ?? "");
+  const [activities, setActivities] = useState<string[]>(initial?.activities ?? []);
+  const [guardianClass, setGuardianClass] = useState(initial?.guardianClass ?? "");
+  const [subclass, setSubclass] = useState(initial?.subclass ?? "");
+  const [superName, setSuperName] = useState(initial?.super ?? "");
+  const [kinetic, setKinetic] = useState<BuildWeapon | null>(ld?.kinetic ?? null);
+  const [energy, setEnergy] = useState<BuildWeapon | null>(ld?.energy ?? null);
+  const [power, setPower] = useState<BuildWeapon | null>(ld?.power ?? null);
+  const [exotic, setExotic] = useState<ItemHit | null>(ex ? { hash: ex.hash ?? 0, name: ex.name, icon: ex.icon ?? null, type: "", tier: "Exotic" } : null);
+  const [stats, setStats] = useState<BuildStats>(initial?.stats ?? {});
+  const [aspects, setAspects] = useState<string[]>(initial?.aspects ?? []);
+  const [fragments, setFragments] = useState<string[]>(initial?.fragments ?? []);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 

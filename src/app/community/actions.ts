@@ -2,8 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { getCurrentUser, getCurrentUserId } from "@/lib/auth";
-import { createBuild, toggleLike, toggleFavorite, CommunityBuildInput } from "@/lib/communityBuilds";
+import { getCurrentUser, getCurrentUserId, isAdmin } from "@/lib/auth";
+import { createBuild, toggleLike, toggleFavorite, addComment, deleteComment, setBuildFlags, CommunityBuildInput } from "@/lib/communityBuilds";
 import { dbConfigured } from "@/lib/db";
 
 const CLASSES = ["Titan", "Hunter", "Warlock"];
@@ -58,4 +58,31 @@ export async function favoriteAction(buildId: string): Promise<{ ok: boolean; fa
   revalidatePath(`/community/${buildId}`);
   revalidatePath("/community");
   return { ok: true, favorited };
+}
+
+export async function addCommentAction(buildId: string, body: string): Promise<{ ok: boolean }> {
+  if (!dbConfigured()) return { ok: false };
+  const user = await getCurrentUser();
+  if (!user) return { ok: false };
+  const text = (body ?? "").trim().slice(0, 2000);
+  if (!text) return { ok: false };
+  await addComment(buildId, user.id, user.name, text);
+  revalidatePath(`/community/${buildId}`);
+  return { ok: true };
+}
+
+export async function deleteCommentAction(buildId: string, commentId: string): Promise<{ ok: boolean }> {
+  const uid = await getCurrentUserId();
+  if (!uid || !dbConfigured()) return { ok: false };
+  await deleteComment(commentId, uid, await isAdmin());
+  revalidatePath(`/community/${buildId}`);
+  return { ok: true };
+}
+
+export async function setFlagsAction(buildId: string, flags: { verified?: boolean; featured?: boolean }): Promise<{ ok: boolean }> {
+  if (!dbConfigured() || !(await isAdmin())) return { ok: false };
+  await setBuildFlags(buildId, flags);
+  revalidatePath(`/community/${buildId}`);
+  revalidatePath("/community");
+  return { ok: true };
 }

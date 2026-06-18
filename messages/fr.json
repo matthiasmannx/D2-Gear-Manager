@@ -370,6 +370,13 @@
     "dbMissing": "La base de données n'est pas encore connectée. Community Builds arrive bientôt.",
     "like": "J'aime",
     "favorite": "Favori",
-    "clearFilters": "Effacer"
+    "clearFilters": "Effacer",
+    "commentsTitle": "Commentaires",
+    "commentPh": "Partage un retour, une arme alternative ou un ajustement...",
+    "post": "Publier",
+    "noComments": "Aucun commentaire.",
+    "deleteC": "Supprimer",
+    "loginToComment": "Connecte-toi pour commenter.",
+    "adminTitle": "Admin"
   }
 }

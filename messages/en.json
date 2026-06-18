@@ -370,6 +370,13 @@
     "dbMissing": "The database isn't connected yet. Community Builds is coming soon.",
     "like": "Like",
     "favorite": "Favorite",
-    "clearFilters": "Clear"
+    "clearFilters": "Clear",
+    "commentsTitle": "Comments",
+    "commentPh": "Share feedback, an alternative weapon or a tweak...",
+    "post": "Post",
+    "noComments": "No comments yet.",
+    "deleteC": "Delete",
+    "loginToComment": "Log in to comment.",
+    "adminTitle": "Admin"
   }
 }

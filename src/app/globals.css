@@ -2687,3 +2687,16 @@ input:focus {
 .skel-emblem { width: 72px; height: 72px; border-radius: 10px; }
 @keyframes skel-shimmer { 100% { transform: translateX(100%); } }
 @media (prefers-reduced-motion: reduce) { .skel::after { animation: none; } }
+
+/* ===== Community: comments + admin ===== */
+.cb-comments { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1rem; }
+.cb-comment { border-left: 2px solid var(--border); padding-left: 0.7rem; }
+.cb-comment-h { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
+.cb-comment-h .muted { font-size: 0.78rem; }
+.cb-comment-del { margin-left: auto; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 0.78rem; }
+.cb-comment-del:hover { color: var(--danger); }
+.cb-comment-body { margin: 0.2rem 0 0; white-space: pre-wrap; line-height: 1.5; }
+.cb-comment-form { display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+.cb-comment-form .cb-textarea { width: 100%; }
+.cb-admin { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+.cb-admin .cb-btn { padding: 0.35rem 0.6rem; font-size: 0.82rem; }

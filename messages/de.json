@@ -370,6 +370,13 @@
     "dbMissing": "Die Datenbank ist noch nicht verbunden. Community Builds folgt in Kürze.",
     "like": "Like",
     "favorite": "Favorit",
-    "clearFilters": "Zurücksetzen"
+    "clearFilters": "Zurücksetzen",
+    "commentsTitle": "Kommentare",
+    "commentPh": "Teile Feedback, eine alternative Waffe oder einen Tweak...",
+    "post": "Senden",
+    "noComments": "Noch keine Kommentare.",
+    "deleteC": "Löschen",
+    "loginToComment": "Melde dich an, um zu kommentieren.",
+    "adminTitle": "Admin"
   }
 }
