@@ -1651,6 +1651,9 @@ input:focus {
 .ms-card {
   padding: 0;
   overflow: hidden;
+  /* Niet meerekken met een opengeklapte buur op dezelfde rij; buren blijven
+     compact (alleen hun kop) i.p.v. lege hoge vakken. */
+  align-self: start;
 }
 .ms-toggle {
   display: flex;
