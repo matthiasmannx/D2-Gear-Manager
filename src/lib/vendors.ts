@@ -9,7 +9,8 @@ import { lookupItems } from "./manifest";
  * event, plus Banshee, Ada, bestemmings-vendors, enz.).
  */
 
-const IKORA_HASH = 1976548992; // synthetische/echte Ikora-kaart (subclass-customisatie)
+const IKORA_HASH = 1976548992; // Ikora-kaart (subclass-customisatie)
+const MONUMENT_HASH = 990000002; // synthetische Monument to Lost Lights-kaart
 
 // Bekende vendors die we vooraan willen tonen (rest komt erachter, op aantal items).
 const VENDOR_PRIORITY: Record<number, number> = {
@@ -22,9 +23,28 @@ const VENDOR_PRIORITY: Record<number, number> = {
   672118013: 7, // Banshee-44 (Gunsmith)
   350061650: 8, // Ada-1
   [IKORA_HASH]: 9, // Ikora Rey (subclass)
-  2255782930: 10, // Master Rahool (Cryptarch)
-  3361454721: 11, // Tess Everis (Eververse)
+  [MONUMENT_HASH]: 10, // Monument to Lost Lights
+  2255782930: 11, // Master Rahool (Cryptarch)
+  3361454721: 12, // Tess Everis (Eververse)
 };
+
+// Voegt alle vendors waarvan de naam in `names` zit samen tot één kaart.
+function mergeGroup(views: VendorView[], names: Set<string>, hash: number, displayName: string): VendorView[] {
+  const matched = views.filter((v) => names.has(v.name.trim().toLowerCase()));
+  if (matched.length === 0) return views;
+  const merged: VendorItem[] = [];
+  const seen = new Set<number>();
+  for (const sv of matched) {
+    for (const it of sv.items) {
+      if (seen.has(it.hash)) continue;
+      seen.add(it.hash);
+      merged.push({ ...it, subcat: sv.name });
+    }
+  }
+  const rest = views.filter((v) => !names.has(v.name.trim().toLowerCase()));
+  rest.push({ hash, name: displayName, icon: matched[0].icon, banner: matched[0].banner, location: "The Last City", items: merged });
+  return rest;
+}
 
 // Subclass-customisatie-vendors → samenvoegen tot één Ikora-kaart (in de Tower).
 // Bungie levert deze deels als element-vendors (Arc/Solar/Void/…) en deels als
@@ -166,36 +186,14 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
       }
       if (!name) return null;
 
-      // Monument to Lost Lights-categorieën onder één locatie-kopje.
-      if (MONUMENT_VENDORS.has(name.trim().toLowerCase())) location = "Monument to Lost Lights";
-
       return { hash: Number(vendorHash), name, icon: vicon, banner, location, items: items.slice(0, 30) };
     })
   );
   let views = built.filter((v): v is VendorView => v !== null);
 
-  // Subclass-customisatie-vendors samenvoegen tot één Ikora-kaart in de Tower.
-  const subViews = views.filter((v) => SUBCLASS_VENDORS.has(v.name.trim().toLowerCase()));
-  if (subViews.length > 0) {
-    const merged: VendorItem[] = [];
-    const seen = new Set<number>();
-    for (const sv of subViews) {
-      for (const it of sv.items) {
-        if (seen.has(it.hash)) continue;
-        seen.add(it.hash);
-        merged.push({ ...it, subcat: sv.name }); // tag met bron (element/categorie)
-      }
-    }
-    views = views.filter((v) => !SUBCLASS_VENDORS.has(v.name.trim().toLowerCase()));
-    views.push({
-      hash: IKORA_HASH,
-      name: "Ikora Rey",
-      icon: subViews[0].icon,
-      banner: subViews[0].banner,
-      location: "The Last City", // Ikora staat in de Tower
-      items: merged,
-    });
-  }
+  // Subclass-customisatie → Ikora; Exotic Archive/Legacy Gear/… → Monument.
+  views = mergeGroup(views, SUBCLASS_VENDORS, IKORA_HASH, "Ikora Rey");
+  views = mergeGroup(views, MONUMENT_VENDORS, MONUMENT_HASH, "Monument to Lost Lights");
 
   // Belangrijke vendors eerst, daarna op aantal gear-items.
   views.sort((a, b) => {

@@ -214,6 +214,7 @@ const BUCKET_RANK: Record<string, number> = {
   weapons: 0, armor: 1,
   Arc: 2, Solar: 3, Void: 4, Stasis: 5, Strand: 6, Prismatic: 7, Kinetic: 8,
   Supers: 10, "Class Abilities": 11, Aspects: 12, Fragments: 13, Grenades: 14, Melees: 15, Movement: 16,
+  "Exotic Archive": 20, "Legacy Gear": 21, "Pinnacle Weapons": 22, "Ritual Weapons": 23,
   titan: 30, hunter: 31, warlock: 32, other: 99,
 };
 const rankBucket = (k: string) => BUCKET_RANK[k] ?? 50;
