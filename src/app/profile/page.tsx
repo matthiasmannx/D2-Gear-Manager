@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { getTranslations, getLocale } from "next-intl/server";
 import { Loading } from "@/components/Skeleton";
-import { getValidAccessToken } from "@/lib/auth";
+import { getValidAccessToken, getCurrentUserId } from "@/lib/auth";
 import {
   getMemberships,
   getPlayerExtras,
@@ -56,6 +56,7 @@ async function ProfileContent() {
   }
 
   const h = stats?.highlights;
+  const accountId = await getCurrentUserId();
 
   return (
     <>
@@ -70,6 +71,11 @@ async function ProfileContent() {
         </div>
       </div>
       <p className="muted">{t("intro")}</p>
+      {accountId && (
+        <p className="muted" style={{ fontSize: "0.72rem" }}>
+          Account ID: <code>{accountId}</code>
+        </p>
+      )}
 
       {/* Top stats */}
       <div className="stat-cards">
