@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { sectionColor } from "@/lib/sectionColors";
 import Brand from "@/components/Brand";
 
-const SECTION_KEYS = ["items", "gear", "builds", "players", "profile", "events", "changelog", "sandbox"] as const;
+const SECTION_KEYS = ["items", "gear", "builds", "players", "profile", "events", "changelog"] as const;
 
 export default async function Home({
   searchParams,

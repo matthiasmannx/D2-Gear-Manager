@@ -15,7 +15,6 @@ const LINKS = [
   { href: "/profile", key: "profile" },
   { href: "/events", key: "events" },
   { href: "/changelog", key: "changelog" },
-  { href: "/sandbox", key: "sandbox" },
 ] as const;
 
 export default function Nav({ loggedIn }: { loggedIn: boolean }) {
