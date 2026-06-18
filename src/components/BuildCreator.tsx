@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { createBuildAction } from "@/app/community/actions";
-import type { BuildLoadout, BuildStats, BuildWeapon, CommunityBuildInput } from "@/lib/communityBuilds";
+import type { BuildLoadout, BuildStats, BuildWeapon, CommunityBuildInput, WeaponPerks } from "@/lib/communityBuilds";
 
 const CLASSES = ["Titan", "Hunter", "Warlock"];
 const SUBCLASSES = ["Solar", "Arc", "Void", "Strand", "Stasis", "Prismatic"];
@@ -32,6 +32,9 @@ export default function BuildCreator({ forkOf, initial }: { forkOf?: string; ini
   const [kinetic, setKinetic] = useState<BuildWeapon | null>(ld?.kinetic ?? null);
   const [energy, setEnergy] = useState<BuildWeapon | null>(ld?.energy ?? null);
   const [power, setPower] = useState<BuildWeapon | null>(ld?.power ?? null);
+  const [kineticPerks, setKineticPerks] = useState<WeaponPerks>(ld?.kinetic?.perks ?? {});
+  const [energyPerks, setEnergyPerks] = useState<WeaponPerks>(ld?.energy?.perks ?? {});
+  const [powerPerks, setPowerPerks] = useState<WeaponPerks>(ld?.power?.perks ?? {});
   const [exotic, setExotic] = useState<ItemHit | null>(ex ? { hash: ex.hash ?? 0, name: ex.name, icon: ex.icon ?? null, type: "", tier: "Exotic" } : null);
   const [stats, setStats] = useState<BuildStats>(initial?.stats ?? {});
   const [aspects, setAspects] = useState<string[]>(initial?.aspects ?? []);
@@ -49,10 +52,15 @@ export default function BuildCreator({ forkOf, initial }: { forkOf?: string; ini
       setError(t("required"));
       return;
     }
+    const wp = (w: BuildWeapon | null, p: WeaponPerks): BuildWeapon | undefined => {
+      if (!w) return undefined;
+      const perks = cleanPerks(p);
+      return { hash: w.hash, name: w.name, icon: w.icon ?? null, ...(perks ? { perks } : {}) };
+    };
     const loadout: BuildLoadout = {
-      kinetic: kinetic ?? undefined,
-      energy: energy ?? undefined,
-      power: power ?? undefined,
+      kinetic: wp(kinetic, kineticPerks),
+      energy: wp(energy, energyPerks),
+      power: wp(power, powerPerks),
       exoticArmor: exotic ? { hash: exotic.hash, name: exotic.name, icon: exotic.icon } : undefined,
     };
     setSaving(true);
@@ -115,9 +123,18 @@ export default function BuildCreator({ forkOf, initial }: { forkOf?: string; ini
 
       <section className="card cb-section">
         <h2>{t("fLoadout")}</h2>
-        <ItemSearch kind="weapon" label={t("fKinetic")} value={kinetic} onPick={(i) => setKinetic(i)} placeholder={t("searchPh")} />
-        <ItemSearch kind="weapon" label={t("fEnergy")} value={energy} onPick={(i) => setEnergy(i)} placeholder={t("searchPh")} />
-        <ItemSearch kind="weapon" label={t("fPower")} value={power} onPick={(i) => setPower(i)} placeholder={t("searchPh")} />
+        <div className="cb-weapon">
+          <ItemSearch kind="weapon" label={t("fKinetic")} value={kinetic} onPick={(i) => setKinetic(i)} placeholder={t("searchPh")} />
+          {kinetic && <PerksRow value={kineticPerks} onChange={setKineticPerks} />}
+        </div>
+        <div className="cb-weapon">
+          <ItemSearch kind="weapon" label={t("fEnergy")} value={energy} onPick={(i) => setEnergy(i)} placeholder={t("searchPh")} />
+          {energy && <PerksRow value={energyPerks} onChange={setEnergyPerks} />}
+        </div>
+        <div className="cb-weapon">
+          <ItemSearch kind="weapon" label={t("fPower")} value={power} onPick={(i) => setPower(i)} placeholder={t("searchPh")} />
+          {power && <PerksRow value={powerPerks} onChange={setPowerPerks} />}
+        </div>
         <ItemSearch kind="armor" label={t("fExotic")} value={exotic} onPick={(i) => setExotic(i)} placeholder={t("fExoticPh")} />
       </section>
 
@@ -145,6 +162,40 @@ export default function BuildCreator({ forkOf, initial }: { forkOf?: string; ini
         <button type="button" className="btn btn-primary" onClick={submit} disabled={saving}>{saving ? t("saving") : t("save")}</button>
         <a href="/community" className="btn">{t("cancel")}</a>
       </div>
+    </div>
+  );
+}
+
+function cleanPerks(p: WeaponPerks): WeaponPerks | undefined {
+  const out: WeaponPerks = {};
+  (Object.keys(p) as (keyof WeaponPerks)[]).forEach((k) => {
+    const v = (p[k] ?? "").trim().slice(0, 60);
+    if (v) out[k] = v;
+  });
+  return Object.keys(out).length ? out : undefined;
+}
+
+const PERK_SLOTS: { key: keyof WeaponPerks; label: string }[] = [
+  { key: "barrel", label: "Barrel" },
+  { key: "magazine", label: "Magazine" },
+  { key: "trait1", label: "Trait 1" },
+  { key: "trait2", label: "Trait 2" },
+  { key: "masterwork", label: "Masterwork" },
+];
+
+function PerksRow({ value, onChange }: { value: WeaponPerks; onChange: (v: WeaponPerks) => void }) {
+  return (
+    <div className="cb-perks">
+      {PERK_SLOTS.map(({ key, label }) => (
+        <input
+          key={key}
+          className="cb-input cb-perk"
+          value={value[key] ?? ""}
+          maxLength={60}
+          placeholder={label}
+          onChange={(e) => onChange({ ...value, [key]: e.target.value })}
+        />
+      ))}
     </div>
   );
 }

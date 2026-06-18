@@ -5,11 +5,18 @@ import { sql, ensureSchema, dbConfigured } from "./db";
 
 export const BUILDS_TAG = "community-builds";
 
+export interface WeaponPerks {
+  barrel?: string;
+  magazine?: string;
+  trait1?: string;
+  trait2?: string;
+  masterwork?: string;
+}
 export interface BuildWeapon {
   hash?: number;
   name: string;
   icon?: string | null;
-  perks?: string[];
+  perks?: WeaponPerks;
 }
 export interface BuildLoadout {
   kinetic?: BuildWeapon;

@@ -2700,3 +2700,10 @@ input:focus {
 .cb-comment-form .cb-textarea { width: 100%; }
 .cb-admin { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
 .cb-admin .cb-btn { padding: 0.35rem 0.6rem; font-size: 0.82rem; }
+
+/* ===== Build Creator: per-wapen perks ===== */
+.cb-weapon { margin-bottom: 0.4rem; }
+.cb-perks { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.4rem; margin: 0.4rem 0 0.2rem; }
+.cb-perk { padding: 0.4rem 0.5rem; font-size: 0.82rem; }
+.cb-slot-perks { font-size: 0.75rem; color: var(--accent-2, var(--muted)); margin-top: 0.15rem; }
+@media (max-width: 640px) { .cb-perks { grid-template-columns: 1fr 1fr; } }

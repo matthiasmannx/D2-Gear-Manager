@@ -76,9 +76,13 @@ export default async function BuildDetail({ params }: { params: Promise<{ id: st
             {weapons.map(({ label, w }) => (
               <div key={label} className="cb-slot">
                 {w!.icon && /* eslint-disable-next-line @next/next/no-img-element */ <img src={w!.icon} alt="" />}
-                <div>
+                <div style={{ minWidth: 0 }}>
                   <div className="muted cb-slot-label">{label}</div>
                   <div>{w!.hash ? <Link href={`/items/${w!.hash}`}>{w!.name}</Link> : w!.name}</div>
+                  {w!.perks && (() => {
+                    const p = [w!.perks!.barrel, w!.perks!.magazine, w!.perks!.trait1, w!.perks!.trait2, w!.perks!.masterwork].filter(Boolean);
+                    return p.length ? <div className="cb-slot-perks">{p.join(" · ")}</div> : null;
+                  })()}
                 </div>
               </div>
             ))}
