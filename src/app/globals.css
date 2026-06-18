@@ -1294,6 +1294,24 @@ input:focus {
 .gear-tile.is-mw {
   box-shadow: inset 0 0 0 2px rgba(206, 174, 51, 0.5);
 }
+/* Favoriet-markering op de tegel (linksonder) + ring */
+.gear-fav {
+  position: absolute;
+  bottom: 1px;
+  left: 1px;
+  font-size: 0.7rem;
+  line-height: 1;
+  color: var(--accent);
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
+}
+.gear-tile.is-fav,
+.gear-fav + * {
+  /* (placeholder voor mogelijke extra styling) */
+}
+.gear-fav-btn.on {
+  color: var(--accent);
+  border-color: var(--accent);
+}
 .ih-tip-stats {
   padding: 0.3rem 0.7rem 0.6rem;
   display: grid;

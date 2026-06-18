@@ -167,7 +167,8 @@
     "prev": "← Zurück",
     "next": "Weiter →",
     "page": "Seite {n} / {total}",
-    "anyClass": "Jede Klasse"
+    "anyClass": "Jede Klasse",
+    "favorite": "Favorit"
   },
   "builds": {
     "title": "Meta-Builds",

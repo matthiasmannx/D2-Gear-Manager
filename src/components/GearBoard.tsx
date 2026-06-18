@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useGearFavorites } from "@/lib/useGearFavorites";
 
 interface ItemStat {
   name: string;
@@ -85,6 +86,8 @@ interface TileActions {
   pull: (item: Item, characterId: string) => void;
   setDragging: (v: boolean) => void;
   setDraggingBucket: (v: number | null) => void;
+  favGear: Set<number>;
+  toggleFavGear: (hash: number) => void;
 }
 
 function Tile({
@@ -107,6 +110,7 @@ function Tile({
   const [flipUp, setFlipUp] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
   const t = useTranslations("gear");
+  const isFav = a.favGear.has(item.hash);
   const border = TIER_COLOR[item.tier] ?? "var(--border)";
   const canAct = !!item.instanceId;
   const otherChars = a.characters.filter((c) => c.characterId !== source);
@@ -160,6 +164,7 @@ function Tile({
         {item.power != null && <span className="gear-power">{item.power}</span>}
         {item.locked && <span className="gear-lock" title="Locked">🔒</span>}
         {item.masterwork && <span className="gear-mw" title="Masterwork">MW</span>}
+        {isFav && <span className="gear-fav" title={t("favorite")}>★</span>}
       </button>
 
       {show && (
@@ -223,6 +228,9 @@ function Tile({
             <div className="gear-panel-actions">
               <button onClick={() => a.pull(item, source)} disabled={a.busy}>⤓ {t("pull")}</button>
               {canAct && (
+                <button className={`gear-fav-btn ${isFav ? "on" : ""}`} onClick={() => a.toggleFavGear(item.hash)} disabled={a.busy}>
+                  {isFav ? "★" : "☆"} {t("favorite")}
+                </button>
                 <button className="gear-lock-btn" onClick={() => a.toggleLock(item, source, item.locked)} disabled={a.busy}>
                   {item.locked ? `🔓 ${t("unlock")}` : `🔒 ${t("lock")}`}
                 </button>
@@ -249,6 +257,9 @@ function Tile({
                     + {CLASS_NAMES[c.classType]}
                   </button>
                 ))}
+                <button className={`gear-fav-btn ${isFav ? "on" : ""}`} onClick={() => a.toggleFavGear(item.hash)} disabled={a.busy}>
+                  {isFav ? "★" : "☆"} {t("favorite")}
+                </button>
                 <button className="gear-lock-btn" onClick={() => a.toggleLock(item, source, item.locked)} disabled={a.busy}>
                   {item.locked ? `🔓 ${t("unlock")}` : `🔒 ${t("lock")}`}
                 </button>
@@ -276,6 +287,7 @@ export default function GearBoard({
   membershipType: number;
 }) {
   const t = useTranslations("gear");
+  const { favs: favGear, toggle: toggleFavGear } = useGearFavorites();
   const router = useRouter();
   // Direct verversen + nogmaals na 5s, omdat Bungie's profiel-data soms even
   // achterloopt na een transfer/equip.
@@ -367,6 +379,7 @@ export default function GearBoard({
   const [rarity, setRarity] = useState<"all" | "Exotic" | "Legendary">("all");
   const [mwOnly, setMwOnly] = useState(false);
   const [lockedOnly, setLockedOnly] = useState(false);
+  const [favOnly, setFavOnly] = useState(false);
   const [page, setPage] = useState(0);
   const PAGE = 60;
 
@@ -487,6 +500,8 @@ export default function GearBoard({
       postJson("/api/gear/postmaster", { itemReferenceHash: item.hash, itemId: item.instanceId, characterId, membershipType }),
     setDragging,
     setDraggingBucket,
+    favGear,
+    toggleFavGear,
     toggleLock: (item, sourceCharacterId, locked) =>
       postJson("/api/gear/lock", {
         itemId: item.instanceId,
@@ -548,9 +563,10 @@ export default function GearBoard({
       if (rarity !== "all" && it.tier !== rarity) return false;
       if (mwOnly && !it.masterwork) return false;
       if (lockedOnly && !it.locked) return false;
+      if (favOnly && !favGear.has(it.hash)) return false;
       return true;
     });
-  }, [vault, q, typeFilter, rarity, mwOnly, lockedOnly]);
+  }, [vault, q, typeFilter, rarity, mwOnly, lockedOnly, favOnly, favGear]);
 
   const pageCount = Math.max(1, Math.ceil(filteredVault.length / PAGE));
   const safePage = Math.min(page, pageCount - 1);
@@ -770,6 +786,7 @@ export default function GearBoard({
           </select>
           <label className="vault-toggle"><input type="checkbox" checked={mwOnly} onChange={(e) => { setMwOnly(e.target.checked); setPage(0); }} /> MW</label>
           <label className="vault-toggle"><input type="checkbox" checked={lockedOnly} onChange={(e) => { setLockedOnly(e.target.checked); setPage(0); }} /> 🔒</label>
+          <label className="vault-toggle"><input type="checkbox" checked={favOnly} onChange={(e) => { setFavOnly(e.target.checked); setPage(0); }} /> ★</label>
         </div>
 
         {pageItems.length === 0 ? (

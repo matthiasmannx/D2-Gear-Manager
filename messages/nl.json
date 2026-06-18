@@ -167,7 +167,8 @@
     "prev": "← Vorige",
     "next": "Volgende →",
     "page": "Pagina {n} / {total}",
-    "anyClass": "Elke class"
+    "anyClass": "Elke class",
+    "favorite": "Favoriet"
   },
   "builds": {
     "title": "Meta Builds",

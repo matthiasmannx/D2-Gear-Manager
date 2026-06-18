@@ -167,7 +167,8 @@
     "prev": "← Anterior",
     "next": "Siguiente →",
     "page": "Página {n} / {total}",
-    "anyClass": "Cualquier clase"
+    "anyClass": "Cualquier clase",
+    "favorite": "Favorito"
   },
   "builds": {
     "title": "Builds meta",
