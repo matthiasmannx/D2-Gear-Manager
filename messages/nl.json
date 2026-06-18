@@ -254,5 +254,9 @@
     "tabNerfs": "Nerfs ({n})",
     "tabChange": "Aangepast ({n})",
     "patchNotes": "Patch notes ↗"
+  },
+  "common": {
+    "search": "Zoek",
+    "searchPlaceholder": "Zoeken…"
   }
 }

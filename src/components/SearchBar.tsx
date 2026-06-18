@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function SearchBar({
   basePath,
@@ -13,6 +14,7 @@ export default function SearchBar({
   placeholder?: string;
 }) {
   const router = useRouter();
+  const t = useTranslations("common");
   const [value, setValue] = useState(initial);
 
   function submit(e: React.FormEvent) {
@@ -27,11 +29,11 @@ export default function SearchBar({
         type="search"
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder={placeholder ?? "Zoeken…"}
+        placeholder={placeholder ?? t("searchPlaceholder")}
         autoFocus
       />
       <button type="submit" className="btn">
-        Zoek
+        {t("search")}
       </button>
     </form>
   );

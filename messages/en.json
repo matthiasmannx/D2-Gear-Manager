@@ -254,5 +254,9 @@
     "tabNerfs": "Nerfs ({n})",
     "tabChange": "Changed ({n})",
     "patchNotes": "Patch notes ↗"
+  },
+  "common": {
+    "search": "Search",
+    "searchPlaceholder": "Search…"
   }
 }
