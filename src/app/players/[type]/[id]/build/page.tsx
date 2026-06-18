@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { getPlayerBuild, PlayerBuild, BuildCharacter, CLASS_NAMES } from "@/lib/playerBuild";
 
-export const metadata = { title: "Build — Guardian Hub" };
+export const metadata = { title: "Build · Guardian Hub" };
 
 const CLASS_COLOR: Record<number, string> = { 0: "#e0564b", 1: "#4aa3c7", 2: "#e8a13a", 3: "#888" };
 
@@ -27,7 +27,7 @@ export default async function PlayerBuildPage({
       <Link href={`/players/${type}/${id}`} className="muted" style={{ display: "inline-block", marginBottom: "1rem" }}>
         {t("buildBack")}
       </Link>
-      <h1 style={{ marginBottom: 0 }}>{t("buildTitle")}{build?.name ? ` — ${build.name}` : ""}</h1>
+      <h1 style={{ marginBottom: 0 }}>{t("buildTitle")}{build?.name ? ` · ${build.name}` : ""}</h1>
       <div className="notice" style={{ marginTop: "0.5rem", fontSize: "0.82rem" }}>
         {t("buildNote")}
       </div>

@@ -1,5 +1,5 @@
 /**
- * Pure datum-helpers voor Destiny-resets en weekend-events. Geen API nodig —
+ * Pure datum-helpers voor Destiny-resets en weekend-events. Geen API nodig -
  * Destiny reset op vaste UTC-tijden. Client-bruikbaar.
  *
  * - Dagelijkse reset: 17:00 UTC.
@@ -11,7 +11,7 @@ const RESET_HOUR = 17; // UTC
 
 /**
  * Bekende komende Iron Banner-startdata (ISO). De Bungie API geeft géén
- * toekomstige IB-data — Bungie kondigt die aan via de "This Week In Destiny".
+ * toekomstige IB-data, Bungie kondigt die aan via de "This Week In Destiny".
  * Vul hier de aangekondigde startdata in (een IB-week loopt di → di).
  * Voorbeeld: "2026-07-07T17:00:00Z".
  */

@@ -2,7 +2,7 @@ import { getTranslations, getLocale } from "next-intl/server";
 import { CHANGELOG, ChangeEntry } from "@/lib/changelog";
 import { SANDBOX_CHANGES, SandboxChange, ChangeKind } from "@/lib/sandbox";
 
-export const metadata = { title: "Changelog — Guardian Hub" };
+export const metadata = { title: "Changelog · Guardian Hub" };
 
 const TAG_COLOR: Record<string, string> = {
   Major: "#f5a623",
@@ -45,7 +45,7 @@ export default async function ChangelogPage({
         ))}
       </div>
 
-      {/* Buffs & Nerfs — samengevoegd, hoort bij de patches */}
+      {/* Buffs & Nerfs, samengevoegd, hoort bij de patches */}
       <h2 style={{ marginTop: "2.5rem" }}>{ts("title")}</h2>
       <p className="muted">{ts("intro")}</p>
       <div className="notice" style={{ marginTop: "0.5rem", fontSize: "0.82rem" }}>{ts("note")}</div>

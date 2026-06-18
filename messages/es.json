@@ -16,7 +16,7 @@
   "home": {
     "tag": "Con la API de Bungie",
     "title": "Guardian Hub",
-    "intro": "Bienvenido, Guardián. Guardian Hub es tu centro para Destiny 2 — busca items y god rolls, gestiona tu equipo y configuraciones, sigue el reinicio semanal y los eventos, estudia builds meta, y consulta tus estadísticas y las de tu fireteam. Eyes up, Guardian: todo en un solo lugar, en tu idioma.",
+    "intro": "Bienvenido, Guardián. Guardian Hub es tu centro para Destiny 2, busca items y god rolls, gestiona tu equipo y configuraciones, sigue el reinicio semanal y los eventos, estudia builds meta, y consulta tus estadísticas y las de tu fireteam. Eyes up, Guardian: todo en un solo lugar, en tu idioma.",
     "open": "Abrir →",
     "error": "Algo salió mal: {error}",
     "sections": {
@@ -27,7 +27,7 @@
       "events": { "title": "Eventos", "desc": "Reinicio semanal, hitos, vendedores y actividades activas." },
       "changelog": { "title": "Changelog", "desc": "Actualizaciones, parches y rotaciones de Destiny 2: lo más reciente arriba." },
       "sandbox": { "title": "Buffs y Nerfs", "desc": "Cambios del sandbox según Bungie: buffs, nerfs y ajustes." },
-      "profile": { "title": "Mi perfil", "desc": "Tus propios guardianes, estadísticas y equipo — visibles al iniciar sesión." }
+      "profile": { "title": "Mi perfil", "desc": "Tus propios guardianes, estadísticas y equipo, visibles al iniciar sesión." }
     }
   },
   "players": {
@@ -123,7 +123,7 @@
     "loadouts": "Configuraciones",
     "noLoadouts": "Sin configuraciones guardadas",
     "loadoutTitle": "Equipar «{name}» ({n} items)",
-    "loadoutTitleActive": "Activa — Equipar «{name}» ({n} items)",
+    "loadoutTitleActive": "Activa, Equipar «{name}» ({n} items)",
     "equipped": "Equipado",
     "onCharacter": "En el personaje ({n})",
     "postmaster": "Cartero ({n}): haz clic para god roll y recoger",
@@ -194,7 +194,7 @@
     "subclassSetup": "Configuración de subclase",
     "statPriority": "Prioridad de estadísticas",
     "howItWorks": "¿Cómo funciona?",
-    "sourceDetail": "Fuente: {source} — verifica/ajusta en light.gg o Mobalytics.",
+    "sourceDetail": "Fuente: {source}, verifica/ajusta en light.gg o Mobalytics.",
     "descGM": "Supervivencia, cobertura de campeones y limpieza de adds",
     "descRaid": "DPS de jefe, apoyo y limpieza de adds",
     "descDungeon": "Jugable en solitario y objetivo único",

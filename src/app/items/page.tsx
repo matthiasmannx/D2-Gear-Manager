@@ -4,7 +4,7 @@ import SearchBar from "@/components/SearchBar";
 import { icon } from "@/lib/bungie";
 import { searchItemIndex, ItemIndexEntry } from "@/lib/manifest";
 
-export const metadata = { title: "Items — Guardian Hub" };
+export const metadata = { title: "Items · Guardian Hub" };
 
 export default async function ItemsPage({
   searchParams,

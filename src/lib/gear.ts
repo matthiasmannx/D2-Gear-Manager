@@ -41,7 +41,7 @@ export interface GearItem {
   power?: number;
   itemLevel?: number;
   energy?: number;
-  /** Nieuwe gear-tier (1–5) uit de instance; 0/undefined = geen tier (oude gear). */
+  /** Nieuwe gear-tier (1-5) uit de instance; 0/undefined = geen tier (oude gear). */
   gearTier?: number;
   locked: boolean;
   masterwork: boolean;

@@ -19,7 +19,7 @@ export interface ResolvedItem {
  * "Lucky Pants of FR0ST-EE5" pakken we op het eerste alternatief.
  */
 export async function resolveItemByName(name: string): Promise<ResolvedItem | null> {
-  // Alleen op " / " splitsen (alternatieven). NIET op " of " — dat hoort in
+  // Alleen op " / " splitsen (alternatieven). NIET op " of ", dat hoort in
   // namen als "Heart of Inmost Light" / "Crown of Tempests".
   const query = name.split(/\s\/\s/)[0].trim();
   const hits = await searchItemIndex(query, 8);

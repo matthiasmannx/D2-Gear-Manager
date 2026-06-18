@@ -323,7 +323,7 @@ export interface PlayerResult {
 /**
  * Zoek spelers. Bevat de query een `#code` (bv. "Guardian#1234"), dan doen we
  * een exacte Bungie-naam-zoekopdracht; anders een prefix-zoekopdracht op de
- * Bungie-naam. Let op: de API ondersteunt geen losse PSN-gamertag-zoek meer —
+ * Bungie-naam. Let op: de API ondersteunt geen losse PSN-gamertag-zoek meer -
  * alleen de Bungie-naam.
  */
 export async function searchPlayers(query: string, page = 0): Promise<PlayerResult[]> {
@@ -388,7 +388,7 @@ const MODE_LABELS: Record<string, string> = {
 
 function disp(stat: any, key: string): string {
   const b = stat?.[key]?.basic;
-  return b?.displayValue ?? (b?.value != null ? String(b.value) : "—");
+  return b?.displayValue ?? (b?.value != null ? String(b.value) : "-");
 }
 function num(stat: any, key: string): number {
   return stat?.[key]?.basic?.value ?? 0;
@@ -408,13 +408,13 @@ function toModeStats(mode: string, a: any): PvpModeStats {
     kd: disp(a, "killsDeathsRatio"),
     kda: disp(a, "killsDeathsAssists"),
     efficiency: disp(a, "efficiency"),
-    winRate: entered > 0 ? pct(won / entered) : "—",
+    winRate: entered > 0 ? pct(won / entered) : "-",
     wins: disp(a, "activitiesWon"),
     games: disp(a, "activitiesEntered"),
     kills: disp(a, "kills"),
     deaths: disp(a, "deaths"),
     assists: disp(a, "assists"),
-    precisionPct: kills > 0 ? pct(precision / kills) : "—",
+    precisionPct: kills > 0 ? pct(precision / kills) : "-",
     bestGameKills: disp(a, "bestSingleGameKills"),
     longestSpree: disp(a, "longestKillSpree"),
     longestLife: disp(a, "longestSingleLife"),
@@ -516,14 +516,14 @@ export async function getPvpStats(
     highlights = {
       kd: disp(all, "killsDeathsRatio"),
       kda: disp(all, "killsDeathsAssists"),
-      winRate: entered > 0 ? pct(won / entered) : "—",
+      winRate: entered > 0 ? pct(won / entered) : "-",
       totalKills: disp(all, "kills"),
       bestGameKills: disp(all, "bestSingleGameKills"),
       longestSpree: disp(all, "longestKillSpree"),
       longestLife: disp(all, "longestSingleLife"),
       combatRating: disp(all, "combatRating"),
       timePlayed: disp(all, "secondsPlayed"),
-      precisionPct: kills > 0 ? pct(num(all, "precisionKills") / kills) : "—",
+      precisionPct: kills > 0 ? pct(num(all, "precisionKills") / kills) : "-",
     };
   }
 
@@ -736,7 +736,7 @@ export async function getRecentMatches(
       won,
       result: won ? "Victory" : "Defeat",
       mode: modeLabel(m.activityDetails),
-      mapName: mapNames[m.activityDetails?.referenceId] ?? "—",
+      mapName: mapNames[m.activityDetails?.referenceId] ?? "-",
       kills: disp(v, "kills"),
       deaths: disp(v, "deaths"),
       assists: disp(v, "assists"),
@@ -850,7 +850,7 @@ export async function getMatchReport(instanceId: string): Promise<MatchReport | 
       superKills: disp(ev, "weaponKillsSuper"),
       meleeKills: disp(ev, "weaponKillsMelee"),
       grenadeKills: disp(ev, "weaponKillsGrenade"),
-      precisionPct: kills > 0 ? `${((precision / kills) * 100).toFixed(0)}%` : "—",
+      precisionPct: kills > 0 ? `${((precision / kills) * 100).toFixed(0)}%` : "-",
       topWeapon: th ? weaponNames[th] ?? null : null,
       mvp: maxKills > 0 && kills === maxKills,
     };
@@ -868,7 +868,7 @@ export async function getMatchReport(instanceId: string): Promise<MatchReport | 
         .map(toPlayer);
       return {
         id: teamId,
-        result: t.standing?.basic?.displayValue ?? "—",
+        result: t.standing?.basic?.displayValue ?? "-",
         score: t.score?.basic?.displayValue ?? "",
         players,
       };
@@ -979,7 +979,7 @@ const PVP_MODES_QUERY = [
 function blockFrom(kills: number, deaths: number, wins: number, games: number): ModeBlock {
   return {
     kd: deaths > 0 ? (kills / deaths).toFixed(2) : String(kills),
-    winRate: games > 0 ? `${((wins / games) * 100).toFixed(1)}%` : "—",
+    winRate: games > 0 ? `${((wins / games) * 100).toFixed(1)}%` : "-",
     wins,
     games,
   };

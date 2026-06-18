@@ -16,7 +16,7 @@ import { getValidAccessToken } from "@/lib/auth";
 import { FavStar } from "@/components/Favorites";
 import { getTranslations, getLocale } from "next-intl/server";
 
-export const metadata = { title: "Player stats — Guardian Hub" };
+export const metadata = { title: "Player stats · Guardian Hub" };
 
 export default async function PlayerStats({
   params,
@@ -76,7 +76,7 @@ export default async function PlayerStats({
             <>
               {t("shared", { count: shared.count })}
               {shared.teammate + shared.opponent > 0 && (
-                <> — <span style={{ color: "#38d39f" }}>{t("sharedTeammate", { n: shared.teammate })}</span>, <span style={{ color: "var(--danger)" }}>{t("sharedOpponent", { n: shared.opponent })}</span></>
+                <>, <span style={{ color: "#38d39f" }}>{t("sharedTeammate", { n: shared.teammate })}</span>, <span style={{ color: "var(--danger)" }}>{t("sharedOpponent", { n: shared.opponent })}</span></>
               )}
               .
             </>
@@ -88,9 +88,9 @@ export default async function PlayerStats({
 
       {/* Top: K/D, win rate, flawless, ranks */}
       <div className="stat-cards">
-        <BigStat label={t("statKd")} value={h?.kd ?? "—"} accent />
-        <BigStat label={t("statWinRate")} value={h?.winRate ?? "—"} />
-        <BigStat label={t("statFlawless")} value={extras.flawlessCount ?? "—"} accent sub={t("flawlessSub")} />
+        <BigStat label={t("statKd")} value={h?.kd ?? "-"} accent />
+        <BigStat label={t("statWinRate")} value={h?.winRate ?? "-"} />
+        <BigStat label={t("statFlawless")} value={extras.flawlessCount ?? "-"} accent sub={t("flawlessSub")} />
         {extras.ranks.map((r) => (
           <BigStat key={r.label} label={r.label} value={r.rankName} sub={r.resets != null ? t("resets", { n: r.resets }) : undefined} small />
         ))}

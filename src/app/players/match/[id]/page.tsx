@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getTranslations, getLocale } from "next-intl/server";
 import { getMatchReport, MatchReport, MatchTeam } from "@/lib/bungie";
 
-export const metadata = { title: "Match — Guardian Hub" };
+export const metadata = { title: "Match · Guardian Hub" };
 
 export default async function MatchPage({
   params,

@@ -18,7 +18,7 @@ export interface ItemDetail {
   screenshot: string | null;
   description: string;
   flavor: string;
-  /** "Waar/hoe te krijgen" — uit de collectible source of displaySource. */
+  /** "Waar/hoe te krijgen", uit de collectible source of displaySource. */
   source: string;
   /** Exotic intrinsieke trait (de perk die het exotic goed maakt). */
   intrinsic?: Trait;

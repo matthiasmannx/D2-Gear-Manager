@@ -16,7 +16,7 @@
   "home": {
     "tag": "Powered by die Bungie-API",
     "title": "Guardian Hub",
-    "intro": "Willkommen, Guardian. Guardian Hub ist deine zentrale Anlaufstelle für Destiny 2 — durchsuche Items und God-Rolls, verwalte Ausrüstung und Loadouts, verfolge den wöchentlichen Reset und Events, studiere Meta-Builds und sieh die Statistiken von dir und deinem Fireteam. Eyes up, Guardian: alles an einem Ort, in deiner Sprache.",
+    "intro": "Willkommen, Guardian. Guardian Hub ist deine zentrale Anlaufstelle für Destiny 2, durchsuche Items und God-Rolls, verwalte Ausrüstung und Loadouts, verfolge den wöchentlichen Reset und Events, studiere Meta-Builds und sieh die Statistiken von dir und deinem Fireteam. Eyes up, Guardian: alles an einem Ort, in deiner Sprache.",
     "open": "Öffnen →",
     "error": "Etwas ist schiefgelaufen: {error}",
     "sections": {
@@ -25,9 +25,9 @@
       "builds": { "title": "Meta-Builds", "desc": "Die stärksten PvE- und PvP-Builds für die aktuelle Season-Meta." },
       "players": { "title": "Spieler", "desc": "Suche Spieler und sieh ihre K/D, Siege, Trials, Eisenbanner und Makellos-Zahl." },
       "events": { "title": "Events-Tracker", "desc": "Wöchentlicher Reset, Meilensteine, Händler und aktive Aktivitäten." },
-      "changelog": { "title": "Changelog", "desc": "Destiny-2-Updates, Patches und Rotationen — Neuestes zuerst." },
-      "sandbox": { "title": "Buffs & Nerfs", "desc": "Sandbox-Änderungen laut Bungie — Buffs, Nerfs und Anpassungen." },
-      "profile": { "title": "Mein Profil", "desc": "Deine eigenen Guardians, Statistiken und Ausrüstung — sichtbar wenn angemeldet." }
+      "changelog": { "title": "Changelog", "desc": "Destiny-2-Updates, Patches und Rotationen, Neuestes zuerst." },
+      "sandbox": { "title": "Buffs & Nerfs", "desc": "Sandbox-Änderungen laut Bungie, Buffs, Nerfs und Anpassungen." },
+      "profile": { "title": "Mein Profil", "desc": "Deine eigenen Guardians, Statistiken und Ausrüstung, sichtbar wenn angemeldet." }
     }
   },
   "players": {
@@ -39,7 +39,7 @@
     "hint": "Gib (einen Teil) eines Bungie-Namens ein, um Spieler zu finden.",
     "searchFailed": "Suche fehlgeschlagen: {error}",
     "noResults": "Keine Spieler gefunden für „{query}“.",
-    "noResultsTip": "Tipp: Suche nach dem Bungie-Namen, nicht dem PSN-Gamertag – die können sich unterscheiden. Kennst du den Code? Probiere Name#1234 für eine exakte Übereinstimmung.",
+    "noResultsTip": "Tipp: Suche nach dem Bungie-Namen, nicht dem PSN-Gamertag, die können sich unterscheiden. Kennst du den Code? Probiere Name#1234 für eine exakte Übereinstimmung.",
     "platformType": "Typ {n}",
     "back": "← Zurück zur Suche",
     "unknownPlayer": "Unbekannter Spieler",
@@ -89,7 +89,7 @@
     "viewBuild": "Build ansehen",
     "buildTitle": "Build",
     "buildBack": "← Zurück zu den Statistiken",
-    "buildNote": "ℹ️ Dies ist die aktuelle Ausrüstung des Spielers. Die Bungie-API speichert nicht, welchen Build jemand in einem bestimmten Match nutzte — aber das ist meist, was sie (noch) spielen.",
+    "buildNote": "ℹ️ Dies ist die aktuelle Ausrüstung des Spielers. Die Bungie-API speichert nicht, welchen Build jemand in einem bestimmten Match nutzte, aber das ist meist, was sie (noch) spielen.",
     "buildLoadFailed": "Build konnte nicht geladen werden (Profil evtl. privat)."
   },
   "items": {
@@ -107,7 +107,7 @@
     "noSource": "Keine spezifische Quellen-Info in der Manifest verfügbar. Dieses Item stammt wahrscheinlich aus allgemeinen World-Drops oder Händler-Engrammen.",
     "exoticTrait": "Exotic-Eigenschaft",
     "godRolls": "God-Rolls",
-    "exoticNoRoll": "Exotic mit festen Perks — es gibt keinen zufälligen \"God-Roll\". Siehe die Exotic-Eigenschaft oben.",
+    "exoticNoRoll": "Exotic mit festen Perks, es gibt keinen zufälligen \"God-Roll\". Siehe die Exotic-Eigenschaft oben.",
     "noWishlist": "Kein Wishlist-Roll für diese Waffe bekannt.",
     "moreLightGg": "Mehr Details auf light.gg ↗",
     "sourceNote": "Bungies Datenbank nennt meist eine Hauptquelle. Alle aktuellen Wege, dieses Item zu bekommen (mit jedem Destiny-Patch aktualisiert), findest du auf light.gg.",
@@ -123,18 +123,18 @@
     "loadouts": "Loadouts",
     "noLoadouts": "Keine gespeicherten Loadouts",
     "loadoutTitle": "\"{name}\" anlegen ({n} Items)",
-    "loadoutTitleActive": "Aktiv — \"{name}\" anlegen ({n} Items)",
+    "loadoutTitleActive": "Aktiv, \"{name}\" anlegen ({n} Items)",
     "equipped": "Angelegt",
     "onCharacter": "Auf Charakter ({n})",
-    "postmaster": "Poststelle ({n}) — für God-Roll & Abholen klicken",
+    "postmaster": "Poststelle ({n}), für God-Roll & Abholen klicken",
     "postmasterEmpty": "Poststelle leer",
     "pull": "Zum Charakter holen",
     "equip": "Anlegen",
     "vault": "Tresor",
     "lock": "Sperren",
     "unlock": "Entsperren",
-    "equippedNote": "Angelegt — beim Verschieben wird zuerst automatisch ein anderes Item aus dem Inventar in diesem Slot angelegt.",
-    "cannotMoveEquipped": "Angelegte Items kannst du nicht verschieben — leg zuerst etwas anderes an.",
+    "equippedNote": "Angelegt, beim Verschieben wird zuerst automatisch ein anderes Item aus dem Inventar in diesem Slot angelegt.",
+    "cannotMoveEquipped": "Angelegte Items kannst du nicht verschieben, leg zuerst etwas anderes an.",
     "failed": "Fehlgeschlagen",
     "actionFailed": "Aktion fehlgeschlagen",
     "deequipFailed": "Ablegen fehlgeschlagen",
@@ -194,17 +194,17 @@
     "subclassSetup": "Fokus-Setup",
     "statPriority": "Werte-Priorität",
     "howItWorks": "Wie funktioniert es?",
-    "sourceDetail": "Quelle: {source} — auf light.gg oder Mobalytics prüfen/feinjustieren.",
+    "sourceDetail": "Quelle: {source}, auf light.gg oder Mobalytics prüfen/feinjustieren.",
     "descGM": "Überlebensfähigkeit, Champion-Abdeckung & Add-Clear",
     "descRaid": "Boss-DPS, Support & Add-Clear",
     "descDungeon": "Solo-tauglich & Einzelziel",
-    "descTrials": "3v3 — Duelle & Zonenkontrolle",
-    "descIronBanner": "6v6 — fähigkeitslastig & Objektive",
-    "descCrucible": "Allgemeines PvP — Duelle & Movement"
+    "descTrials": "3v3, Duelle & Zonenkontrolle",
+    "descIronBanner": "6v6, fähigkeitslastig & Objektive",
+    "descCrucible": "Allgemeines PvP, Duelle & Movement"
   },
   "events": {
     "title": "Events-Tracker",
-    "intro": "Resets, Wochenend-Events und aktive Meilensteine — mit Live-Countdowns.",
+    "intro": "Resets, Wochenend-Events und aktive Meilensteine, mit Live-Countdowns.",
     "schedule": "Zeitplan",
     "thisWeek": "Diese Woche",
     "vendors": "Händler",
@@ -249,7 +249,7 @@
   },
   "changelog": {
     "title": "Changelog",
-    "intro": "Destiny-2-Updates, Patches und Rotationen — Neuestes zuerst.",
+    "intro": "Destiny-2-Updates, Patches und Rotationen, Neuestes zuerst.",
     "patchNotes": "Offizielle Patchnotes ↗"
   },
   "sandbox": {

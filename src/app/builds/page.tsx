@@ -4,7 +4,7 @@ import { BUILDS, META_SEASON, META_UPDATED, Mode, GuardianClass, Build } from "@
 import { resolveItems, ResolvedItem } from "@/lib/buildItems";
 import ItemHover from "@/components/ItemHover";
 
-export const metadata = { title: "Meta Builds — Guardian Hub" };
+export const metadata = { title: "Meta Builds · Guardian Hub" };
 
 const MODES: { key: Mode; label: string; group: "PvE" | "PvP" }[] = [
   { key: "GM", label: "Grandmaster", group: "PvE" },

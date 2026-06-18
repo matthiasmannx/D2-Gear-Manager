@@ -16,7 +16,7 @@
   "home": {
     "tag": "Powered by de Bungie API",
     "title": "Guardian Hub",
-    "intro": "Welkom, Guardian. Guardian Hub is je centrale plek voor Destiny 2 — doorzoek items en god rolls, beheer je gear en loadouts, volg de wekelijkse reset en events, bestudeer meta-builds en bekijk de stats van jou en je fireteam. Eyes up, Guardian: alles op één plek, in jouw taal.",
+    "intro": "Welkom, Guardian. Guardian Hub is je centrale plek voor Destiny 2, doorzoek items en god rolls, beheer je gear en loadouts, volg de wekelijkse reset en events, bestudeer meta-builds en bekijk de stats van jou en je fireteam. Eyes up, Guardian: alles op één plek, in jouw taal.",
     "open": "Open →",
     "error": "Er ging iets mis: {error}",
     "sections": {
@@ -25,9 +25,9 @@
       "builds": { "title": "Meta Builds", "desc": "Sterkste PvE- en PvP-builds voor de huidige seizoens-meta." },
       "players": { "title": "Players", "desc": "Zoek spelers en bekijk hun K/D, wins, Trials, Iron Banner en Flawless-count." },
       "events": { "title": "Events Tracker", "desc": "Wekelijkse reset, milestones, vendors en actieve activiteiten." },
-      "changelog": { "title": "Changelog", "desc": "Destiny 2 updates, patches en rotaties — nieuwste bovenaan." },
-      "sandbox": { "title": "Buffs & Nerfs", "desc": "Sandbox-wijzigingen volgens Bungie — buffs, nerfs en aanpassingen." },
-      "profile": { "title": "My Profile", "desc": "Je eigen guardians, stats en gear — zichtbaar als je bent ingelogd." }
+      "changelog": { "title": "Changelog", "desc": "Destiny 2 updates, patches en rotaties, nieuwste bovenaan." },
+      "sandbox": { "title": "Buffs & Nerfs", "desc": "Sandbox-wijzigingen volgens Bungie, buffs, nerfs en aanpassingen." },
+      "profile": { "title": "My Profile", "desc": "Je eigen guardians, stats en gear, zichtbaar als je bent ingelogd." }
     }
   },
   "players": {
@@ -89,7 +89,7 @@
     "viewBuild": "Bekijk build",
     "buildTitle": "Build",
     "buildBack": "← Terug naar stats",
-    "buildNote": "ℹ️ Dit is de huidige uitrusting van deze speler. De Bungie-API bewaart niet welke build iemand in een specifieke match droeg — maar dit is doorgaans wat ze (nog) draaien.",
+    "buildNote": "ℹ️ Dit is de huidige uitrusting van deze speler. De Bungie-API bewaart niet welke build iemand in een specifieke match droeg, maar dit is doorgaans wat ze (nog) draaien.",
     "buildLoadFailed": "Kon de build niet laden (profiel mogelijk privé)."
   },
   "items": {
@@ -107,7 +107,7 @@
     "noSource": "Geen specifieke bron-info beschikbaar in de manifest. Dit item komt waarschijnlijk uit algemene world-drops of vendor-engrams.",
     "exoticTrait": "Exotic trait",
     "godRolls": "God rolls",
-    "exoticNoRoll": "Exotic met vaste perks — er is geen random \"god roll\". Zie de Exotic trait hierboven.",
+    "exoticNoRoll": "Exotic met vaste perks, er is geen random \"god roll\". Zie de Exotic trait hierboven.",
     "noWishlist": "Geen wishlist-roll bekend voor dit wapen.",
     "moreLightGg": "Meer details op light.gg ↗",
     "sourceNote": "Bungie's database noemt meestal één hoofdbron. Bekijk alle actuele manieren om dit item te krijgen (bijgewerkt per Destiny-update) op light.gg.",
@@ -123,18 +123,18 @@
     "loadouts": "Loadouts",
     "noLoadouts": "Geen opgeslagen loadouts",
     "loadoutTitle": "Equip \"{name}\" ({n} items)",
-    "loadoutTitleActive": "Actief — Equip \"{name}\" ({n} items)",
+    "loadoutTitleActive": "Actief, Equip \"{name}\" ({n} items)",
     "equipped": "Uitgerust",
     "onCharacter": "Op character ({n})",
-    "postmaster": "Postmaster ({n}) — klik voor god-roll & pull",
+    "postmaster": "Postmaster ({n}), klik voor god-roll & pull",
     "postmasterEmpty": "Postmaster leeg",
     "pull": "Pull naar character",
     "equip": "Equip",
     "vault": "Vault",
     "lock": "Lock",
     "unlock": "Unlock",
-    "equippedNote": "Uitgerust — verplaatsen equipt automatisch eerst een ander item uit de inventory in dit slot.",
-    "cannotMoveEquipped": "Uitgeruste items kun je niet verplaatsen — equip eerst iets anders.",
+    "equippedNote": "Uitgerust, verplaatsen equipt automatisch eerst een ander item uit de inventory in dit slot.",
+    "cannotMoveEquipped": "Uitgeruste items kun je niet verplaatsen, equip eerst iets anders.",
     "failed": "Mislukt",
     "actionFailed": "Actie mislukt",
     "deequipFailed": "De-equip mislukt",
@@ -194,17 +194,17 @@
     "subclassSetup": "Subclass-setup",
     "statPriority": "Stat-prioriteit",
     "howItWorks": "Hoe werkt het?",
-    "sourceDetail": "Bron: {source} — verifieer/fine-tune op light.gg of Mobalytics.",
+    "sourceDetail": "Bron: {source}, verifieer/fine-tune op light.gg of Mobalytics.",
     "descGM": "Survivability, champion-coverage & add-clear",
     "descRaid": "Boss-DPS, support & add-clear",
     "descDungeon": "Solo-survivable & single-target",
-    "descTrials": "3v3 — duels & zone-control",
-    "descIronBanner": "6v6 — ability-heavy & objective",
-    "descCrucible": "Algemene PvP — duels & movement"
+    "descTrials": "3v3, duels & zone-control",
+    "descIronBanner": "6v6, ability-heavy & objective",
+    "descCrucible": "Algemene PvP, duels & movement"
   },
   "events": {
     "title": "Events Tracker",
-    "intro": "Resets, weekend-events en actieve milestones — met live afteltimers.",
+    "intro": "Resets, weekend-events en actieve milestones, met live afteltimers.",
     "schedule": "Schema",
     "thisWeek": "Deze week",
     "vendors": "Vendors",
@@ -249,7 +249,7 @@
   },
   "changelog": {
     "title": "Changelog",
-    "intro": "Destiny 2 updates, patches en rotaties — nieuwste bovenaan.",
+    "intro": "Destiny 2 updates, patches en rotaties, nieuwste bovenaan.",
     "patchNotes": "Officiële patch notes ↗"
   },
   "sandbox": {

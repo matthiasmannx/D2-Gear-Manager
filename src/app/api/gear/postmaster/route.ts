@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           error:
-            "Dit item kun je alleen in-game uit de postmaster halen — Bungie staat dit specifieke item niet toe via de API. Veel andere items pullen wél.",
+            "Dit item kun je alleen in-game uit de postmaster halen, Bungie staat dit specifieke item niet toe via de API. Veel andere items pullen wél.",
         },
         { status: 400 }
       );

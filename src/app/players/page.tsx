@@ -5,7 +5,7 @@ import { searchPlayers, icon, PLATFORMS, PlayerResult } from "@/lib/bungie";
 import { isLoggedIn } from "@/lib/auth";
 import { FavStar, FavoritesList } from "@/components/Favorites";
 
-export const metadata = { title: "Players — Guardian Hub" };
+export const metadata = { title: "Players · Guardian Hub" };
 
 export default async function PlayersPage({
   searchParams,

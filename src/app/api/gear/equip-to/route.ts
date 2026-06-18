@@ -3,7 +3,7 @@ import { getValidAccessToken } from "@/lib/auth";
 import { transferItem, equipItem } from "@/lib/bungie";
 
 /**
- * Equip een item op een character in één keer — ongeacht waar het nu staat.
+ * Equip een item op een character in één keer, ongeacht waar het nu staat.
  * Verplaatst het zo nodig eerst (andere character → vault → doel) en equipt het
  * dan. Equippen vervangt automatisch wat er in het slot zat; je hoeft dus niets
  * eerst te de-equippen.

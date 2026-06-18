@@ -1312,7 +1312,7 @@ input:focus {
   color: var(--accent);
   border-color: var(--accent);
 }
-/* Linksboven: gear-tier (T1–T5) + lock, naast elkaar */
+/* Linksboven: gear-tier (T1-T5) + lock, naast elkaar */
 .gear-tl {
   position: absolute;
   top: 1px;
@@ -1335,7 +1335,7 @@ input:focus {
   line-height: 1;
   text-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
 }
-/* My Profile — guardian-banners + outline-knop */
+/* My Profile, guardian-banners + outline-knop */
 .prof-guardian {
   min-height: 84px;
   display: flex;

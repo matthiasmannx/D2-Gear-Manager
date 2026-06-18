@@ -1,4 +1,4 @@
-/** Eén kleur per sectie — gebruikt in de nav én op de landingspagina-kaarten. */
+/** Eén kleur per sectie, gebruikt in de nav én op de landingspagina-kaarten. */
 export const SECTION_COLORS: Record<string, string> = {
   "/items": "#f5a623", // goud
   "/gear": "#4a9eff", // blauw

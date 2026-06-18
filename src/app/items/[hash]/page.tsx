@@ -100,7 +100,7 @@ export default async function ItemDetail({
         </div>
       )}
 
-      {/* God rolls voor wapens — inline uit de wishlist */}
+      {/* God rolls voor wapens, inline uit de wishlist */}
       {item.itemType === 3 && <GodRolls hash={item.hash} isExotic={item.tier === "Exotic"} />}
 
       {item.screenshot && (

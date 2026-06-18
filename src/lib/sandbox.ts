@@ -1,5 +1,5 @@
 /**
- * Sandbox changes (buffs & nerfs) per Bungie's patch notes. Editorial — the API
+ * Sandbox changes (buffs & nerfs) per Bungie's patch notes. Editorial, the API
  * doesn't provide this. Add new changes per update; fill `url` with the official
  * patch notes. Ask Claude "refresh the buffs and nerfs" to update via web
  * research. Content language: English.
@@ -44,7 +44,7 @@ export const SANDBOX_CHANGES: SandboxChange[] = [
   {
     subject: "Previously nerfed weapon",
     kind: "buff", category: "Weapons", version: "9.7.0", date: "2026-06-09", url: U970,
-    note: "Previous nerf reverted ~70% — combo damage and self-heal largely restored.",
+    note: "Previous nerf reverted ~70%, combo damage and self-heal largely restored.",
   },
   {
     subject: "Rocket Pulse",

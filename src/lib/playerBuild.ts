@@ -7,7 +7,7 @@ const ARMOR_STAT_NAMES = new Set(["Weapons", "Health", "Class", "Grenade", "Supe
 
 /**
  * Publieke "build"-weergave van een speler: huidige uitrusting + perks per
- * character (weapons, armor, subclass). Let op: dit is de ACTUELE uitrusting —
+ * character (weapons, armor, subclass). Let op: dit is de ACTUELE uitrusting -
  * de Bungie API bewaart niet welke build iemand in een specifieke match droeg.
  */
 

@@ -16,7 +16,7 @@
   "home": {
     "tag": "Powered by the Bungie API",
     "title": "Guardian Hub",
-    "intro": "Welcome, Guardian. Guardian Hub is your central hub for Destiny 2 — search items and god rolls, manage your gear and loadouts, track the weekly reset and events, study meta builds, and check your own and your fireteam's stats. Eyes up, Guardian: everything in one place, in your language.",
+    "intro": "Welcome, Guardian. Guardian Hub is your central hub for Destiny 2, search items and god rolls, manage your gear and loadouts, track the weekly reset and events, study meta builds, and check your own and your fireteam's stats. Eyes up, Guardian: everything in one place, in your language.",
     "open": "Open →",
     "error": "Something went wrong: {error}",
     "sections": {
@@ -25,9 +25,9 @@
       "builds": { "title": "Meta Builds", "desc": "Strongest PvE and PvP builds for the current seasonal meta." },
       "players": { "title": "Players", "desc": "Search players and view their K/D, wins, Trials, Iron Banner and Flawless count." },
       "events": { "title": "Events Tracker", "desc": "Weekly reset, milestones, vendors and active activities." },
-      "changelog": { "title": "Changelog", "desc": "Destiny 2 updates, patches and rotations — newest on top." },
-      "sandbox": { "title": "Buffs & Nerfs", "desc": "Sandbox changes per Bungie — buffs, nerfs and adjustments." },
-      "profile": { "title": "My Profile", "desc": "Your own guardians, stats and gear — visible when logged in." }
+      "changelog": { "title": "Changelog", "desc": "Destiny 2 updates, patches and rotations, newest on top." },
+      "sandbox": { "title": "Buffs & Nerfs", "desc": "Sandbox changes per Bungie, buffs, nerfs and adjustments." },
+      "profile": { "title": "My Profile", "desc": "Your own guardians, stats and gear, visible when logged in." }
     }
   },
   "players": {
@@ -39,7 +39,7 @@
     "hint": "Type (part of) a Bungie name to find players.",
     "searchFailed": "Search failed: {error}",
     "noResults": "No players found for “{query}”.",
-    "noResultsTip": "Tip: search by Bungie name, not the PSN gamertag — they can differ. Know the code? Try Name#1234 for an exact match.",
+    "noResultsTip": "Tip: search by Bungie name, not the PSN gamertag, they can differ. Know the code? Try Name#1234 for an exact match.",
     "platformType": "Type {n}",
     "back": "← Back to search",
     "unknownPlayer": "Unknown player",
@@ -89,7 +89,7 @@
     "viewBuild": "View build",
     "buildTitle": "Build",
     "buildBack": "← Back to stats",
-    "buildNote": "ℹ️ This is the player's current loadout. The Bungie API doesn't store which build someone used in a specific match — but this is usually what they're (still) running.",
+    "buildNote": "ℹ️ This is the player's current loadout. The Bungie API doesn't store which build someone used in a specific match, but this is usually what they're (still) running.",
     "buildLoadFailed": "Couldn't load the build (profile may be private)."
   },
   "items": {
@@ -107,7 +107,7 @@
     "noSource": "No specific source info available in the manifest. This item likely comes from general world drops or vendor engrams.",
     "exoticTrait": "Exotic trait",
     "godRolls": "God rolls",
-    "exoticNoRoll": "Exotic with fixed perks — there's no random \"god roll\". See the Exotic trait above.",
+    "exoticNoRoll": "Exotic with fixed perks, there's no random \"god roll\". See the Exotic trait above.",
     "noWishlist": "No wishlist roll known for this weapon.",
     "moreLightGg": "More details on light.gg ↗",
     "sourceNote": "Bungie's database usually lists one main source. See all current ways to get this item (updated each Destiny patch) on light.gg.",
@@ -123,18 +123,18 @@
     "loadouts": "Loadouts",
     "noLoadouts": "No saved loadouts",
     "loadoutTitle": "Equip \"{name}\" ({n} items)",
-    "loadoutTitleActive": "Active — Equip \"{name}\" ({n} items)",
+    "loadoutTitleActive": "Active, Equip \"{name}\" ({n} items)",
     "equipped": "Equipped",
     "onCharacter": "On character ({n})",
-    "postmaster": "Postmaster ({n}) — click for god roll & pull",
+    "postmaster": "Postmaster ({n}), click for god roll & pull",
     "postmasterEmpty": "Postmaster empty",
     "pull": "Pull to character",
     "equip": "Equip",
     "vault": "Vault",
     "lock": "Lock",
     "unlock": "Unlock",
-    "equippedNote": "Equipped — moving will automatically equip another item from the inventory in this slot first.",
-    "cannotMoveEquipped": "You can't move equipped items — equip something else first.",
+    "equippedNote": "Equipped, moving will automatically equip another item from the inventory in this slot first.",
+    "cannotMoveEquipped": "You can't move equipped items, equip something else first.",
     "failed": "Failed",
     "actionFailed": "Action failed",
     "deequipFailed": "De-equip failed",
@@ -194,17 +194,17 @@
     "subclassSetup": "Subclass setup",
     "statPriority": "Stat priority",
     "howItWorks": "How does it work?",
-    "sourceDetail": "Source: {source} — verify/fine-tune on light.gg or Mobalytics.",
+    "sourceDetail": "Source: {source}, verify/fine-tune on light.gg or Mobalytics.",
     "descGM": "Survivability, champion coverage & add-clear",
     "descRaid": "Boss DPS, support & add-clear",
     "descDungeon": "Solo-survivable & single-target",
-    "descTrials": "3v3 — duels & zone control",
-    "descIronBanner": "6v6 — ability-heavy & objective",
-    "descCrucible": "General PvP — duels & movement"
+    "descTrials": "3v3, duels & zone control",
+    "descIronBanner": "6v6, ability-heavy & objective",
+    "descCrucible": "General PvP, duels & movement"
   },
   "events": {
     "title": "Events Tracker",
-    "intro": "Resets, weekend events and active milestones — with live countdowns.",
+    "intro": "Resets, weekend events and active milestones, with live countdowns.",
     "schedule": "Schedule",
     "thisWeek": "This week",
     "vendors": "Vendors",
@@ -249,7 +249,7 @@
   },
   "changelog": {
     "title": "Changelog",
-    "intro": "Destiny 2 updates, patches and rotations — newest on top.",
+    "intro": "Destiny 2 updates, patches and rotations, newest on top.",
     "patchNotes": "Official patch notes ↗"
   },
   "sandbox": {

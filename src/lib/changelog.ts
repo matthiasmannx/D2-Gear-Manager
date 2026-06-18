@@ -1,5 +1,5 @@
 /**
- * Destiny 2 changelog — editorial. The Bungie API provides no patch notes, so
+ * Destiny 2 changelog, editorial. The Bungie API provides no patch notes, so
  * add new updates here (newest on top). Fill `url` with the official Bungie
  * patch notes or TWID. Content language: English.
  */
@@ -31,7 +31,7 @@ export const CHANGELOG: ChangeEntry[] = [
   {
     version: "9.7.0",
     date: "2026-06-09",
-    title: "Destiny 2 — Final Live Service Update",
+    title: "Destiny 2, Final Live Service Update",
     tag: "Major",
     summary:
       "The last major update for Destiny 2 with 71 pages of patch notes: Pantheon 2.0, countless bug fixes and balance changes.",
@@ -48,7 +48,7 @@ export const CHANGELOG: ChangeEntry[] = [
     title: "Every End is a New Beginning",
     tag: "Event",
     summary:
-      "Start of the Monument of Triumph era — the current meta the Meta Builds section is based on.",
+      "Start of the Monument of Triumph era, the current meta the Meta Builds section is based on.",
     highlights: [
       "New seasonal meta and armor tiers",
       "Reworked exotic traits and builds",

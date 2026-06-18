@@ -752,7 +752,7 @@ export default function GearBoard({
                       <Tile key={(it.instanceId ?? it.hash) + "-" + i} item={it} source={c.characterId} equipped={false} context="inventory" a={actions} />
                     ))
                   ) : (
-                    <span className="inv-empty">—</span>
+                    <span className="inv-empty">-</span>
                   )}
                 </div>
               </div>

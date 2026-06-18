@@ -6,7 +6,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 
 export const metadata: Metadata = {
-  title: "Guardian Hub — Destiny 2 Companion",
+  title: "Guardian Hub, Destiny 2 Companion",
   description:
     "Items, gear, events en gidsen voor Destiny 2, aangedreven door de Bungie API.",
 };

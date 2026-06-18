@@ -26,7 +26,7 @@ export interface ItemIndexEntry {
   classType: number;
 }
 
-// Gebundelde, vooraf gebouwde data (committen in de repo) — werkt op serverless
+// Gebundelde, vooraf gebouwde data (committen in de repo), werkt op serverless
 // zonder de 190MB-manifest te downloaden.
 const BUNDLED_DIR = path.join(process.cwd(), "data");
 const BUNDLED_INDEX = path.join(BUNDLED_DIR, "item-index-v3.json");
@@ -69,7 +69,7 @@ async function readCache(): Promise<CachedIndex | null> {
 }
 
 async function buildIndex(): Promise<CachedIndex> {
-  // 1. Gebundelde snapshot heeft voorrang — geen 190MB-download op de server.
+  // 1. Gebundelde snapshot heeft voorrang, geen 190MB-download op de server.
   try {
     const raw = await fs.readFile(BUNDLED_INDEX, "utf8");
     return JSON.parse(raw) as CachedIndex;

@@ -9,7 +9,7 @@ import { WEEKLY } from "@/lib/weekly";
 import EventSchedule, { IronBannerInfo } from "@/components/EventSchedule";
 import MilestoneBoard, { MilestoneView } from "@/components/MilestoneBoard";
 
-export const metadata = { title: "Events Tracker — Guardian Hub" };
+export const metadata = { title: "Events Tracker · Guardian Hub" };
 export const revalidate = 900; // 15 min
 
 interface RawMilestone {
@@ -32,7 +32,7 @@ export default async function EventsPage() {
     const list: RawMilestone[] = Object.values(data ?? {});
 
     // Eén parallelle golf per milestone: milestone-def + activity-def tegelijk.
-    // Groep (raid/dungeon) leiden we af uit de banner/naam — geen extra fetch.
+    // Groep (raid/dungeon) leiden we af uit de banner/naam, geen extra fetch.
     const built = await Promise.all(
       list.map(async (m): Promise<MilestoneView | null> => {
         const actHash = m.activities?.[0]?.activityHash;

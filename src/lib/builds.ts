@@ -1,9 +1,9 @@
 /**
- * Meta builds — editorial/community content. The Bungie API provides NO "meta"
+ * Meta builds, editorial/community content. The Bungie API provides NO "meta"
  * or "best build" data, so this is maintained here by hand.
  *
  * Recent community sources (June 2026, Armor 3.0 / Edge of Fate / Monument of
- * Triumph) — builds from after the stat rework. Stats: Weapons, Health, Class,
+ * Triumph), builds from after the stat rework. Stats: Weapons, Health, Class,
  * Grenade, Super, Melee. Each build tagged with the modes it's meant for.
  * Verify/fine-tune on light.gg, Mobalytics or blueberries.gg.
  *
@@ -41,7 +41,7 @@ export const BUILDS: Build[] = [
   // ============================ HUNTER ============================
   {
     id: "hunter-void-gyrfalcon",
-    name: "Void — Gyrfalcon's Hauberk (Nightstalker)",
+    name: "Void, Gyrfalcon's Hauberk (Nightstalker)",
     modes: ["GM", "Dungeon", "Raid"], guardianClass: "Hunter", subclass: "Void", tier: "S",
     summary: "The most reliable endgame Hunter: invisibility, volatile rounds, overshields and team buffs.",
     exoticArmor: "Gyrfalcon's Hauberk",
@@ -54,7 +54,7 @@ export const BUILDS: Build[] = [
   },
   {
     id: "hunter-celestial-stillhunt",
-    name: "Solar — Celestial Nighthawk + Still Hunt (DPS)",
+    name: "Solar, Celestial Nighthawk + Still Hunt (DPS)",
     modes: ["Raid", "Dungeon"], guardianClass: "Hunter", subclass: "Solar", tier: "S",
     summary: "Top-class single-target boss DPS via one massive Golden Gun shot.",
     exoticArmor: "Celestial Nighthawk",
@@ -68,7 +68,7 @@ export const BUILDS: Build[] = [
   },
   {
     id: "hunter-solar-crackshot",
-    name: "Solar — Crackshot Golden Gun",
+    name: "Solar, Crackshot Golden Gun",
     modes: ["GM", "Dungeon", "Raid"], guardianClass: "Hunter", subclass: "Solar", tier: "S",
     summary: "New Crackshot aspect: your class ability marks 3 targets + scorching shots, and heals you.",
     exoticArmor: "Star-Eater Scales",
@@ -81,7 +81,7 @@ export const BUILDS: Build[] = [
   },
   {
     id: "hunter-prismatic-specter",
-    name: "Prismatic — Threaded Specter",
+    name: "Prismatic, Threaded Specter",
     modes: ["Dungeon", "Raid", "GM"], guardianClass: "Hunter", subclass: "Prismatic", tier: "A",
     summary: "Transcendence uptime with clones, threadlings and on-demand ignitions.",
     exoticArmor: "Star-Eater Scales",
@@ -94,7 +94,7 @@ export const BUILDS: Build[] = [
   },
   {
     id: "hunter-solar-duelist",
-    name: "Solar — Crackshot Duelist",
+    name: "Solar, Crackshot Duelist",
     modes: ["Trials", "Crucible"], guardianClass: "Hunter", subclass: "Solar", tier: "S",
     summary: "Primary duels with radar control, heals and aggressive peeks.",
     exoticArmor: "Lucky Pants / St0mp-EE5",
@@ -107,7 +107,7 @@ export const BUILDS: Build[] = [
   },
   {
     id: "hunter-stompees",
-    name: "Arc — St0mp-EE5 Movement",
+    name: "Arc, St0mp-EE5 Movement",
     modes: ["Crucible", "IronBanner", "Trials"], guardianClass: "Hunter", subclass: "Arc", tier: "A",
     summary: "Maximum jump/slide + reduced airborne damage; force duels on your terms.",
     exoticArmor: "St0mp-EE5",
@@ -120,7 +120,7 @@ export const BUILDS: Build[] = [
   },
   {
     id: "hunter-sixthcoyote",
-    name: "Void — Sixth Coyote (Double Dodge)",
+    name: "Void, Sixth Coyote (Double Dodge)",
     modes: ["Trials", "Crucible"], guardianClass: "Hunter", subclass: "Void", tier: "A",
     summary: "Two dodges back to back for flanks, baits and invis plays.",
     exoticArmor: "Sixth Coyote",
@@ -135,7 +135,7 @@ export const BUILDS: Build[] = [
   // ============================ TITAN ============================
   {
     id: "titan-cuirass-thundercrash",
-    name: "Arc — Cuirass Thundercrash (DPS)",
+    name: "Arc, Cuirass Thundercrash (DPS)",
     modes: ["Raid", "Dungeon"], guardianClass: "Titan", subclass: "Arc", tier: "S",
     summary: "Burst-DPS Super that closes out boss damage phases.",
     exoticArmor: "Cuirass of the Falling Star",
@@ -148,9 +148,9 @@ export const BUILDS: Build[] = [
   },
   {
     id: "titan-solar-ashenwake",
-    name: "Solar — Ashen Wake Fusion Grenade",
+    name: "Solar, Ashen Wake Fusion Grenade",
     modes: ["GM", "Dungeon", "Raid"], guardianClass: "Titan", subclass: "Solar", tier: "S",
-    summary: "Insta-fusion grenades that ignite — massive add-clear with grenade spam.",
+    summary: "Insta-fusion grenades that ignite, massive add-clear with grenade spam.",
     exoticArmor: "Ashen Wake",
     aspects: ["Roaring Flames", "Sol Invictus"],
     fragments: ["Ember of Resolve", "Ember of Empyrean", "Ember of Torches", "Ember of Char"],
@@ -161,7 +161,7 @@ export const BUILDS: Build[] = [
   },
   {
     id: "titan-prismatic-hoil",
-    name: "Prismatic — Heart of Inmost Light",
+    name: "Prismatic, Heart of Inmost Light",
     modes: ["GM", "Raid", "Dungeon"], guardianClass: "Titan", subclass: "Prismatic", tier: "S",
     summary: "Ability economy for GMs: one ability empowers the other two.",
     exoticArmor: "Heart of Inmost Light",
@@ -174,7 +174,7 @@ export const BUILDS: Build[] = [
   },
   {
     id: "titan-arc-skullfort",
-    name: "Arc — Insurmountable Skullfort",
+    name: "Arc, Insurmountable Skullfort",
     modes: ["Dungeon", "GM"], guardianClass: "Titan", subclass: "Arc", tier: "A",
     summary: "Melee loop with heals: Thunderclap + One-Two Punch.",
     exoticArmor: "An Insurmountable Skullfort",
@@ -187,7 +187,7 @@ export const BUILDS: Build[] = [
   },
   {
     id: "titan-strand-wishful",
-    name: "Strand — Wishful Ignorance",
+    name: "Strand, Wishful Ignorance",
     modes: ["Dungeon", "Raid"], guardianClass: "Titan", subclass: "Strand", tier: "A",
     summary: "\"Green Man\": absurd melee damage with Frenzied Blade + Flechette Storm.",
     exoticArmor: "Wishful Ignorance",
@@ -200,7 +200,7 @@ export const BUILDS: Build[] = [
   },
   {
     id: "titan-hoil-pvp",
-    name: "Prismatic — Heart of Inmost Light (PvP)",
+    name: "Prismatic, Heart of Inmost Light (PvP)",
     modes: ["IronBanner", "Crucible", "Trials"], guardianClass: "Titan", subclass: "Prismatic", tier: "S",
     summary: "Ability spam under pressure: the best ability economy in Crucible.",
     exoticArmor: "Heart of Inmost Light",
@@ -213,7 +213,7 @@ export const BUILDS: Build[] = [
   },
   {
     id: "titan-void-bubble-pvp",
-    name: "Void — Bubble Support",
+    name: "Void, Bubble Support",
     modes: ["Trials", "IronBanner"], guardianClass: "Titan", subclass: "Void", tier: "A",
     summary: "Ward of Dawn as zone control + Weapons of Light.",
     exoticArmor: "Helm of Saint-14",
@@ -228,7 +228,7 @@ export const BUILDS: Build[] = [
   // ============================ WARLOCK ============================
   {
     id: "warlock-starfire-dps",
-    name: "Solar — Starfire Protocol (DPS)",
+    name: "Solar, Starfire Protocol (DPS)",
     modes: ["Raid", "Dungeon"], guardianClass: "Warlock", subclass: "Solar", tier: "S",
     summary: "Fusion grenade spam for high sustained boss DPS + ability energy.",
     exoticArmor: "Starfire Protocol",
@@ -241,7 +241,7 @@ export const BUILDS: Build[] = [
   },
   {
     id: "warlock-well-phoenix",
-    name: "Solar — Well of Radiance (Phoenix Protocol)",
+    name: "Solar, Well of Radiance (Phoenix Protocol)",
     modes: ["GM", "Raid", "Dungeon"], guardianClass: "Warlock", subclass: "Solar", tier: "S",
     summary: "Team-heal + damage-buff Well, available almost constantly.",
     exoticArmor: "Phoenix Protocol",
@@ -254,7 +254,7 @@ export const BUILDS: Build[] = [
   },
   {
     id: "warlock-prismatic-getaway",
-    name: "Prismatic — Getaway Artist",
+    name: "Prismatic, Getaway Artist",
     modes: ["GM", "Dungeon", "Raid"], guardianClass: "Warlock", subclass: "Prismatic", tier: "S",
     summary: "Constant Devour + Arc Soul + stasis-turret area denial.",
     exoticArmor: "Getaway Artist",
@@ -267,9 +267,9 @@ export const BUILDS: Build[] = [
   },
   {
     id: "warlock-void-contraverse",
-    name: "Void — Contraverse Devour (Solo)",
+    name: "Void, Contraverse Devour (Solo)",
     modes: ["GM", "Dungeon"], guardianClass: "Warlock", subclass: "Void", tier: "S",
-    summary: "Grenade spam with permanent Devour + damage resist — top for solo/endgame.",
+    summary: "Grenade spam with permanent Devour + damage resist, top for solo/endgame.",
     exoticArmor: "Contraverse Hold",
     aspects: ["Chaos Accelerant", "Feed the Void"],
     fragments: ["Echo of Persistence", "Echo of Undermining", "Echo of Instability", "Echo of Remnants"],
@@ -280,9 +280,9 @@ export const BUILDS: Build[] = [
   },
   {
     id: "warlock-solar-ophidian-pvp",
-    name: "Solar — Ophidian Dawnblade",
+    name: "Solar, Ophidian Dawnblade",
     modes: ["Trials", "Crucible", "IronBanner"], guardianClass: "Warlock", subclass: "Solar", tier: "S",
-    summary: "Snappy weapon handling + restoration heals after duels — a safe all-rounder.",
+    summary: "Snappy weapon handling + restoration heals after duels, a safe all-rounder.",
     exoticArmor: "Ophidian Aspect",
     aspects: ["Heat Rises", "Touch of Flame"],
     fragments: ["Ember of Torches", "Ember of Solace", "Ember of Searing"],
@@ -293,7 +293,7 @@ export const BUILDS: Build[] = [
   },
   {
     id: "warlock-stasis-osmiomancy-pvp",
-    name: "Stasis — Osmiomancy Coldsnap",
+    name: "Stasis, Osmiomancy Coldsnap",
     modes: ["Trials", "IronBanner", "Crucible"], guardianClass: "Warlock", subclass: "Stasis", tier: "A",
     summary: "Coldsnap grenades as unmatched shutdown + freeze control.",
     exoticArmor: "Osmiomancy Gloves",

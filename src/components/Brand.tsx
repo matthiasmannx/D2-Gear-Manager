@@ -1,6 +1,6 @@
 /**
  * Origineel Guardian Hub-wordmerk: ⟡ + "Guardian" (wit) + "Hub" in een oranje
- * badge. Eigen vormgeving — geen overgenomen huisstijl.
+ * badge. Eigen vormgeving, geen overgenomen huisstijl.
  */
 export default function Brand({ collapsible = false }: { collapsible?: boolean }) {
   return (

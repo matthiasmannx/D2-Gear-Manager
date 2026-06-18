@@ -59,7 +59,7 @@ export default function EventSchedule({ ironBanner }: { ironBanner: IronBannerIn
         ) : ironBanner.nextDate ? (
           <Countdown to={ironBanner.nextDate} />
         ) : (
-          <span className="cd muted">—</span>
+          <span className="cd muted">-</span>
         )}
       </Card>
 

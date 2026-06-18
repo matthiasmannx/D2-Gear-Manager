@@ -9,7 +9,7 @@ import {
   PvpStatsResult,
 } from "@/lib/bungie";
 
-export const metadata = { title: "My Profile — Guardian Hub" };
+export const metadata = { title: "My Profile · Guardian Hub" };
 
 const CLASS_NAMES: Record<number, string> = { 0: "Titan", 1: "Hunter", 2: "Warlock", 3: "Guardian" };
 const CLASS_COLOR: Record<number, string> = { 0: "#e0564b", 1: "#4aa3c7", 2: "#e8a13a", 3: "#888" };
@@ -63,9 +63,9 @@ export default async function ProfilePage() {
 
       {/* Top stats */}
       <div className="stat-cards">
-        <BigStat label={t("statKd")} value={h?.kd ?? "—"} accent />
-        <BigStat label={t("statWinRate")} value={h?.winRate ?? "—"} />
-        <BigStat label={t("statFlawless")} value={extras.flawlessCount ?? "—"} accent />
+        <BigStat label={t("statKd")} value={h?.kd ?? "-"} accent />
+        <BigStat label={t("statWinRate")} value={h?.winRate ?? "-"} />
+        <BigStat label={t("statFlawless")} value={extras.flawlessCount ?? "-"} accent />
         {extras.ranks.map((r) => (
           <BigStat key={r.label} label={r.label} value={r.rankName} small />
         ))}

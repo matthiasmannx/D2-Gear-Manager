@@ -3,7 +3,7 @@ import { loadGear, GearData } from "@/lib/gear";
 import GearBoard from "@/components/GearBoard";
 import { getTranslations } from "next-intl/server";
 
-export const metadata = { title: "Gear — Guardian Hub" };
+export const metadata = { title: "Gear · Guardian Hub" };
 
 export default async function GearPage() {
   const t = await getTranslations("gear");
