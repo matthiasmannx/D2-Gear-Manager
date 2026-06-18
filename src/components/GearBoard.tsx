@@ -22,6 +22,7 @@ interface Item {
   power?: number;
   itemLevel?: number;
   energy?: number;
+  gearTier?: number;
   locked: boolean;
   masterwork: boolean;
   stats: ItemStat[];
@@ -162,7 +163,14 @@ function Tile({
           <div className="gear-tile-empty" />
         )}
         {item.power != null && <span className="gear-power">{item.power}</span>}
-        {item.locked && <span className="gear-lock" title="Locked">🔒</span>}
+        {(item.locked || (item.gearTier ?? 0) > 0) && (
+          <span className="gear-tl">
+            {(item.gearTier ?? 0) > 0 && (
+              <span className="gear-tier-badge" title={`Gear Tier ${item.gearTier}`}>T{item.gearTier}</span>
+            )}
+            {item.locked && <span className="gear-lock-i" title="Locked">🔒</span>}
+          </span>
+        )}
         {item.masterwork && <span className="gear-mw" title="Masterwork">MW</span>}
         {isFav && <span className="gear-fav" title={t("favorite")}>★</span>}
       </button>
@@ -190,6 +198,7 @@ function Tile({
           <div className="gear-panel-stats">
             {item.power != null && <div className="ih-stat"><span>Power</span><b>{item.power}</b></div>}
             {item.itemLevel != null && <div className="ih-stat"><span>Level</span><b>{item.itemLevel}</b></div>}
+            {(item.gearTier ?? 0) > 0 && <div className="ih-stat"><span>Gear Tier</span><b>T{item.gearTier}</b></div>}
             {item.energy != null && <div className="ih-stat"><span>Energie</span><b>{item.energy}</b></div>}
             {(item.locked || item.masterwork) && (
               <div className="ih-stat"><span>Status</span><b>{[item.masterwork && "Masterwork", item.locked && "Locked 🔒"].filter(Boolean).join(", ")}</b></div>

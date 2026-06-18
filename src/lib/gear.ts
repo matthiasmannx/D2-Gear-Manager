@@ -41,6 +41,8 @@ export interface GearItem {
   power?: number;
   itemLevel?: number;
   energy?: number;
+  /** Nieuwe gear-tier (1–5) uit de instance; 0/undefined = geen tier (oude gear). */
+  gearTier?: number;
   locked: boolean;
   masterwork: boolean;
   stats: ItemStat[];
@@ -142,6 +144,7 @@ export async function loadGear(token: string): Promise<GearData | null> {
       power: inst?.primaryStat?.value,
       itemLevel: inst?.itemLevel,
       energy: inst?.energy?.energyCapacity,
+      gearTier: inst?.gearTier,
       locked: (state & STATE_LOCKED) !== 0,
       masterwork: (state & STATE_MASTERWORK) !== 0,
       stats,
