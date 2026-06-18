@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
+import { Loading } from "@/components/Skeleton";
 import { getItemDetail } from "@/lib/itemDetail";
 
 const CLASS_NAMES: Record<number, string> = { 0: "Titan", 1: "Hunter", 2: "Warlock" };
@@ -17,33 +19,33 @@ export default async function ItemDetail({
   params: Promise<{ hash: string }>;
 }) {
   const { hash } = await params;
+  return (
+    <>
+      <BackLink />
+      <Suspense fallback={<Loading head cards={0} rows={3} />}>
+        <ItemBody hash={hash} />
+      </Suspense>
+    </>
+  );
+}
+
+async function ItemBody({ hash }: { hash: string }) {
   const t = await getTranslations("items");
 
   let item;
   try {
     item = await getItemDetail(hash);
   } catch (e: any) {
-    return (
-      <>
-        <BackLink />
-        <div className="notice error">{t("loadFailed", { error: e.message })}</div>
-      </>
-    );
+    return <div className="notice error">{t("loadFailed", { error: e.message })}</div>;
   }
   if (!item) {
-    return (
-      <>
-        <BackLink />
-        <div className="empty">{t("notFound")}</div>
-      </>
-    );
+    return <div className="empty">{t("notFound")}</div>;
   }
 
   const color = TIER_COLOR[item.tier] ?? "var(--text)";
 
   return (
     <>
-      <BackLink />
       <div className="idetail-head">
         {item.icon && (
           // eslint-disable-next-line @next/next/no-img-element

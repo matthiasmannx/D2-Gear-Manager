@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 import { listBuilds, SortKey } from "@/lib/communityBuilds";
 import { dbConfigured } from "@/lib/db";
 import { isLoggedIn } from "@/lib/auth";
 import BuildCard from "@/components/BuildCard";
 import BuildFilters from "@/components/BuildFilters";
+import { Loading } from "@/components/Skeleton";
 
 export const dynamic = "force-dynamic";
 
@@ -19,11 +21,6 @@ export default async function CommunityPage({
   const t = await getTranslations("community");
   const sort = (SORTS.includes(sp.sort as SortKey) ? sp.sort : "trending") as SortKey;
   const loggedIn = await isLoggedIn();
-
-  const labels = { by: t("by"), views: t("views"), verifiedBadge: t("verifiedBadge"), featuredBadge: t("featuredBadge") };
-  const builds = dbConfigured()
-    ? await listBuilds({ sort, guardianClass: sp.class, subclass: sp.subclass, activity: sp.activity })
-    : [];
 
   const qs = (extra: Record<string, string | undefined>) => {
     const p = new URLSearchParams();
@@ -57,13 +54,23 @@ export default async function CommunityPage({
 
       <BuildFilters labels={{ anyClass: t("anyClass"), anySubclass: t("anySubclass"), anyActivity: t("anyActivity"), clear: t("clearFilters") }} />
 
-      {builds.length === 0 ? (
-        <p className="muted" style={{ marginTop: "1.5rem" }}>{dbConfigured() ? t("empty") : ""}</p>
-      ) : (
-        <div className="bc-grid">
-          {builds.map((b) => <BuildCard key={b.id} build={b} labels={labels} />)}
-        </div>
+      {dbConfigured() && (
+        <Suspense key={`${sort}:${sp.class ?? ""}:${sp.subclass ?? ""}:${sp.activity ?? ""}`} fallback={<Loading head={false} cards={6} rows={0} />}>
+          <BuildList sort={sort} guardianClass={sp.class} subclass={sp.subclass} activity={sp.activity} />
+        </Suspense>
       )}
+    </div>
+  );
+}
+
+async function BuildList({ sort, guardianClass, subclass, activity }: { sort: SortKey; guardianClass?: string; subclass?: string; activity?: string }) {
+  const t = await getTranslations("community");
+  const labels = { by: t("by"), views: t("views"), verifiedBadge: t("verifiedBadge"), featuredBadge: t("featuredBadge") };
+  const builds = await listBuilds({ sort, guardianClass, subclass, activity });
+  if (builds.length === 0) return <p className="muted" style={{ marginTop: "1.5rem" }}>{t("empty")}</p>;
+  return (
+    <div className="bc-grid">
+      {builds.map((b) => <BuildCard key={b.id} build={b} labels={labels} />)}
     </div>
   );
 }

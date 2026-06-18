@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 import SearchBar from "@/components/SearchBar";
+import { Loading } from "@/components/Skeleton";
 import { searchPlayers, icon, PLATFORMS, PlayerResult } from "@/lib/bungie";
 import { isLoggedIn } from "@/lib/auth";
 import { FavStar, FavoritesList } from "@/components/Favorites";
@@ -30,7 +32,13 @@ export default async function PlayersPage({
 
       <SearchBar basePath="/players" initial={q} placeholder={t("searchPlaceholder")} />
       <FavoritesList />
-      {q ? <Results query={q} /> : <Hint />}
+      {q ? (
+        <Suspense key={q} fallback={<Loading head={false} cards={0} rows={4} />}>
+          <Results query={q} />
+        </Suspense>
+      ) : (
+        <Hint />
+      )}
     </>
   );
 }

@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { getTranslations, getLocale } from "next-intl/server";
+import { Loading } from "@/components/Skeleton";
 import { getMatchReport, MatchReport, MatchTeam } from "@/lib/bungie";
 
 export const metadata = { title: "Match · Guardian Hub" };
@@ -10,6 +12,20 @@ export default async function MatchPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const t = await getTranslations("players");
+  return (
+    <>
+      <Link href="/players" className="muted" style={{ display: "inline-block", marginBottom: "1rem" }}>
+        {t("matchBack")}
+      </Link>
+      <Suspense fallback={<Loading head cards={0} rows={2} />}>
+        <MatchBody id={id} />
+      </Suspense>
+    </>
+  );
+}
+
+async function MatchBody({ id }: { id: string }) {
   const t = await getTranslations("players");
   const locale = await getLocale();
 
@@ -23,10 +39,6 @@ export default async function MatchPage({
 
   return (
     <>
-      <Link href="/players" className="muted" style={{ display: "inline-block", marginBottom: "1rem" }}>
-        {t("matchBack")}
-      </Link>
-
       {error || !report ? (
         <>
           <h1>{t("matchTitle")}</h1>

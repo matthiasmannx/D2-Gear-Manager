@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { getTranslations, getLocale } from "next-intl/server";
+import { Loading } from "@/components/Skeleton";
 import { getValidAccessToken } from "@/lib/auth";
 import {
   getMemberships,
@@ -15,6 +17,14 @@ const CLASS_NAMES: Record<number, string> = { 0: "Titan", 1: "Hunter", 2: "Warlo
 const CLASS_COLOR: Record<number, string> = { 0: "#e0564b", 1: "#4aa3c7", 2: "#e8a13a", 3: "#888" };
 
 export default async function ProfilePage() {
+  return (
+    <Suspense fallback={<Loading cards={4} rows={3} />}>
+      <ProfileContent />
+    </Suspense>
+  );
+}
+
+async function ProfileContent() {
   const t = await getTranslations("profile");
   const tp = await getTranslations("players");
   const locale = await getLocale();

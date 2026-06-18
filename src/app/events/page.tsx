@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
+import { Loading } from "@/components/Skeleton";
 import { getPublicMilestones, getEntityDefinition, icon } from "@/lib/bungie";
 import { lookupItems } from "@/lib/manifest";
 import { getValidAccessToken } from "@/lib/auth";
@@ -22,6 +24,25 @@ interface RawMilestone {
 }
 
 export default async function EventsPage() {
+  const t = await getTranslations("events");
+  return (
+    <>
+      <h1>{t("title")}</h1>
+      <p className="muted">{t("intro")}</p>
+      <Suspense fallback={<Loading cards={3} rows={2} />}>
+        <MilestonesSection />
+      </Suspense>
+      <Suspense fallback={null}>
+        <ThisWeek />
+      </Suspense>
+      <Suspense fallback={<Loading head={false} cards={0} rows={3} />}>
+        <Vendors />
+      </Suspense>
+    </>
+  );
+}
+
+async function MilestonesSection() {
   const t = await getTranslations("events");
   let milestones: MilestoneView[] = [];
   let ironBanner: IronBannerInfo = { active: false };
@@ -110,14 +131,9 @@ export default async function EventsPage() {
 
   return (
     <>
-      <h1>{t("title")}</h1>
-      <p className="muted">{t("intro")}</p>
-
-      {/* Schedule als allereerste */}
       <h2 style={{ marginTop: "1.25rem" }}>{t("schedule")}</h2>
       <EventSchedule ironBanner={ironBanner} />
 
-      {/* Daarna de active milestones */}
       <h2 style={{ marginTop: "2rem" }}>{t("activeMilestones")}</h2>
       {loadError ? (
         <div className="notice error">{t("milestonesFailed", { error: loadError })}</div>
@@ -126,11 +142,6 @@ export default async function EventsPage() {
       ) : (
         <MilestoneBoard milestones={milestones} />
       )}
-
-      <ThisWeek />
-
-      {/* Vendors (vereist login) */}
-      <Vendors />
     </>
   );
 }
