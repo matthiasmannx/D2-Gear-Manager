@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { createBuildAction } from "@/app/community/actions";
+import { PlugInput, PlugChips } from "@/components/PlugInput";
 import type { BuildLoadout, BuildStats, BuildWeapon, CommunityBuildInput, WeaponPerks } from "@/lib/communityBuilds";
 
 const CLASSES = ["Titan", "Hunter", "Warlock"];
@@ -10,11 +11,11 @@ const SUBCLASSES = ["Solar", "Arc", "Void", "Strand", "Stasis", "Prismatic"];
 const ACTIVITIES = ["PvE", "PvP", "Raid", "Dungeon", "Solo", "GM Nightfall"];
 const STAT_KEYS: (keyof BuildStats)[] = ["Weapons", "Health", "Class", "Grenade", "Melee", "Super"];
 const ARMOR_PIECES = ["Helmet", "Arms", "Chest", "Legs", "Class Item"];
-const ABILITY_SLOTS: { key: "classAbility" | "movement" | "grenade" | "melee"; label: string }[] = [
-  { key: "classAbility", label: "Class Ability" },
-  { key: "movement", label: "Movement" },
-  { key: "grenade", label: "Grenade" },
-  { key: "melee", label: "Melee" },
+const ABILITY_SLOTS: { key: "classAbility" | "movement" | "grenade" | "melee"; label: string; cat: string }[] = [
+  { key: "classAbility", label: "Class Ability", cat: "classability" },
+  { key: "movement", label: "Movement", cat: "movement" },
+  { key: "grenade", label: "Grenade", cat: "grenade" },
+  { key: "melee", label: "Melee", cat: "melee" },
 ];
 
 interface ItemHit {
@@ -131,7 +132,7 @@ export default function BuildCreator({ forkOf, initial }: { forkOf?: string; ini
         </div>
 
         <label className="cb-label">{t("fSuper")}</label>
-        <input className="cb-input" value={superName} onChange={(e) => setSuperName(e.target.value)} placeholder={t("fSuperPh")} maxLength={80} />
+        <PlugInput cat="super" value={superName} onChange={setSuperName} placeholder={t("fSuperPh")} />
       </section>
 
       <section className="card cb-section">
@@ -165,18 +166,24 @@ export default function BuildCreator({ forkOf, initial }: { forkOf?: string; ini
 
       <section className="card cb-section">
         <div className="cb-row">
-          <ChipInput label={t("fAspects")} chips={aspects} setChips={setAspects} placeholder={t("chipPh")} max={4} />
-          <ChipInput label={t("fFragments")} chips={fragments} setChips={setFragments} placeholder={t("chipPh")} max={8} />
+          <div>
+            <label className="cb-label">{t("fAspects")} <span className="muted">({aspects.length}/2)</span></label>
+            <PlugChips cat="aspect" chips={aspects} setChips={setAspects} max={2} placeholder={t("searchPh")} />
+          </div>
+          <div>
+            <label className="cb-label">{t("fFragments")} <span className="muted">({fragments.length}/5)</span></label>
+            <PlugChips cat="fragment" chips={fragments} setChips={setFragments} max={5} placeholder={t("searchPh")} />
+          </div>
         </div>
       </section>
 
       <section className="card cb-section">
         <h2>{t("fAbilities")}</h2>
         <div className="cb-stats">
-          {ABILITY_SLOTS.map(({ key, label }) => (
+          {ABILITY_SLOTS.map(({ key, label, cat }) => (
             <label key={key} className="cb-stat">
               <span>{label}</span>
-              <input className="cb-input cb-perk" maxLength={60} value={abilities[key] ?? ""} placeholder={label} onChange={(e) => setAbilities((a) => ({ ...a, [key]: e.target.value }))} />
+              <PlugInput cat={cat} value={abilities[key] ?? ""} placeholder={label} onChange={(v) => setAbilities((a) => ({ ...a, [key]: v }))} />
             </label>
           ))}
         </div>
@@ -189,16 +196,15 @@ export default function BuildCreator({ forkOf, initial }: { forkOf?: string; ini
             <span className="cb-mod-piece">{piece}</span>
             <div className="cb-perks">
               {[0, 1, 2].map((i) => (
-                <input
+                <PlugInput
                   key={i}
-                  className="cb-input cb-perk"
-                  maxLength={60}
+                  cat="armormod"
                   value={mods[piece]?.[i] ?? ""}
                   placeholder={`${t("fMods")} ${i + 1}`}
-                  onChange={(e) => {
+                  onChange={(v) => {
                     setMods((m) => {
                       const arr = [...(m[piece] ?? ["", "", ""])];
-                      arr[i] = e.target.value;
+                      arr[i] = v;
                       return { ...m, [piece]: arr };
                     });
                   }}
@@ -210,7 +216,8 @@ export default function BuildCreator({ forkOf, initial }: { forkOf?: string; ini
       </section>
 
       <section className="card cb-section">
-        <ChipInput label={t("fArtifact")} chips={artifact} setChips={setArtifact} placeholder={t("chipPh")} max={12} />
+        <label className="cb-label">{t("fArtifact")} <span className="muted">({artifact.length}/12)</span></label>
+        <PlugChips chips={artifact} setChips={setArtifact} max={12} placeholder={t("searchPh")} />
       </section>
 
       {error && <div className="notice error">{error}</div>}
@@ -261,14 +268,7 @@ function PerksRow({ value, onChange }: { value: WeaponPerks; onChange: (v: Weapo
   return (
     <div className="cb-perks">
       {PERK_SLOTS.map(({ key, label }) => (
-        <input
-          key={key}
-          className="cb-input cb-perk"
-          value={value[key] ?? ""}
-          maxLength={60}
-          placeholder={label}
-          onChange={(e) => onChange({ ...value, [key]: e.target.value })}
-        />
+        <PlugInput key={key} cat="weaponperk" value={value[key] ?? ""} placeholder={label} onChange={(v) => onChange({ ...value, [key]: v })} />
       ))}
     </div>
   );
@@ -320,22 +320,3 @@ function ItemSearch({ kind, label, value, onPick, placeholder }: { kind: "weapon
   );
 }
 
-function ChipInput({ label, chips, setChips, placeholder, max }: { label: string; chips: string[]; setChips: (x: string[]) => void; placeholder: string; max: number }) {
-  const [v, setV] = useState("");
-  function add() {
-    const x = v.trim();
-    if (x && chips.length < max && !chips.includes(x)) setChips([...chips, x]);
-    setV("");
-  }
-  return (
-    <div>
-      <label className="cb-label">{label} <span className="muted">({chips.length}/{max})</span></label>
-      <div className="cb-chips">
-        {chips.map((c) => (
-          <span key={c} className="cb-chip on">{c}<button type="button" className="cb-clear" onClick={() => setChips(chips.filter((x) => x !== c))}>×</button></span>
-        ))}
-      </div>
-      <input className="cb-input" value={v} onChange={(e) => setV(e.target.value)} placeholder={placeholder} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); add(); } }} />
-    </div>
-  );
-}
