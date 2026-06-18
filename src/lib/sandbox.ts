@@ -1,8 +1,8 @@
 /**
- * Sandbox-wijzigingen (buffs & nerfs) volgens Bungie's patch notes. Redactioneel
- * — de API levert dit niet. Voeg nieuwe wijzigingen toe per update; vul `url`
- * met de officiële patchnotes. Vraag Claude "ververs de buffs en nerfs" om dit
- * via web-research bij te werken.
+ * Sandbox changes (buffs & nerfs) per Bungie's patch notes. Editorial — the API
+ * doesn't provide this. Add new changes per update; fill `url` with the official
+ * patch notes. Ask Claude "refresh the buffs and nerfs" to update via web
+ * research. Content language: English.
  */
 
 export type ChangeKind = "buff" | "nerf" | "change";
@@ -10,7 +10,7 @@ export type ChangeKind = "buff" | "nerf" | "change";
 export interface SandboxChange {
   subject: string;
   kind: ChangeKind;
-  category: "Wapens" | "Abilities" | "Exotics" | "Crucible" | "Overig";
+  category: "Weapons" | "Abilities" | "Exotics" | "Crucible" | "Other";
   note: string;
   version: string;
   date: string; // YYYY-MM-DD
@@ -20,40 +20,40 @@ export interface SandboxChange {
 const U970 = "https://www.bungie.net/7/en/News/Article/destiny_update_9_7_0";
 
 export const SANDBOX_CHANGES: SandboxChange[] = [
-  // --- Update 9.7.0 (archetype-niveau uit de patch notes) ---
+  // --- Update 9.7.0 (archetype-level from the patch notes) ---
   {
     subject: "Lightweight Pulse Rifles",
-    kind: "nerf", category: "Wapens", version: "9.7.0", date: "2026-06-09", url: U970,
-    note: "Base- en critical damage verlaagd.",
+    kind: "nerf", category: "Weapons", version: "9.7.0", date: "2026-06-09", url: U970,
+    note: "Base and critical damage reduced.",
   },
   {
     subject: "Rapid-Fire Scout Rifles",
-    kind: "nerf", category: "Wapens", version: "9.7.0", date: "2026-06-09", url: U970,
-    note: "Damage verlaagd.",
+    kind: "nerf", category: "Weapons", version: "9.7.0", date: "2026-06-09", url: U970,
+    note: "Damage reduced.",
   },
   {
     subject: "Aggressive Hand Cannons",
-    kind: "nerf", category: "Wapens", version: "9.7.0", date: "2026-06-09", url: U970,
-    note: "Kleine damage-afname.",
+    kind: "nerf", category: "Weapons", version: "9.7.0", date: "2026-06-09", url: U970,
+    note: "Small damage decrease.",
   },
   {
-    subject: "Charge-wapen (PvE)",
-    kind: "buff", category: "Wapens", version: "9.7.0", date: "2026-06-09", url: U970,
-    note: "+20% charge rate en +20% impact-damage van geladen schoten (alleen PvE).",
+    subject: "Charge weapon (PvE)",
+    kind: "buff", category: "Weapons", version: "9.7.0", date: "2026-06-09", url: U970,
+    note: "+20% charge rate and +20% impact damage on charged shots (PvE only).",
   },
   {
-    subject: "Eerder generfd wapen",
-    kind: "buff", category: "Wapens", version: "9.7.0", date: "2026-06-09", url: U970,
-    note: "Vorige nerf ~70% teruggedraaid — combo-damage en self-heal grotendeels hersteld.",
+    subject: "Previously nerfed weapon",
+    kind: "buff", category: "Weapons", version: "9.7.0", date: "2026-06-09", url: U970,
+    note: "Previous nerf reverted ~70% — combo damage and self-heal largely restored.",
   },
   {
     subject: "Rocket Pulse",
-    kind: "change", category: "Wapens", version: "9.7.0", date: "2026-06-09", url: U970,
-    note: "+11% Anticipation per punt damage ter compensatie van een damage-nerf.",
+    kind: "change", category: "Weapons", version: "9.7.0", date: "2026-06-09", url: U970,
+    note: "+11% Anticipation per point of damage to offset a damage nerf.",
   },
   {
-    subject: "Weapon trait buff-prioriteit",
-    kind: "change", category: "Overig", version: "9.7.0", date: "2026-06-09", url: U970,
-    note: "Belangrijkere buffs worden minder snel weggedrukt; perk-HUD buffs vereisen nu het actieve wapen.",
+    subject: "Weapon trait buff priority",
+    kind: "change", category: "Other", version: "9.7.0", date: "2026-06-09", url: U970,
+    note: "More important buffs are overwritten less easily; perk HUD buffs now require the active weapon.",
   },
 ];

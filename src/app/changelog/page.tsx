@@ -7,7 +7,7 @@ const TAG_COLOR: Record<string, string> = {
   Major: "#f5a623",
   Hotfix: "#4a9eff",
   Event: "#e0564b",
-  Rotatie: "#38d39f",
+  Rotation: "#38d39f",
 };
 
 export default async function ChangelogPage() {
