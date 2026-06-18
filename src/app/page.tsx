@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { sectionColor } from "@/lib/sectionColors";
 import Brand from "@/components/Brand";
 import BuildCard from "@/components/BuildCard";
-import { listBuilds } from "@/lib/communityBuilds";
+import { getTrendingBuilds } from "@/lib/communityBuilds";
 import { dbConfigured } from "@/lib/db";
 
 const SECTION_KEYS = ["items", "gear", "builds", "community", "players", "profile", "events", "changelog"] as const;
@@ -52,7 +52,7 @@ export default async function Home({
 
 async function TrendingBuilds() {
   if (!dbConfigured()) return null;
-  const builds = await listBuilds({ sort: "trending", limit: 3 });
+  const builds = await getTrendingBuilds(3);
   if (builds.length === 0) return null;
   const t = await getTranslations("community");
   const labels = { by: t("by"), views: t("views"), verifiedBadge: t("verifiedBadge"), featuredBadge: t("featuredBadge") };

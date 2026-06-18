@@ -89,6 +89,11 @@ export async function ensureSchema(): Promise<void> {
   await sql`CREATE INDEX IF NOT EXISTS idx_likes_build ON build_likes (build_id)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_favs_build ON build_favorites (build_id)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_likes_recent ON build_likes (created_at)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_favs_recent ON build_favorites (created_at)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_builds_author ON builds (author_id)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_builds_created ON builds (created_at DESC)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_builds_verified ON builds (verified)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_builds_class ON builds (guardian_class, subclass)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_builds_activities ON builds USING GIN (activities)`;
   schemaReady = true;
 }

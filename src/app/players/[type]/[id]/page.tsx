@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import {
   getPvpStats,
   getPvpModes,
@@ -24,6 +25,20 @@ export default async function PlayerStats({
   params: Promise<{ type: string; id: string }>;
 }) {
   const { type, id } = await params;
+  const t = await getTranslations("players");
+  return (
+    <>
+      <Link href="/players" className="muted" style={{ display: "inline-block", marginBottom: "1rem" }}>
+        {t("back")}
+      </Link>
+      <Suspense fallback={<PlayerSkeleton label={t("pvpStats")} />}>
+        <PlayerBody type={type} id={id} />
+      </Suspense>
+    </>
+  );
+}
+
+async function PlayerBody({ type, id }: { type: string; id: string }) {
   const mType = Number(type);
   const token = await getValidAccessToken();
   const t = await getTranslations("players");
@@ -52,9 +67,6 @@ export default async function PlayerStats({
 
   return (
     <>
-      <Link href="/players" className="muted" style={{ display: "inline-block", marginBottom: "1rem" }}>
-        {t("back")}
-      </Link>
       <div className="player-head">
         {extras.emblemPath && (
           // eslint-disable-next-line @next/next/no-img-element
@@ -204,6 +216,31 @@ export default async function PlayerStats({
         <div className="empty">{t("noPvp")}</div>
       )}
     </>
+  );
+}
+
+function PlayerSkeleton({ label }: { label: string }) {
+  return (
+    <div className="player-skel" aria-busy="true">
+      <div className="player-head">
+        <div className="skel skel-emblem" />
+        <div style={{ flex: 1 }}>
+          <div className="skel skel-line" style={{ width: "40%", height: "1.6rem" }} />
+          <div className="skel skel-line muted" style={{ width: "20%", marginTop: "0.5rem" }} />
+        </div>
+      </div>
+      <div className="muted" style={{ fontSize: "0.85rem", margin: "0.5rem 0 1rem" }}>{label}…</div>
+      <div className="stat-cards">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="card big-stat"><div className="skel skel-line" style={{ width: "60%" }} /><div className="skel skel-line" style={{ width: "40%", height: "1.8rem", marginTop: "0.5rem" }} /></div>
+        ))}
+      </div>
+      <div className="section-list" style={{ marginTop: "1.5rem" }}>
+        {Array.from({ length: 3 }).map((_, i) => (
+          <div key={i} className="card"><div className="skel skel-line" style={{ width: "50%", height: "1.2rem" }} /><div className="skel skel-line" style={{ width: "80%", marginTop: "0.6rem" }} /><div className="skel skel-line" style={{ width: "70%", marginTop: "0.4rem" }} /></div>
+        ))}
+      </div>
+    </div>
   );
 }
 

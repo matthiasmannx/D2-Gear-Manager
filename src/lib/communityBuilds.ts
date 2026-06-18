@@ -1,6 +1,9 @@
 import "server-only";
 import { randomUUID } from "crypto";
+import { unstable_cache } from "next/cache";
 import { sql, ensureSchema, dbConfigured } from "./db";
+
+export const BUILDS_TAG = "community-builds";
 
 export interface BuildWeapon {
   hash?: number;
@@ -109,7 +112,19 @@ export async function listBuilds(filters: BuildFilters = {}): Promise<CommunityB
   if (filters.authorId) { params.push(filters.authorId); where.push(`b.author_id = $${params.length}`); }
   const whereSql = where.length ? `WHERE ${where.join(" AND ")}` : "";
 
-  const text = `SELECT b.*, ${COUNT_COLS} FROM builds b ${whereSql}`;
+  // Aggregaten één keer per groep berekenen (i.p.v. 4 subqueries per rij).
+  const text = `
+    SELECT b.*,
+      COALESCE(l.c, 0)::int  AS likes,
+      COALESCE(f.c, 0)::int  AS favorites,
+      COALESCE(l7.c, 0)::int AS likes7,
+      COALESCE(f7.c, 0)::int AS favs7
+    FROM builds b
+    LEFT JOIN (SELECT build_id, count(*) c FROM build_likes GROUP BY build_id) l ON l.build_id = b.id
+    LEFT JOIN (SELECT build_id, count(*) c FROM build_favorites GROUP BY build_id) f ON f.build_id = b.id
+    LEFT JOIN (SELECT build_id, count(*) c FROM build_likes WHERE created_at > now() - interval '7 days' GROUP BY build_id) l7 ON l7.build_id = b.id
+    LEFT JOIN (SELECT build_id, count(*) c FROM build_favorites WHERE created_at > now() - interval '7 days' GROUP BY build_id) f7 ON f7.build_id = b.id
+    ${whereSql}`;
   const { rows } = await sql.query(text, params);
   let builds = rows.map(rowToBuild);
 
@@ -122,6 +137,20 @@ export async function listBuilds(filters: BuildFilters = {}): Promise<CommunityB
   if (filters.limit) builds = builds.slice(0, filters.limit);
   return builds;
 }
+
+/**
+ * Trending builds voor de homepage-widget. Gecachet (revalidate 60s, tag
+ * BUILDS_TAG) zodat de veelbezochte landingspagina niet bij elke load de DB
+ * raakt. Wordt na een nieuwe build/like via revalidateTag ververst.
+ */
+export const getTrendingBuilds = unstable_cache(
+  async (limit: number): Promise<CommunityBuild[]> => {
+    if (!dbConfigured()) return [];
+    return listBuilds({ sort: "trending", limit });
+  },
+  ["home-trending-builds"],
+  { revalidate: 60, tags: [BUILDS_TAG] }
+);
 
 export async function getBuild(id: string, incView = false): Promise<CommunityBuild | null> {
   if (!dbConfigured()) return null;
