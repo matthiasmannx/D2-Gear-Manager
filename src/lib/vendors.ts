@@ -35,6 +35,7 @@ export interface VendorView {
   hash: number;
   name: string;
   icon: string | null;
+  location: string; // destination-naam (bv. "The Last City" = Tower)
   items: VendorItem[];
 }
 
@@ -59,6 +60,7 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
   }
 
   const salesData = res?.sales?.data ?? {};
+  const vendorsData = res?.vendors?.data ?? {};
 
   // Alle vendors PARALLEL verwerken (vendor-definities tegelijk ophalen i.p.v.
   // tientallen na elkaar — dat maakte de pagina traag).
@@ -83,16 +85,24 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
 
       let name = "";
       let vicon: string | null = null;
+      let location = "";
       try {
         const def = await getEntityDefinition("DestinyVendorDefinition", Number(vendorHash));
         name = def?.displayProperties?.name ?? "";
         vicon = icon(def?.displayProperties?.icon);
+        const locs = def?.locations ?? [];
+        const idx = vendorsData[vendorHash]?.vendorLocationIndex ?? 0;
+        const destHash = locs[idx]?.destinationHash ?? locs[0]?.destinationHash;
+        if (destHash) {
+          const dd = await getEntityDefinition("DestinyDestinationDefinition", destHash);
+          location = dd?.displayProperties?.name ?? "";
+        }
       } catch {
         /* negeer */
       }
       if (!name) return null;
 
-      return { hash: Number(vendorHash), name, icon: vicon, items: items.slice(0, 30) };
+      return { hash: Number(vendorHash), name, icon: vicon, location, items: items.slice(0, 30) };
     })
   );
   const views = built.filter((v): v is VendorView => v !== null);

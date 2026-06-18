@@ -197,44 +197,70 @@ async function Vendors() {
     vendors = [];
   }
 
+  // Groeperen op locatie: Tower ("The Last City") eerst, daarna planeten.
+  const groups = new Map<string, VendorView[]>();
+  for (const v of vendors ?? []) {
+    const key = v.location || "Overig";
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key)!.push(v);
+  }
+  const order = [...groups.keys()].sort((a, b) => {
+    if (a === "The Last City") return -1;
+    if (b === "The Last City") return 1;
+    if (a === "Overig") return 1;
+    if (b === "Overig") return -1;
+    return a.localeCompare(b);
+  });
+
   return (
     <>
       <h2 style={{ marginTop: "2rem" }}>{t("vendors")}</h2>
       {!vendors || vendors.length === 0 ? (
         <div className="empty">{t("noVendors")}</div>
       ) : (
-        vendors.map((v) => (
-          <details key={v.hash} className="vendor-details">
-            <summary className="vendor-summary">
-              {v.icon && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={v.icon} alt="" className="vendor-icon" />
-              )}
-              <span className="vendor-name">{v.name}</span>
-              <span className="muted vendor-count">({v.items.length})</span>
-              <span className="vendor-chevron">▸</span>
-            </summary>
-            <div className="grid">
-              {v.items.map((it) => (
-                <Link key={it.hash} href={`/items/${it.hash}`} className="card card-link">
-                  <div className="item">
-                    {it.icon ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img className="item-icon" src={it.icon} alt="" />
-                    ) : (
-                      <div className="item-icon" />
-                    )}
-                    <div>
-                      <div className="item-name">{it.name}</div>
-                      <div className="item-type">{[it.tier, it.type].filter(Boolean).join(" · ")}</div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </details>
+        order.map((loc) => (
+          <section key={loc} style={{ marginTop: "1rem" }}>
+            <h3 className="vendor-loc-h">{loc}</h3>
+            {groups.get(loc)!.map((v) => (
+              <VendorCard key={v.hash} v={v} />
+            ))}
+          </section>
         ))
       )}
     </>
+  );
+}
+
+function VendorCard({ v }: { v: VendorView }) {
+  return (
+    <details className="vendor-details">
+      <summary className="vendor-summary">
+        {v.icon && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={v.icon} alt="" className="vendor-icon" />
+        )}
+        <span className="vendor-name">{v.name}</span>
+        <span className="muted vendor-count">({v.items.length})</span>
+        <span className="vendor-chevron">▸</span>
+      </summary>
+      <div className="grid">
+        {v.items.map((it) => (
+          <Link key={it.hash} href={`/items/${it.hash}`} className="card card-link">
+            <div className="item">
+              {it.icon ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img className="item-icon" src={it.icon} alt="" />
+              ) : (
+                <div className="item-icon" />
+              )}
+              <div>
+                <div className="item-name">{it.name}</div>
+                <div className="item-type">{[it.tier, it.type].filter(Boolean).join(" · ")}</div>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </details>
   );
 }
