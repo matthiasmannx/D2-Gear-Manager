@@ -403,6 +403,13 @@
     "open": "Limpiar la bóveda",
     "loginPrompt": "Inicia sesión para analizar tu bóveda.",
     "noVault": "No se encontraron objetos de la bóveda.",
-    "powerNote": "La API de Bungie no puede desmantelar; bloqueamos los keepers, tú desmantelas el resto en el juego."
+    "powerNote": "La API de Bungie no puede desmantelar; bloqueamos los keepers, tú desmantelas el resto en el juego.",
+    "sumArmor": "Buena armadura",
+    "sumMw": "Obra maestra",
+    "armorTitle": "Buena armadura (total de stats)",
+    "armorDesc": "Armadura con un total de stats alto.",
+    "mwTitle": "Obra maestra (conservar)",
+    "mwDesc": "Los objetos con obra maestra también se bloquean.",
+    "armorMinLabel": "Total mín. de armadura"
   }
 }

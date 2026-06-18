@@ -403,6 +403,13 @@
     "open": "Tresor aufräumen",
     "loginPrompt": "Melde dich an, um deinen Tresor zu analysieren.",
     "noVault": "Keine Tresor-Items gefunden.",
-    "powerNote": "Die Bungie-API kann nicht zerlegen; wir sperren die Keeper, du zerlegst den Rest im Spiel."
+    "powerNote": "Die Bungie-API kann nicht zerlegen; wir sperren die Keeper, du zerlegst den Rest im Spiel.",
+    "sumArmor": "Gute Rüstung",
+    "sumMw": "Meisterwerk",
+    "armorTitle": "Gute Rüstung (Stat-Summe)",
+    "armorDesc": "Rüstung mit hoher Stat-Summe.",
+    "mwTitle": "Meisterwerk (behalten)",
+    "mwDesc": "Voll gemeisterte Items werden ebenfalls gesperrt.",
+    "armorMinLabel": "Min. Rüstungs-Summe"
   }
 }

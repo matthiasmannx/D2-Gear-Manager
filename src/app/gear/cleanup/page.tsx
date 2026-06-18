@@ -6,13 +6,16 @@ import { loadGear } from "@/lib/gear";
 import { analyzeVault, CleanupItem } from "@/lib/vaultCleanup";
 import { Loading } from "@/components/Skeleton";
 import LockKeepers from "@/components/LockKeepers";
+import ArmorThreshold from "@/components/ArmorThreshold";
 
 export const metadata = { title: "Vault cleanup · Guardian Hub" };
 export const dynamic = "force-dynamic";
 
 const TIER_COLOR: Record<string, string> = { Exotic: "#ceae33", Legendary: "#b58cf6", Rare: "#5076a3", Uncommon: "#5b9e4d", Common: "#c3bcb4" };
 
-export default async function CleanupPage() {
+export default async function CleanupPage({ searchParams }: { searchParams: Promise<{ armorMin?: string }> }) {
+  const { armorMin } = await searchParams;
+  const min = Math.max(0, Math.min(100, Number(armorMin) || 65));
   const t = await getTranslations("cleanup");
   return (
     <>
@@ -20,13 +23,13 @@ export default async function CleanupPage() {
       <h1>{t("title")}</h1>
       <p className="muted">{t("intro")}</p>
       <Suspense fallback={<Loading cards={4} rows={3} />}>
-        <CleanupBody />
+        <CleanupBody armorMin={min} />
       </Suspense>
     </>
   );
 }
 
-async function CleanupBody() {
+async function CleanupBody({ armorMin }: { armorMin: number }) {
   const t = await getTranslations("cleanup");
   const token = await getValidAccessToken();
   if (!token) {
@@ -44,25 +47,30 @@ async function CleanupBody() {
   }
   if (!data || data.vault.length === 0) return <div className="empty">{t("noVault")}</div>;
 
-  const a = await analyzeVault(data.vault);
+  const a = await analyzeVault(data.vault, armorMin);
   const charId = data.characters[0]?.characterId ?? "";
 
   return (
     <>
       <div className="stat-cards" style={{ marginTop: "1rem" }}>
         <Stat label={t("sumGod")} value={a.counts.godroll} accent />
+        <Stat label={t("sumArmor")} value={a.counts.armorgood} accent />
         <Stat label={t("sumExotic")} value={a.counts.exotic} />
+        <Stat label={t("sumMw")} value={a.counts.masterwork} />
         <Stat label={t("sumJunk")} value={a.counts.junk} />
         <Stat label={t("sumReview")} value={a.counts.review} />
       </div>
 
       <div className="cleanup-bar">
         <LockKeepers targets={a.lockTargets} characterId={charId} membershipType={data.membershipType} labels={{ lock: t("lock"), locking: t("locking"), none: t("lockNone") }} />
+        <ArmorThreshold value={a.armorMin} label={t("armorMinLabel")} />
         <span className="muted cleanup-note">{t("powerNote")}</span>
       </div>
 
       <CleanupSection title={`★ ${t("godTitle")}`} count={a.godRolls.length} desc={t("godDesc")} items={a.godRolls} t={t} />
-      <CleanupSection title={`✦ ${t("sumExotic")}`} count={a.exotics.length} items={a.exotics} t={t} />
+      <CleanupSection title={`🛡 ${t("armorTitle")}`} count={a.armorGood.length} desc={t("armorDesc")} items={a.armorGood} t={t} />
+      <CleanupSection title={`✦ ${t("sumExotic")}`} count={a.exotics.length} items={a.exotics} t={t} collapsed />
+      <CleanupSection title={`◆ ${t("mwTitle")}`} count={a.masterworks.length} desc={t("mwDesc")} items={a.masterworks} t={t} collapsed />
       <CleanupSection title={`🗑 ${t("junkTitle")}`} count={a.junk.length} desc={t("junkDesc")} items={a.junk} t={t} collapsed />
       <CleanupSection title={`❓ ${t("reviewTitle")}`} count={a.review.length} desc={t("reviewDesc")} items={a.review} t={t} collapsed />
     </>
@@ -73,7 +81,7 @@ function Stat({ label, value, accent }: { label: string; value: number; accent?:
   return (
     <div className="card big-stat">
       <div className="item-type">{label}</div>
-      <div style={{ fontSize: "2rem", fontWeight: 800, color: accent ? "var(--accent)" : "var(--text)" }}>{value}</div>
+      <div style={{ fontSize: "1.8rem", fontWeight: 800, color: accent ? "var(--accent)" : "var(--text)" }}>{value}</div>
     </div>
   );
 }
@@ -89,11 +97,17 @@ function CleanupSection({ title, count, desc, items, t, collapsed }: { title: st
           <div key={it.instanceId ?? it.hash} className="cleanup-row" style={{ borderLeft: `3px solid ${TIER_COLOR[it.tier] ?? "var(--border)"}` }}>
             {it.icon && /* eslint-disable-next-line @next/next/no-img-element */ <img className="item-icon" src={it.icon} alt="" />}
             <div className="cleanup-info">
-              <div className="cleanup-name">{it.name}</div>
+              <div className="cleanup-name">
+                {it.name}
+                {it.rollPve && <span className="cleanup-tag pve"> PvE</span>}
+                {it.rollPvp && <span className="cleanup-tag pvp"> PvP</span>}
+              </div>
               <div className="cleanup-meta muted">
-                {[it.tier, it.type, it.power ? `${it.power}` : null].filter(Boolean).join(" · ")}
+                {[it.tier, it.type].filter(Boolean).join(" · ")}
+                {it.statTotal != null && <span className="cleanup-total"> Σ{it.statTotal}</span>}
+                {it.gearTier ? <span className="cleanup-tag tier"> T{it.gearTier}</span> : null}
                 {it.dupe && <span className="cleanup-tag dupe"> {t("dupeTag")}</span>}
-                {it.locked && <span className="cleanup-tag locked"> 🔒 {t("lockedTag")}</span>}
+                {it.locked && <span className="cleanup-tag locked"> 🔒</span>}
               </div>
             </div>
             <a className="cleanup-lgg" href={it.lightgg} target="_blank" rel="noopener noreferrer">light.gg ↗</a>

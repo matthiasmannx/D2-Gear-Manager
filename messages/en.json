@@ -403,6 +403,13 @@
     "open": "Vault cleanup",
     "loginPrompt": "Log in to analyze your vault.",
     "noVault": "No vault items found.",
-    "powerNote": "The Bungie API can't dismantle; we lock the keepers, you dismantle the rest in-game."
+    "powerNote": "The Bungie API can't dismantle; we lock the keepers, you dismantle the rest in-game.",
+    "sumArmor": "Good armor",
+    "sumMw": "Masterworked",
+    "armorTitle": "Good armor (stat total)",
+    "armorDesc": "Armor with a high total stat count.",
+    "mwTitle": "Masterworked (keep)",
+    "mwDesc": "Fully masterworked items are locked too.",
+    "armorMinLabel": "Min. armor total"
   }
 }

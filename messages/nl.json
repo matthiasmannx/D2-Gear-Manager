@@ -403,6 +403,13 @@
     "open": "Vault opruimen",
     "loginPrompt": "Log in om je vault te analyseren.",
     "noVault": "Geen vault-items gevonden.",
-    "powerNote": "De Bungie API kan niet dismantlen; we locken de keepers, jij dismantled de rest in-game."
+    "powerNote": "De Bungie API kan niet dismantlen; we locken de keepers, jij dismantled de rest in-game.",
+    "sumArmor": "Goede armor",
+    "sumMw": "Masterworked",
+    "armorTitle": "Goede armor (stat-totaal)",
+    "armorDesc": "Armor met een hoog totaal aantal stat-punten.",
+    "mwTitle": "Masterworked (houden)",
+    "mwDesc": "Volledig gemasterworkte items worden ook gelockt.",
+    "armorMinLabel": "Min. armor-totaal"
   }
 }

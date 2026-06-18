@@ -403,6 +403,13 @@
     "open": "Nettoyer le coffre",
     "loginPrompt": "Connecte-toi pour analyser ton coffre.",
     "noVault": "Aucun objet de coffre trouvé.",
-    "powerNote": "L'API Bungie ne peut pas démanteler ; on verrouille les keepers, tu démantèles le reste en jeu."
+    "powerNote": "L'API Bungie ne peut pas démanteler ; on verrouille les keepers, tu démantèles le reste en jeu.",
+    "sumArmor": "Bonne armure",
+    "sumMw": "Chef-d'œuvre",
+    "armorTitle": "Bonne armure (total de stats)",
+    "armorDesc": "Armure avec un total de stats élevé.",
+    "mwTitle": "Chef-d'œuvre (à garder)",
+    "mwDesc": "Les objets entièrement maîtrisés sont aussi verrouillés.",
+    "armorMinLabel": "Total d'armure min."
   }
 }
