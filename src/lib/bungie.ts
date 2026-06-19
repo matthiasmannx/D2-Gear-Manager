@@ -42,6 +42,8 @@ interface CallOpts {
   body?: unknown;
   /** Next.js fetch-cache revalidatie in seconden (alleen publieke calls). */
   revalidate?: number;
+  /** Forceer een verse call (live data, geen cache). */
+  noStore?: boolean;
 }
 
 /**
@@ -56,8 +58,8 @@ export async function bungieFetch<T>(path: string, opts: CallOpts = {}): Promise
     method: opts.method ?? "GET",
     headers,
     body: opts.body ? JSON.stringify(opts.body) : undefined,
-    next: opts.revalidate ? { revalidate: opts.revalidate } : undefined,
-    cache: opts.revalidate ? undefined : opts.accessToken ? "no-store" : undefined,
+    next: opts.revalidate && !opts.noStore ? { revalidate: opts.revalidate } : undefined,
+    cache: opts.noStore ? "no-store" : opts.revalidate ? undefined : opts.accessToken ? "no-store" : undefined,
   });
 
   const text = await res.text();

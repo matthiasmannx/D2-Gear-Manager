@@ -121,7 +121,10 @@
     "buildTitle": "Build",
     "buildBack": "← Volver a las estadísticas",
     "buildNote": "ℹ️ Este es el equipo actual del jugador. La API de Bungie no guarda qué build usó alguien en una partida concreta, pero suele ser lo que (todavía) lleva.",
-    "buildLoadFailed": "No se pudo cargar el build (el perfil puede ser privado)."
+    "buildLoadFailed": "No se pudo cargar el build (el perfil puede ser privado).",
+    "liveNow": "Jugando ahora",
+    "liveSince": "hace {m} min",
+    "livePrivate": "Estado en vivo privado"
   },
   "items": {
     "title": "Items",

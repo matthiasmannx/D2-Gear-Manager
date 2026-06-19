@@ -121,7 +121,10 @@
     "buildTitle": "Build",
     "buildBack": "← Retour aux stats",
     "buildNote": "ℹ️ Ceci est l'équipement actuel du joueur. L'API Bungie ne stocke pas quel build quelqu'un a utilisé dans une partie précise, mais c'est généralement ce qu'il utilise (encore).",
-    "buildLoadFailed": "Impossible de charger le build (profil peut-être privé)."
+    "buildLoadFailed": "Impossible de charger le build (profil peut-être privé).",
+    "liveNow": "En jeu",
+    "liveSince": "depuis {m} min",
+    "livePrivate": "Statut en direct privé"
   },
   "items": {
     "title": "Items",

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { getTranslations, getLocale } from "next-intl/server";
 import { Loading } from "@/components/Skeleton";
+import LiveActivity from "@/components/LiveActivity";
 import { getValidAccessToken, getCurrentUserId } from "@/lib/auth";
 import {
   getMemberships,
@@ -76,6 +77,8 @@ async function ProfileContent() {
           Account ID: <code>{accountId}</code>
         </p>
       )}
+
+      <LiveActivity type={mType} id={mId} />
 
       {/* Top stats */}
       <div className="stat-cards">

@@ -121,7 +121,10 @@
     "buildTitle": "Build",
     "buildBack": "← Terug naar stats",
     "buildNote": "ℹ️ Dit is de huidige uitrusting van deze speler. De Bungie-API bewaart niet welke build iemand in een specifieke match droeg, maar dit is doorgaans wat ze (nog) draaien.",
-    "buildLoadFailed": "Kon de build niet laden (profiel mogelijk privé)."
+    "buildLoadFailed": "Kon de build niet laden (profiel mogelijk privé).",
+    "liveNow": "Nu bezig",
+    "liveSince": "sinds {m} min",
+    "livePrivate": "Live-status staat privé"
   },
   "items": {
     "title": "Items",

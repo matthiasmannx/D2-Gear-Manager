@@ -121,7 +121,10 @@
     "buildTitle": "Build",
     "buildBack": "← Back to stats",
     "buildNote": "ℹ️ This is the player's current loadout. The Bungie API doesn't store which build someone used in a specific match, but this is usually what they're (still) running.",
-    "buildLoadFailed": "Couldn't load the build (profile may be private)."
+    "buildLoadFailed": "Couldn't load the build (profile may be private).",
+    "liveNow": "Now playing",
+    "liveSince": "for {m} min",
+    "livePrivate": "Live status is private"
   },
   "items": {
     "title": "Items",

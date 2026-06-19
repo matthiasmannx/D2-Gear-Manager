@@ -15,6 +15,7 @@ import {
 } from "@/lib/bungie";
 import { getValidAccessToken } from "@/lib/auth";
 import { FavStar } from "@/components/Favorites";
+import LiveActivity from "@/components/LiveActivity";
 import { getTranslations, getLocale } from "next-intl/server";
 
 export const metadata = { title: "Player stats · Guardian Hub" };
@@ -78,6 +79,8 @@ async function PlayerBody({ type, id }: { type: string; id: string }) {
         </div>
         {extras.name && <FavStar type={mType} id={id} name={extras.name} />}
       </div>
+
+      <LiveActivity type={mType} id={id} />
 
       {failed && <div className="notice error">{t("loadFailed")}</div>}
 

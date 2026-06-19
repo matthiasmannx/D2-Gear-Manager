@@ -2785,3 +2785,20 @@ input:focus {
   background: rgba(74,158,255,0.18); color: #7ab8ff; vertical-align: middle;
   text-transform: uppercase; letter-spacing: 0.03em;
 }
+
+/* ===== Live activity-kaart ===== */
+.live-card {
+  display: flex; align-items: center; gap: 0.7rem;
+  margin: 0.75rem 0; padding: 0.7rem 0.9rem;
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  background-size: cover; background-position: center;
+}
+.live-card.pvp { border-color: rgba(229,72,77,0.5); }
+.live-card.off { background: var(--card); }
+.live-dot { width: 10px; height: 10px; border-radius: 50%; background: #e5484d; box-shadow: 0 0 0 0 rgba(229,72,77,0.7); animation: live-pulse 1.6s infinite; flex-shrink: 0; }
+@keyframes live-pulse { 0% { box-shadow: 0 0 0 0 rgba(229,72,77,0.6); } 70% { box-shadow: 0 0 0 8px rgba(229,72,77,0); } 100% { box-shadow: 0 0 0 0 rgba(229,72,77,0); } }
+.live-info { flex: 1; min-width: 0; }
+.live-now { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #e5484d; }
+.live-where { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.live-since { font-size: 0.78rem; white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
