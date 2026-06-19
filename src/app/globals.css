@@ -66,6 +66,10 @@
   --accent-2: #4a9eff;
   --danger: #ff5b5b;
   --radius: 10px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
 }
 
 * {
@@ -86,6 +90,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  min-height: 100dvh;
 }
 main.container {
   flex: 1 0 auto;
@@ -94,7 +99,8 @@ main.container {
 .site-footer {
   flex-shrink: 0;
   text-align: center;
-  padding: 1.5rem 1rem;
+  padding: 1.5rem calc(1rem + var(--safe-right))
+    calc(1.5rem + var(--safe-bottom)) calc(1rem + var(--safe-left));
   border-top: 1px solid var(--border);
   color: var(--text-dim);
   font-size: 0.72rem;
@@ -122,7 +128,8 @@ h3 {
 .container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 1.5rem;
+  padding: calc(1.5rem + var(--safe-top)) calc(1.5rem + var(--safe-right))
+    calc(1.5rem + var(--safe-bottom)) calc(1.5rem + var(--safe-left));
 }
 
 /* ---- Navbar ---- */
@@ -137,7 +144,8 @@ h3 {
 .nav-inner {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 0.75rem 1.5rem;
+  padding: calc(0.75rem + var(--safe-top)) calc(1.5rem + var(--safe-right))
+    0.75rem calc(1.5rem + var(--safe-left));
   display: flex;
   align-items: center;
   gap: 1.25rem;
@@ -2478,29 +2486,44 @@ input:focus {
 /* ===================== Mobiele weergave ===================== */
 @media (max-width: 680px) {
   .container {
-    padding: 1rem 0.85rem;
+    padding: 1rem calc(0.85rem + var(--safe-right))
+      calc(1rem + var(--safe-bottom)) calc(0.85rem + var(--safe-left));
   }
-  /* Navbar: brand + login vast, links scrollen horizontaal */
+  /* Navbar: veiliger gedrag op iPhone safe areas en minder plakkerig */
+  .nav {
+    position: static;
+  }
   .nav-inner {
-    padding: 0.6rem 0.85rem;
+    padding: calc(0.6rem + var(--safe-top)) calc(0.85rem + var(--safe-right))
+      0.6rem calc(0.85rem + var(--safe-left));
     gap: 0.6rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
   }
   .nav-brand {
     font-size: 0.95rem;
   }
   .nav-links {
+    order: 3;
+    flex: 1 1 100%;
+    width: 100%;
     flex-wrap: nowrap;
     overflow-x: auto;
     gap: 0.9rem;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     justify-content: flex-start;
+    padding-bottom: 0.15rem;
   }
   .nav-links::-webkit-scrollbar {
     display: none;
   }
   .nav-links a {
     white-space: nowrap;
+  }
+  .lang-switch,
+  .nav-auth {
+    flex-shrink: 0;
   }
   .btn,
   .btn-ghost {

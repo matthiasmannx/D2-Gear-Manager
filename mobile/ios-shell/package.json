@@ -1,0 +1,22 @@
+{
+  "name": "guardian-hub-ios-shell",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Capacitor iOS shell for the Guardian Hub web app",
+  "scripts": {
+    "cap:sync": "npx cap sync ios",
+    "cap:open": "npx cap open ios",
+    "cap:add:ios": "npx cap add ios",
+    "ios": "npx cap run ios",
+    "doctor": "npx cap doctor"
+  },
+  "dependencies": {
+    "@capacitor/core": "^7.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.0.0",
+    "@capacitor/ios": "^7.0.0",
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}

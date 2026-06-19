@@ -10,6 +10,20 @@ export const metadata: Metadata = {
   title: "Guardian Hub, Destiny 2 Companion",
   description:
     "Items, gear, events en gidsen voor Destiny 2, aangedreven door de Bungie API.",
+  applicationName: "Guardian Hub",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Guardian Hub",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+};
+
+export const viewport = {
+  themeColor: "#0b0e14",
 };
 
 export default async function RootLayout({
