@@ -22,6 +22,20 @@ export interface ClanMember {
 
 const RANK: Record<number, string> = { 5: "Founder", 4: "Acting Founder", 3: "Admin", 2: "Member", 1: "Beginner" };
 
+/** Bungie geeft clan-teksten met HTML-entities (&#9825;, &#8217; …); decodeer ze. */
+function decodeEntities(s: string): string {
+  if (!s) return "";
+  return s
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(parseInt(n, 10)));
+}
+
 /** De (eerste) clan van een speler via GetGroupsForMember. */
 export async function getMyClan(membershipType: number, membershipId: string): Promise<ClanInfo | null> {
   try {
@@ -30,10 +44,10 @@ export async function getMyClan(membershipType: number, membershipId: string): P
     if (!g) return null;
     return {
       id: g.groupId,
-      name: g.name ?? "",
-      motto: g.motto ?? "",
-      callsign: g.clanInfo?.clanCallsign ?? "",
-      about: g.about ?? "",
+      name: decodeEntities(g.name ?? "").trim(),
+      motto: decodeEntities(g.motto ?? "").trim(),
+      callsign: decodeEntities(g.clanInfo?.clanCallsign ?? "").trim(),
+      about: decodeEntities(g.about ?? "").trim(),
       memberCount: g.memberCount ?? 0,
     };
   } catch {
@@ -49,9 +63,11 @@ export async function getClanMembers(groupId: string): Promise<ClanMember[]> {
     return list
       .map((m) => {
         const d = m.destinyUserInfo ?? {};
-        const name = d.bungieGlobalDisplayName
-          ? `${d.bungieGlobalDisplayName}#${d.bungieGlobalDisplayNameCode}`
-          : d.LastSeenDisplayName ?? "Guardian";
+        const name = decodeEntities(
+          d.bungieGlobalDisplayName
+            ? `${d.bungieGlobalDisplayName}#${d.bungieGlobalDisplayNameCode}`
+            : d.LastSeenDisplayName ?? "Guardian"
+        );
         return {
           membershipType: d.membershipType,
           membershipId: d.membershipId,
