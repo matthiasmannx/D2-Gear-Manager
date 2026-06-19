@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import LivePill from "@/components/LivePill";
 
 export interface Fav {
   type: number;
@@ -78,6 +79,7 @@ export function FavoritesList() {
             <Link href={`/players/${f.type}/${f.id}`} className="fav-card-link">
               <span className="item-name">{f.name}</span>
             </Link>
+            <LivePill type={f.type} id={f.id} />
             <FavStar type={f.type} id={f.id} name={f.name} />
           </div>
         ))}

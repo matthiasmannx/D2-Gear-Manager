@@ -2802,3 +2802,14 @@ input:focus {
 .live-where { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .live-since { font-size: 0.78rem; white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+
+/* compacte live-pill bij favoriete spelers */
+.live-pill {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  margin-left: auto; margin-right: 0.5rem; padding: 0.15rem 0.5rem;
+  background: rgba(229,72,77,0.14); border: 1px solid rgba(229,72,77,0.45);
+  border-radius: 999px; font-size: 0.72rem; font-weight: 700; color: #ff9b9e;
+  white-space: nowrap; flex-shrink: 0;
+}
+.live-pill.pvp { background: rgba(229,72,77,0.2); }
+.live-pill .live-dot { width: 7px; height: 7px; }
