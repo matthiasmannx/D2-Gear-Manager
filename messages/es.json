@@ -418,7 +418,8 @@
     "armorDesc": "Armadura con un total de stats alto.",
     "mwTitle": "Obra maestra (conservar)",
     "mwDesc": "Los objetos con obra maestra también se bloquean.",
-    "armorMinLabel": "Total mín. de armadura"
+    "armorMinLabel": "Total mín. de armadura",
+    "grLabel": "God roll: perks mín."
   },
   "clan": {
     "title": "Mi clan",

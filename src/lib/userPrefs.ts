@@ -17,6 +17,16 @@ export interface UserPrefs {
   favGear?: number[];
   locale?: string;
   vaultView?: VaultView;
+  /** Min. aantal matchende perks (uit een aanbevolen roll) voor "god roll". 2-5, default 4. */
+  godRollMin?: number;
+}
+
+/** Leest de god-roll-drempel van een gebruiker (default 4 = volledige roll). */
+export async function getGodRollMin(userId: string | null): Promise<number> {
+  if (!userId) return 4;
+  const p = await getUserPrefs(userId);
+  const n = Number(p?.godRollMin);
+  return Number.isFinite(n) && n >= 2 && n <= 5 ? n : 4;
 }
 
 export async function getUserPrefs(userId: string): Promise<UserPrefs | null> {

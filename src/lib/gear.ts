@@ -2,6 +2,8 @@ import "server-only";
 import { getMemberships, getProfile, getEntityDefinition, icon } from "./bungie";
 import { lookupItems, getStatNames } from "./manifest";
 import { loadWishlist, rollTags } from "./wishlist";
+import { getCurrentUserId } from "./auth";
+import { getGodRollMin } from "./userPrefs";
 
 /** Equip-slot buckets in weergavevolgorde (wapens dan armor). */
 export const SLOT_ORDER: { bucket: number; label: string }[] = [
@@ -124,6 +126,7 @@ export async function loadGear(token: string): Promise<GearData | null> {
   collect(vaultItems);
   const defs = await lookupItems([...allHashes]);
   await loadWishlist(); // god-roll-tags (PvE/PvP) per wapen
+  const godRollMin = await getGodRollMin(await getCurrentUserId()); // gebruikersdrempel
 
   const toItem = (raw: any): GearItem | null => {
     const def = defs.get(raw.itemHash);
@@ -140,7 +143,7 @@ export async function loadGear(token: string): Promise<GearData | null> {
           .map((s: any) => s?.plugHash)
           .filter((h: any): h is number => typeof h === "number")
       : [];
-    const tags = def.itemType === 3 ? rollTags(raw.itemHash, perks) : null;
+    const tags = def.itemType === 3 ? rollTags(raw.itemHash, perks, godRollMin) : null;
     return {
       instanceId: raw.itemInstanceId,
       hash: raw.itemHash,

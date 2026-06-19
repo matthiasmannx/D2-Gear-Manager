@@ -1,6 +1,5 @@
 import "server-only";
 import type { GearItem } from "./gear";
-import { loadWishlist, rollTags } from "./wishlist";
 
 export type Verdict = "godroll" | "armorgood" | "exotic" | "locked" | "masterwork" | "junk" | "review";
 
@@ -28,8 +27,6 @@ export interface VaultAnalysis {
 }
 
 export async function analyzeVault(vault: GearItem[], armorMin = 65): Promise<VaultAnalysis> {
-  await loadWishlist();
-
   // Duplicaten tellen op basis van item-hash (zelfde wapen/armor).
   const counts = new Map<number, number>();
   for (const it of vault) counts.set(it.hash, (counts.get(it.hash) ?? 0) + 1);
@@ -38,16 +35,18 @@ export async function analyzeVault(vault: GearItem[], armorMin = 65): Promise<Va
     const isWeapon = it.itemType === 3;
     const isArmor = it.itemType === 2;
     const statTotal = isArmor ? it.stats.reduce((s, x) => s + (x.value || 0), 0) : undefined;
-    const m = isWeapon ? rollTags(it.hash, it.perks) : { match: false, pve: false, pvp: false };
+    // God-roll-tags zijn al door loadGear gezet met de drempel van de gebruiker.
+    const god = isWeapon && (it.rollPve || it.rollPvp);
     let verdict: Verdict;
-    if (m.match) verdict = "godroll";
+    if (god) verdict = "godroll";
     else if (it.tier === "Exotic") verdict = "exotic";
     else if (it.locked) verdict = "locked";
-    else if (isArmor && statTotal != null && statTotal >= armorMin) verdict = "armorgood";
+    // T5-armor (hoogste tier) of armor met genoeg stat-totaal = keeper.
+    else if (isArmor && (it.gearTier === 5 || (statTotal != null && statTotal >= armorMin))) verdict = "armorgood";
     else if (it.masterwork) verdict = "masterwork";
     else if (it.tier === "Rare" || it.tier === "Uncommon" || it.tier === "Common") verdict = "junk";
     else verdict = "review";
-    return { ...it, verdict, dupe: (counts.get(it.hash) ?? 1) > 1, lightgg: `https://light.gg/db/items/${it.hash}/`, statTotal, rollPve: m.pve, rollPvp: m.pvp };
+    return { ...it, verdict, dupe: (counts.get(it.hash) ?? 1) > 1, lightgg: `https://light.gg/db/items/${it.hash}/`, statTotal };
   });
 
   const godRolls = items.filter((i) => i.verdict === "godroll");

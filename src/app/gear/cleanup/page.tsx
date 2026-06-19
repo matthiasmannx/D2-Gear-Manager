@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
-import { getValidAccessToken } from "@/lib/auth";
+import { getValidAccessToken, getCurrentUserId } from "@/lib/auth";
+import { getGodRollMin } from "@/lib/userPrefs";
 import { loadGear } from "@/lib/gear";
 import { analyzeVault, CleanupItem } from "@/lib/vaultCleanup";
 import { Loading } from "@/components/Skeleton";
 import LockKeepers from "@/components/LockKeepers";
 import ArmorThreshold from "@/components/ArmorThreshold";
+import GodRollSetting from "@/components/GodRollSetting";
 
 export const metadata = { title: "Vault cleanup · Guardian Hub" };
 export const dynamic = "force-dynamic";
@@ -49,6 +51,7 @@ async function CleanupBody({ armorMin }: { armorMin: number }) {
 
   const a = await analyzeVault(data.vault, armorMin);
   const charId = data.characters[0]?.characterId ?? "";
+  const grMin = await getGodRollMin(await getCurrentUserId());
 
   return (
     <>
@@ -64,6 +67,7 @@ async function CleanupBody({ armorMin }: { armorMin: number }) {
       <div className="cleanup-bar">
         <LockKeepers targets={a.lockTargets} characterId={charId} membershipType={data.membershipType} labels={{ lock: t("lock"), locking: t("locking"), none: t("lockNone") }} />
         <ArmorThreshold value={a.armorMin} label={t("armorMinLabel")} />
+        <GodRollSetting value={grMin} label={t("grLabel")} />
         <span className="muted cleanup-note">{t("powerNote")}</span>
       </div>
 

@@ -418,7 +418,8 @@
     "armorDesc": "Armure avec un total de stats élevé.",
     "mwTitle": "Chef-d'œuvre (à garder)",
     "mwDesc": "Les objets entièrement maîtrisés sont aussi verrouillés.",
-    "armorMinLabel": "Total d'armure min."
+    "armorMinLabel": "Total d'armure min.",
+    "grLabel": "God roll : perks min."
   },
   "clan": {
     "title": "Mon clan",

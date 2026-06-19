@@ -418,7 +418,8 @@
     "armorDesc": "Rüstung mit hoher Stat-Summe.",
     "mwTitle": "Meisterwerk (behalten)",
     "mwDesc": "Voll gemeisterte Items werden ebenfalls gesperrt.",
-    "armorMinLabel": "Min. Rüstungs-Summe"
+    "armorMinLabel": "Min. Rüstungs-Summe",
+    "grLabel": "God Roll: min. Perks"
   },
   "clan": {
     "title": "Mein Clan",

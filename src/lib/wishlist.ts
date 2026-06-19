@@ -18,14 +18,20 @@ export async function loadWishlist(): Promise<Record<string, Roll[]>> {
   return memo!;
 }
 
-/** Match een wapen-roll tegen de wishlist. loadWishlist() moet eerst gedraaid zijn. */
-export function rollTags(hash: number, perks: number[]): { match: boolean; pve: boolean; pvp: boolean } {
+/**
+ * Match een wapen-roll tegen de wishlist. `minMatch` = hoeveel perks van een
+ * aanbevolen combo minimaal aanwezig moeten zijn (gebruiker stelt dit zelf in;
+ * 4 = volledige roll, lager = soepeler). loadWishlist() moet eerst gedraaid zijn.
+ */
+export function rollTags(hash: number, perks: number[], minMatch = 4): { match: boolean; pve: boolean; pvp: boolean } {
   const rolls = memo?.[String(hash)];
   if (!rolls || rolls.length === 0) return { match: false, pve: false, pvp: false };
   const have = new Set(perks);
   let match = false, pve = false, pvp = false;
   for (const r of rolls) {
-    if (r.p.every((p) => have.has(p))) {
+    let hit = 0;
+    for (const p of r.p) if (have.has(p)) hit++;
+    if (hit >= minMatch) {
       match = true;
       if (r.t === 1) pve = true;
       else if (r.t === 2) pvp = true;

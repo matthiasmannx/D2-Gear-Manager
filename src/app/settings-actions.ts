@@ -43,6 +43,10 @@ export async function saveMyPrefs(partial: UserPrefs): Promise<{ ok: boolean }> 
   }
   if (partial.locale !== undefined) merged.locale = STR(partial.locale, 5);
   if (partial.vaultView !== undefined) merged.vaultView = cleanVault(partial.vaultView);
+  if (partial.godRollMin !== undefined) {
+    const n = Number(partial.godRollMin);
+    merged.godRollMin = Number.isFinite(n) ? Math.max(2, Math.min(5, Math.round(n))) : 4;
+  }
 
   await saveUserPrefs(uid, merged);
   return { ok: true };

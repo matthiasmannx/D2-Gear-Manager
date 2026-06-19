@@ -418,7 +418,8 @@
     "armorDesc": "Armor with a high total stat count.",
     "mwTitle": "Masterworked (keep)",
     "mwDesc": "Fully masterworked items are locked too.",
-    "armorMinLabel": "Min. armor total"
+    "armorMinLabel": "Min. armor total",
+    "grLabel": "God roll: min. perks"
   },
   "clan": {
     "title": "My Clan",

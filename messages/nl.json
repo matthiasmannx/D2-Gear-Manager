@@ -418,7 +418,8 @@
     "armorDesc": "Armor met een hoog totaal aantal stat-punten.",
     "mwTitle": "Masterworked (houden)",
     "mwDesc": "Volledig gemasterworkte items worden ook gelockt.",
-    "armorMinLabel": "Min. armor-totaal"
+    "armorMinLabel": "Min. armor-totaal",
+    "grLabel": "God roll: min. perks"
   },
   "clan": {
     "title": "Mijn Clan",
