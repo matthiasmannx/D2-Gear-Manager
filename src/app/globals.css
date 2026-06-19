@@ -2826,3 +2826,6 @@ input:focus {
 .clan-dot.on { background: #38d39f; box-shadow: 0 0 6px rgba(56,211,159,0.7); }
 .clan-name { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
 .clan-rank { font-size: 0.7rem; padding: 0.1rem 0.45rem; border-radius: 5px; background: rgba(138,155,255,0.18); color: #aeb8ff; white-space: nowrap; }
+
+.lock-keepers { display: inline-flex; align-items: center; gap: 0.5rem; }
+.lock-result { font-size: 0.82rem; }
