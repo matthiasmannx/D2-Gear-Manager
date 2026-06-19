@@ -1,6 +1,7 @@
 import "server-only";
 import { getMemberships, getProfile, getEntityDefinition, icon } from "./bungie";
 import { lookupItems, getStatNames } from "./manifest";
+import { loadWishlist, rollTags } from "./wishlist";
 
 /** Equip-slot buckets in weergavevolgorde (wapens dan armor). */
 export const SLOT_ORDER: { bucket: number; label: string }[] = [
@@ -48,6 +49,9 @@ export interface GearItem {
   stats: ItemStat[];
   /** Plug-hashes van de gesokkelde perks (voor god-roll matching). */
   perks: number[];
+  /** God roll volgens de community-wishlist (alleen wapens). */
+  rollPve?: boolean;
+  rollPvp?: boolean;
 }
 
 export interface GearLoadout {
@@ -119,6 +123,7 @@ export async function loadGear(token: string): Promise<GearData | null> {
   Object.values<any>(invData).forEach((c) => collect(c.items ?? []));
   collect(vaultItems);
   const defs = await lookupItems([...allHashes]);
+  await loadWishlist(); // god-roll-tags (PvE/PvP) per wapen
 
   const toItem = (raw: any): GearItem | null => {
     const def = defs.get(raw.itemHash);
@@ -130,6 +135,12 @@ export async function loadGear(token: string): Promise<GearData | null> {
       .map((sh) => ({ name: statNames[sh] ?? `#${sh}`, value: rawStats[sh]?.value ?? 0 }))
       .filter((s) => s.value !== 0 && !s.name.startsWith("#"))
       .sort((a, b) => b.value - a.value);
+    const perks: number[] = raw.itemInstanceId
+      ? (itemSockets[raw.itemInstanceId]?.sockets ?? [])
+          .map((s: any) => s?.plugHash)
+          .filter((h: any): h is number => typeof h === "number")
+      : [];
+    const tags = def.itemType === 3 ? rollTags(raw.itemHash, perks) : null;
     return {
       instanceId: raw.itemInstanceId,
       hash: raw.itemHash,
@@ -148,11 +159,9 @@ export async function loadGear(token: string): Promise<GearData | null> {
       locked: (state & STATE_LOCKED) !== 0,
       masterwork: (state & STATE_MASTERWORK) !== 0,
       stats,
-      perks: raw.itemInstanceId
-        ? (itemSockets[raw.itemInstanceId]?.sockets ?? [])
-            .map((s: any) => s?.plugHash)
-            .filter((h: any): h is number => typeof h === "number")
-        : [],
+      perks,
+      rollPve: tags?.pve || undefined,
+      rollPvp: tags?.pvp || undefined,
     };
   };
 

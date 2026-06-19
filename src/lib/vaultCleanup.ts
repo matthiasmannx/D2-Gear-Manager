@@ -1,21 +1,6 @@
 import "server-only";
-import fs from "fs/promises";
-import path from "path";
 import type { GearItem } from "./gear";
-
-interface Roll { p: number[]; t: number } // t: 0 algemeen, 1 PvE, 2 PvP
-const FILE = path.join(process.cwd(), "data", "wishlist.json");
-let memo: Record<string, Roll[]> | null = null;
-
-async function loadWishlist(): Promise<Record<string, Roll[]>> {
-  if (memo) return memo;
-  try {
-    memo = JSON.parse(await fs.readFile(FILE, "utf8"));
-  } catch {
-    memo = {};
-  }
-  return memo!;
-}
+import { loadWishlist, rollTags } from "./wishlist";
 
 export type Verdict = "godroll" | "armorgood" | "exotic" | "locked" | "masterwork" | "junk" | "review";
 
@@ -42,24 +27,8 @@ export interface VaultAnalysis {
   armorMin: number;
 }
 
-function matchRolls(wishlist: Record<string, Roll[]>, hash: number, perks: number[]): { match: boolean; pve: boolean; pvp: boolean } {
-  const rolls = wishlist[String(hash)];
-  if (!rolls || rolls.length === 0) return { match: false, pve: false, pvp: false };
-  const have = new Set(perks);
-  let match = false, pve = false, pvp = false;
-  for (const r of rolls) {
-    if (r.p.every((p) => have.has(p))) {
-      match = true;
-      if (r.t === 1) pve = true;
-      else if (r.t === 2) pvp = true;
-      else { pve = true; pvp = true; } // algemeen telt voor beide
-    }
-  }
-  return { match, pve, pvp };
-}
-
 export async function analyzeVault(vault: GearItem[], armorMin = 65): Promise<VaultAnalysis> {
-  const wishlist = await loadWishlist();
+  await loadWishlist();
 
   // Duplicaten tellen op basis van item-hash (zelfde wapen/armor).
   const counts = new Map<number, number>();
@@ -69,7 +38,7 @@ export async function analyzeVault(vault: GearItem[], armorMin = 65): Promise<Va
     const isWeapon = it.itemType === 3;
     const isArmor = it.itemType === 2;
     const statTotal = isArmor ? it.stats.reduce((s, x) => s + (x.value || 0), 0) : undefined;
-    const m = isWeapon ? matchRolls(wishlist, it.hash, it.perks) : { match: false, pve: false, pvp: false };
+    const m = isWeapon ? rollTags(it.hash, it.perks) : { match: false, pve: false, pvp: false };
     let verdict: Verdict;
     if (m.match) verdict = "godroll";
     else if (it.tier === "Exotic") verdict = "exotic";

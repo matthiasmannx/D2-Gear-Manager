@@ -2737,3 +2737,10 @@ input:focus {
 .cleanup-tag.pve { background: rgba(74,158,255,0.18); color: #4a9eff; }
 .cleanup-tag.pvp { background: rgba(224,86,75,0.18); color: #e0564b; }
 .cleanup-tag.tier { background: rgba(255,255,255,0.08); color: var(--muted); }
+
+/* PvE/PvP god-roll-badges in het gear hover-paneel (achter de naam) */
+.gear-panel-titles { display: flex; align-items: center; gap: 0.35rem; min-width: 0; flex-wrap: wrap; }
+.gear-panel-name { font-weight: inherit; }
+.gear-roll { font-size: 0.62rem; font-weight: 700; padding: 0.05rem 0.32rem; border-radius: 4px; letter-spacing: 0.02em; }
+.gear-roll.pve { background: rgba(74,158,255,0.22); color: #cfe4ff; }
+.gear-roll.pvp { background: rgba(224,86,75,0.22); color: #ffd6d2; }

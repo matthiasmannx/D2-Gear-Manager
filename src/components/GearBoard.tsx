@@ -28,6 +28,8 @@ interface Item {
   masterwork: boolean;
   stats: ItemStat[];
   perks: number[];
+  rollPve?: boolean;
+  rollPvp?: boolean;
 }
 interface Loadout { index: number; name: string; icon: string | null; color: string | null; itemCount: number; active: boolean }
 interface Character {
@@ -183,7 +185,11 @@ function Tile({
           }}
         >
           <div className="gear-panel-head" style={{ background: border }}>
-            {item.name}
+            <span className="gear-panel-titles">
+              <span className="gear-panel-name">{item.name}</span>
+              {item.rollPve && <span className="gear-roll pve">PvE</span>}
+              {item.rollPvp && <span className="gear-roll pvp">PvP</span>}
+            </span>
             {pinned && <span className="gear-panel-close" onClick={(e) => { e.stopPropagation(); setPinned(false); }}>×</span>}
           </div>
           <div className="gear-panel-sub muted">
