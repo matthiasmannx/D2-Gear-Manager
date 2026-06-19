@@ -15,9 +15,10 @@ export const dynamic = "force-dynamic";
 
 const TIER_COLOR: Record<string, string> = { Exotic: "#ceae33", Legendary: "#b58cf6", Rare: "#5076a3", Uncommon: "#5b9e4d", Common: "#c3bcb4" };
 
-export default async function CleanupPage({ searchParams }: { searchParams: Promise<{ armorMin?: string }> }) {
-  const { armorMin } = await searchParams;
+export default async function CleanupPage({ searchParams }: { searchParams: Promise<{ armorMin?: string; godRoll?: string }> }) {
+  const { armorMin, godRoll } = await searchParams;
   const min = Math.max(0, Math.min(100, Number(armorMin) || 65));
+  const gr = godRoll ? Math.max(2, Math.min(4, Number(godRoll))) : undefined;
   const t = await getTranslations("cleanup");
   return (
     <>
@@ -25,13 +26,13 @@ export default async function CleanupPage({ searchParams }: { searchParams: Prom
       <h1>{t("title")}</h1>
       <p className="muted">{t("intro")}</p>
       <Suspense fallback={<Loading cards={4} rows={3} />}>
-        <CleanupBody armorMin={min} />
+        <CleanupBody armorMin={min} godRollParam={gr} />
       </Suspense>
     </>
   );
 }
 
-async function CleanupBody({ armorMin }: { armorMin: number }) {
+async function CleanupBody({ armorMin, godRollParam }: { armorMin: number; godRollParam?: number }) {
   const t = await getTranslations("cleanup");
   const token = await getValidAccessToken();
   if (!token) {
@@ -41,9 +42,11 @@ async function CleanupBody({ armorMin }: { armorMin: number }) {
       </div>
     );
   }
+  // URL-param wint (instant zichtbaar bij wisselen), anders de opgeslagen pref.
+  const grMin = godRollParam ?? (await getGodRollMin(await getCurrentUserId()));
   let data;
   try {
-    data = await loadGear(token);
+    data = await loadGear(token, grMin);
   } catch (e: any) {
     return <div className="notice error">{e.message}</div>;
   }
@@ -51,7 +54,6 @@ async function CleanupBody({ armorMin }: { armorMin: number }) {
 
   const a = await analyzeVault(data.vault, armorMin);
   const charId = data.characters[0]?.characterId ?? "";
-  const grMin = await getGodRollMin(await getCurrentUserId());
 
   return (
     <>

@@ -97,7 +97,7 @@ const STATE_MASTERWORK = 4;
 // Bucket voor de postmaster (Lost Items).
 const POSTMASTER_BUCKET = 215593132;
 
-export async function loadGear(token: string): Promise<GearData | null> {
+export async function loadGear(token: string, godRollMinOverride?: number): Promise<GearData | null> {
   const { primary, bungieGlobalDisplayName } = await getMemberships(token);
   if (!primary) return null;
 
@@ -126,7 +126,7 @@ export async function loadGear(token: string): Promise<GearData | null> {
   collect(vaultItems);
   const defs = await lookupItems([...allHashes]);
   await loadWishlist(); // god-roll-tags (PvE/PvP) per wapen
-  const godRollMin = await getGodRollMin(await getCurrentUserId()); // gebruikersdrempel
+  const godRollMin = godRollMinOverride ?? (await getGodRollMin(await getCurrentUserId())); // gebruikersdrempel
 
   const toItem = (raw: any): GearItem | null => {
     const def = defs.get(raw.itemHash);
