@@ -14,6 +14,7 @@ const LINKS = [
   { href: "/community", key: "community" },
   { href: "/players", key: "players" },
   { href: "/profile", key: "profile" },
+  { href: "/clan", key: "clan" },
   { href: "/events", key: "events" },
   { href: "/changelog", key: "changelog" },
 ] as const;

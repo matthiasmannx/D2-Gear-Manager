@@ -12,7 +12,8 @@
     "loginExtra": " mit Bungie",
     "logout": "Abmelden",
     "language": "Sprache",
-    "community": "Community"
+    "community": "Community",
+    "clan": "Clan"
   },
   "home": {
     "tag": "Powered by die Bungie-API",
@@ -58,6 +59,10 @@
       "community": {
         "title": "Community Builds",
         "desc": "Entdecke, teile und favorisiere Builds der Community."
+      },
+      "clan": {
+        "title": "Clan",
+        "desc": "Dein Clan und wer gerade online ist, mit Direktlink zu den Stats."
       }
     }
   },
@@ -414,5 +419,14 @@
     "mwTitle": "Meisterwerk (behalten)",
     "mwDesc": "Voll gemeisterte Items werden ebenfalls gesperrt.",
     "armorMinLabel": "Min. Rüstungs-Summe"
+  },
+  "clan": {
+    "title": "Mein Clan",
+    "intro": "Dein Clan und die Mitgliederliste, mit Online-Status und Rang. Tippe ein Mitglied für die Stats.",
+    "loginPrompt": "Melde dich mit Bungie an, um deinen Clan zu sehen.",
+    "loginBtn": "Mit Bungie anmelden",
+    "noClan": "Du bist in keinem Clan (oder das Profil ist privat).",
+    "membersTitle": "Mitglieder",
+    "onlineCount": "{n} online"
   }
 }

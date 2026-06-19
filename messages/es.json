@@ -12,7 +12,8 @@
     "loginExtra": " con Bungie",
     "logout": "Cerrar sesión",
     "language": "Idioma",
-    "community": "Comunidad"
+    "community": "Comunidad",
+    "clan": "Clan"
   },
   "home": {
     "tag": "Con la API de Bungie",
@@ -58,6 +59,10 @@
       "community": {
         "title": "Community Builds",
         "desc": "Descubre, comparte y marca builds de la comunidad."
+      },
+      "clan": {
+        "title": "Clan",
+        "desc": "Tu clan y quién está en línea, con enlace directo a las stats."
       }
     }
   },
@@ -414,5 +419,14 @@
     "mwTitle": "Obra maestra (conservar)",
     "mwDesc": "Los objetos con obra maestra también se bloquean.",
     "armorMinLabel": "Total mín. de armadura"
+  },
+  "clan": {
+    "title": "Mi clan",
+    "intro": "Tu clan y la lista de miembros, con estado en línea y rango. Toca un miembro para ver sus stats.",
+    "loginPrompt": "Inicia sesión con Bungie para ver tu clan.",
+    "loginBtn": "Iniciar sesión con Bungie",
+    "noClan": "No estás en ningún clan (o el perfil es privado).",
+    "membersTitle": "miembros",
+    "onlineCount": "{n} en línea"
   }
 }

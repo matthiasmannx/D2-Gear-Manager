@@ -12,7 +12,8 @@
     "loginExtra": " met Bungie",
     "logout": "Uitloggen",
     "language": "Taal",
-    "community": "Community"
+    "community": "Community",
+    "clan": "Clan"
   },
   "home": {
     "tag": "Powered by de Bungie API",
@@ -58,6 +59,10 @@
       "community": {
         "title": "Community Builds",
         "desc": "Ontdek, deel en favoriet builds van de community."
+      },
+      "clan": {
+        "title": "Clan",
+        "desc": "Je clan en wie er nu online is, met directe link naar ieders stats."
       }
     }
   },
@@ -414,5 +419,14 @@
     "mwTitle": "Masterworked (houden)",
     "mwDesc": "Volledig gemasterworkte items worden ook gelockt.",
     "armorMinLabel": "Min. armor-totaal"
+  },
+  "clan": {
+    "title": "Mijn Clan",
+    "intro": "Je clan en de ledenlijst, met online-status en rank. Klik een lid voor z'n stats.",
+    "loginPrompt": "Log in met Bungie om je clan te zien.",
+    "loginBtn": "Login met Bungie",
+    "noClan": "Je zit in geen enkele clan (of het profiel staat op privé).",
+    "membersTitle": "leden",
+    "onlineCount": "{n} online"
   }
 }

@@ -12,7 +12,8 @@
     "loginExtra": " with Bungie",
     "logout": "Log out",
     "language": "Language",
-    "community": "Community"
+    "community": "Community",
+    "clan": "Clan"
   },
   "home": {
     "tag": "Powered by the Bungie API",
@@ -58,6 +59,10 @@
       "community": {
         "title": "Community Builds",
         "desc": "Discover, share and favorite builds from the community."
+      },
+      "clan": {
+        "title": "Clan",
+        "desc": "Your clan and who's online now, with a direct link to everyone's stats."
       }
     }
   },
@@ -414,5 +419,14 @@
     "mwTitle": "Masterworked (keep)",
     "mwDesc": "Fully masterworked items are locked too.",
     "armorMinLabel": "Min. armor total"
+  },
+  "clan": {
+    "title": "My Clan",
+    "intro": "Your clan and member list, with online status and rank. Tap a member for their stats.",
+    "loginPrompt": "Log in with Bungie to see your clan.",
+    "loginBtn": "Login with Bungie",
+    "noClan": "You're not in a clan (or the profile is private).",
+    "membersTitle": "members",
+    "onlineCount": "{n} online"
   }
 }

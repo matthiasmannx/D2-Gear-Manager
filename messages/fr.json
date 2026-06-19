@@ -12,7 +12,8 @@
     "loginExtra": " avec Bungie",
     "logout": "Déconnexion",
     "language": "Langue",
-    "community": "Communauté"
+    "community": "Communauté",
+    "clan": "Clan"
   },
   "home": {
     "tag": "Propulsé par l'API Bungie",
@@ -58,6 +59,10 @@
       "community": {
         "title": "Community Builds",
         "desc": "Découvre, partage et mets en favori les builds de la communauté."
+      },
+      "clan": {
+        "title": "Clan",
+        "desc": "Ton clan et qui est en ligne, avec un lien direct vers les stats."
       }
     }
   },
@@ -414,5 +419,14 @@
     "mwTitle": "Chef-d'œuvre (à garder)",
     "mwDesc": "Les objets entièrement maîtrisés sont aussi verrouillés.",
     "armorMinLabel": "Total d'armure min."
+  },
+  "clan": {
+    "title": "Mon clan",
+    "intro": "Ton clan et la liste des membres, avec statut en ligne et rang. Touche un membre pour ses stats.",
+    "loginPrompt": "Connecte-toi avec Bungie pour voir ton clan.",
+    "loginBtn": "Connexion Bungie",
+    "noClan": "Tu n'es dans aucun clan (ou le profil est privé).",
+    "membersTitle": "membres",
+    "onlineCount": "{n} en ligne"
   }
 }

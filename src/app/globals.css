@@ -2813,3 +2813,15 @@ input:focus {
 }
 .live-pill.pvp { background: rgba(229,72,77,0.2); }
 .live-pill .live-dot { width: 7px; height: 7px; }
+
+/* ===== Clan ===== */
+.clan-head { padding: 1rem 1.2rem; margin: 1rem 0; border-left: 3px solid #8a9bff; }
+.clan-motto { margin: 0.3rem 0; font-style: italic; }
+.clan-about { margin: 0.3rem 0; font-size: 0.85rem; white-space: pre-wrap; }
+.clan-meta { margin-top: 0.5rem; font-size: 0.85rem; }
+.clan-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.5rem; }
+.clan-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.8rem; }
+.clan-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+.clan-dot.on { background: #38d39f; box-shadow: 0 0 6px rgba(56,211,159,0.7); }
+.clan-name { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+.clan-rank { font-size: 0.7rem; padding: 0.1rem 0.45rem; border-radius: 5px; background: rgba(138,155,255,0.18); color: #aeb8ff; white-space: nowrap; }
