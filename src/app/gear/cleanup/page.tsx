@@ -98,16 +98,16 @@ function CleanupSection({ title, count, desc, items, t, collapsed }: { title: st
             {it.icon && /* eslint-disable-next-line @next/next/no-img-element */ <img className="item-icon" src={it.icon} alt="" />}
             <div className="cleanup-info">
               <div className="cleanup-name">
-                {it.name}
-                {it.rollPve && <span className="cleanup-tag pve"> PvE</span>}
-                {it.rollPvp && <span className="cleanup-tag pvp"> PvP</span>}
+                <span className="cleanup-itemname">{it.name}</span>
+                {it.rollPve && <span className="cleanup-tag pve">PvE</span>}
+                {it.rollPvp && <span className="cleanup-tag pvp">PvP</span>}
               </div>
               <div className="cleanup-meta muted">
-                {[it.tier, it.type].filter(Boolean).join(" · ")}
-                {it.statTotal != null && <span className="cleanup-total"> {it.statTotal} pts</span>}
-                {it.gearTier ? <span className="cleanup-tag tier"> T{it.gearTier}</span> : null}
-                {it.dupe && <span className="cleanup-tag dupe"> {t("dupeTag")}</span>}
-                {it.locked && <span className="cleanup-tag locked"> 🔒</span>}
+                <span>{[it.tier, it.type].filter(Boolean).join(" · ")}</span>
+                {it.statTotal != null && <span className="cleanup-total">{it.statTotal} pts</span>}
+                {it.gearTier ? <span className="cleanup-tag tier">T{it.gearTier}</span> : null}
+                {it.dupe && <span className="cleanup-tag dupe">{t("dupeTag")}</span>}
+                {it.locked && <span className="cleanup-tag locked">🔒</span>}
               </div>
             </div>
             <a className="cleanup-lgg" href={it.lightgg} target="_blank" rel="noopener noreferrer">light.gg ↗</a>
