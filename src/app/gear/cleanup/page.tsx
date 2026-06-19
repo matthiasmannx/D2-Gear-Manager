@@ -104,7 +104,7 @@ function CleanupSection({ title, count, desc, items, t, collapsed }: { title: st
               </div>
               <div className="cleanup-meta muted">
                 {[it.tier, it.type].filter(Boolean).join(" · ")}
-                {it.statTotal != null && <span className="cleanup-total"> Σ{it.statTotal}</span>}
+                {it.statTotal != null && <span className="cleanup-total"> {it.statTotal} pts</span>}
                 {it.gearTier ? <span className="cleanup-tag tier"> T{it.gearTier}</span> : null}
                 {it.dupe && <span className="cleanup-tag dupe"> {t("dupeTag")}</span>}
                 {it.locked && <span className="cleanup-tag locked"> 🔒</span>}
