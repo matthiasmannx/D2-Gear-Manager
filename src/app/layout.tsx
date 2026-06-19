@@ -14,7 +14,8 @@ export const metadata: Metadata = {
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
+    // translucent → content loopt onder de status bar (donker), i.p.v. witte balk.
+    statusBarStyle: "black-translucent",
     title: "Guardian Hub",
   },
   formatDetection: {

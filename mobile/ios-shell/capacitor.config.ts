@@ -34,7 +34,10 @@ const config: CapacitorConfig = {
     allowNavigation: [host],
   },
   ios: {
-    contentInset: "automatic",
+    // never → webview loopt full-bleed onder de status bar; de web-CSS
+    // (env(safe-area-inset-*)) regelt de marges. Voorkomt dubbele ruimte + witte balk.
+    contentInset: "never",
+    backgroundColor: "#0b0e14",
   },
 };
 
