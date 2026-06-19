@@ -2619,6 +2619,8 @@ input:focus {
 .bc-sub { font-size: 0.82rem; }
 .bc-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; }
 .bc-tag { font-size: 0.72rem; padding: 0.15rem 0.5rem; border-radius: 6px; background: rgba(255,255,255,0.06); color: var(--muted); }
+.bc-tag.pve { background: #2f81f7; color: #fff; font-weight: 700; }
+.bc-tag.pvp { background: #e5484d; color: #fff; font-weight: 700; }
 .bc-badge { font-size: 0.72rem; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 600; }
 .bc-badge.verified { background: rgba(56,211,159,0.16); color: #38d39f; }
 .bc-badge.featured { background: rgba(255,159,28,0.16); color: #ff9f1c; }
@@ -2734,8 +2736,8 @@ input:focus {
 .cleanup-thr { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; }
 .cleanup-thr input { width: 60px; padding: 0.35rem 0.5rem; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font: inherit; }
 .cleanup-total { font-weight: 700; color: var(--accent); }
-.cleanup-tag.pve { background: rgba(74,158,255,0.18); color: #4a9eff; }
-.cleanup-tag.pvp { background: rgba(224,86,75,0.18); color: #e0564b; }
+.cleanup-tag.pve { background: #2f81f7; color: #fff; font-weight: 700; }
+.cleanup-tag.pvp { background: #e5484d; color: #fff; font-weight: 700; }
 .cleanup-tag.tier { background: rgba(255,255,255,0.08); color: var(--muted); }
 
 /* PvE/PvP god-roll-badges in het gear hover-paneel (achter de naam) */

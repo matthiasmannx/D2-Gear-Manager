@@ -29,7 +29,7 @@ export default function BuildCard({ build, labels, rank }: { build: CommunityBui
       <div className="bc-tags">
         {build.verified && <span className="bc-badge verified">✅ {labels.verifiedBadge}</span>}
         {build.featured && <span className="bc-badge featured">🔥 {labels.featuredBadge}</span>}
-        {build.activities.slice(0, 3).map((a) => <span key={a} className="bc-tag">{a}</span>)}
+        {build.activities.slice(0, 3).map((a) => <span key={a} className={`bc-tag ${a === "PvE" ? "pve" : a === "PvP" ? "pvp" : ""}`}>{a}</span>)}
       </div>
       <div className="bc-foot muted">
         <span>▲ {build.likes}</span>

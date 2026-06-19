@@ -64,7 +64,7 @@ export default async function BuildDetail({ params }: { params: Promise<{ id: st
       </header>
 
       <div className="cb-tags">
-        {build.activities.map((a) => <span key={a} className="bc-tag">{a}</span>)}
+        {build.activities.map((a) => <span key={a} className={`bc-tag ${a === "PvE" ? "pve" : a === "PvP" ? "pvp" : ""}`}>{a}</span>)}
       </div>
 
       {build.description && <section className="card cb-section"><p className="cb-desc">{build.description}</p></section>}
