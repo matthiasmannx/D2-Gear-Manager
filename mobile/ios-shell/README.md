@@ -18,6 +18,10 @@ Guardian Hub webapp.
 GUARDIAN_HUB_APP_URL=https://guardianhub.app
 ```
 
+De wrapper voegt zelf `?app=ios` toe aan de URL, zodat de webapp later gericht
+iOS-shell-specifieke styling of gedrag kan toepassen zonder de gewone site te
+beinvloeden.
+
 3. Registreer dezelfde productie callback in je Bungie app:
 
 ```text

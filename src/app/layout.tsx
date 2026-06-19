@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import SettingsSync from "@/components/SettingsSync";
+import ShellMode from "@/components/ShellMode";
+import ExternalLinks from "@/components/ExternalLinks";
 import { isLoggedIn } from "@/lib/auth";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
@@ -14,8 +16,7 @@ export const metadata: Metadata = {
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
-    // translucent → content loopt onder de status bar (donker), i.p.v. witte balk.
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "default",
     title: "Guardian Hub",
   },
   formatDetection: {
@@ -25,9 +26,6 @@ export const metadata: Metadata = {
 
 export const viewport = {
   themeColor: "#0b0e14",
-  // Vereist zodat env(safe-area-inset-*) werkt op iOS (notch + home indicator).
-  // Zonder dit blijven die 0 → nav onder de status bar en witte vlakken boven/onder.
-  viewportFit: "cover" as const,
 };
 
 export default async function RootLayout({
@@ -42,6 +40,8 @@ export default async function RootLayout({
     <html lang={locale}>
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
+          <ShellMode />
+          <ExternalLinks />
           <Nav loggedIn={loggedIn} />
           <SettingsSync loggedIn={loggedIn} />
           <main className="container">{children}</main>

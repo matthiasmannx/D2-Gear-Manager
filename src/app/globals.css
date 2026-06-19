@@ -92,6 +92,10 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
 }
+html[data-app-shell="ios"],
+body[data-app-shell="ios"] {
+  background: var(--bg);
+}
 main.container {
   flex: 1 0 auto;
   width: 100%;

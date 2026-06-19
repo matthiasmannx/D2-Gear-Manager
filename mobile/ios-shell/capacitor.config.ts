@@ -22,21 +22,22 @@ const appUrl =
   getEnvValue("GUARDIAN_HUB_APP_URL") ??
   "https://guardianhub.app";
 
-const host = new URL(appUrl).hostname;
+const remoteUrl = new URL(appUrl);
+remoteUrl.searchParams.set("app", "ios");
+
+const host = remoteUrl.hostname;
 
 const config: CapacitorConfig = {
   appId: "com.matthiasmann.guardianhub",
   appName: "Guardian Hub",
   webDir: "www",
   server: {
-    url: appUrl,
+    url: remoteUrl.toString(),
     cleartext: false,
     allowNavigation: [host],
   },
   ios: {
-    // never → webview loopt full-bleed onder de status bar; de web-CSS
-    // (env(safe-area-inset-*)) regelt de marges. Voorkomt dubbele ruimte + witte balk.
-    contentInset: "never",
+    contentInset: "automatic",
     backgroundColor: "#0b0e14",
   },
 };
