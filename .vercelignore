@@ -1,0 +1,3 @@
+# Niet nodig voor de Vercel-deploy (native iOS-shell + docs).
+mobile/
+docs/

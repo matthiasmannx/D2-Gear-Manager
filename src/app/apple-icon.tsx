@@ -17,16 +17,16 @@ export default function AppleIcon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background:
-            "radial-gradient(circle at 50% 38%, #ffd27a 0%, #f5a623 45%, #0b0e14 100%)",
+          background: "#0b0e14",
           borderRadius: 36,
-          color: "#ffffff",
-          fontSize: 112,
-          fontWeight: 900,
-          letterSpacing: "-0.06em",
+          color: "#f5a623",
+          fontSize: 116,
+          fontWeight: 800,
+          lineHeight: 1,
+          boxShadow: "inset 0 0 0 6px rgba(245, 166, 35, 0.16)",
         }}
       >
-        G
+        ⟡
       </div>
     ),
     size,

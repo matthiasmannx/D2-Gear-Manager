@@ -24,6 +24,9 @@ export const metadata: Metadata = {
 
 export const viewport = {
   themeColor: "#0b0e14",
+  // Vereist zodat env(safe-area-inset-*) werkt op iOS (notch + home indicator).
+  // Zonder dit blijven die 0 → nav onder de status bar en witte vlakken boven/onder.
+  viewportFit: "cover" as const,
 };
 
 export default async function RootLayout({
