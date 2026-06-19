@@ -19,14 +19,19 @@ export default function AppleIcon() {
           justifyContent: "center",
           background: "#0b0e14",
           borderRadius: 36,
-          color: "#f5a623",
-          fontSize: 116,
-          fontWeight: 800,
-          lineHeight: 1,
           boxShadow: "inset 0 0 0 6px rgba(245, 166, 35, 0.16)",
         }}
       >
-        ⟡
+        {/* Diamant-merkteken als gedraaid vierkant (geen font nodig). */}
+        <div
+          style={{
+            width: 84,
+            height: 84,
+            background: "#f5a623",
+            borderRadius: 18,
+            transform: "rotate(45deg)",
+          }}
+        />
       </div>
     ),
     size,
