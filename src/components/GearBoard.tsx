@@ -648,7 +648,10 @@ export default function GearBoard({
                   <img src={iconUrl(r.item.icon)!} alt="" />
                 )}
                 <div className="gsr-info">
-                  <span className="gsr-name">{r.item.name}{r.item.power != null ? ` · ⚡${r.item.power}` : ""}</span>
+                  <span className="gsr-name">
+                    {(() => { const sl = SLOTS.find((s) => s.bucket === r.item.bucketHash)?.label; return sl ? <span className="gsr-slot">{sl}</span> : null; })()}
+                    {r.item.name}{r.item.power != null ? ` · ⚡${r.item.power}` : ""}
+                  </span>
                   <span className="muted gsr-loc">{r.location}{r.item.masterwork ? " · MW" : ""}{r.item.locked ? " · 🔒" : ""}</span>
                 </div>
                 <div className="gsr-actions">

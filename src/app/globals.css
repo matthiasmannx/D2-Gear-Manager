@@ -2777,3 +2777,11 @@ input:focus {
 }
 .gear-roll.pve { background: #2f81f7; } /* felblauw */
 .gear-roll.pvp { background: #e5484d; } /* felrood */
+
+/* slot-badge in gear-zoekresultaten */
+.gsr-slot {
+  display: inline-block; margin-right: 0.45rem; padding: 0.05rem 0.4rem;
+  font-size: 0.66rem; font-weight: 700; border-radius: 5px;
+  background: rgba(74,158,255,0.18); color: #7ab8ff; vertical-align: middle;
+  text-transform: uppercase; letter-spacing: 0.03em;
+}
