@@ -2747,14 +2747,16 @@ input:focus {
 /* ===== Vault cleanup ===== */
 .cleanup-bar { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
 .cleanup-note { font-size: 0.8rem; max-width: 560px; }
-.cleanup-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.5rem; }
-.cleanup-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0.6rem; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; }
-.cleanup-row .item-icon { width: 36px; height: 36px; border-radius: 6px; }
+.cleanup-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.5rem; grid-auto-rows: 1fr; }
+.cleanup-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0.6rem; min-height: 58px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; }
+.cleanup-row .item-icon { width: 36px; height: 36px; border-radius: 6px; flex-shrink: 0; }
 .cleanup-info { min-width: 0; flex: 1; }
-.cleanup-name { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; font-weight: 600; }
-.cleanup-itemname { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
-.cleanup-meta { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; font-size: 0.75rem; }
-.cleanup-tag { font-size: 0.7rem; padding: 0 0.3rem; border-radius: 4px; }
+.cleanup-name { display: flex; align-items: center; gap: 0.4rem; flex-wrap: nowrap; min-width: 0; font-weight: 600; }
+.cleanup-itemname { flex: 0 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cleanup-meta { display: flex; align-items: center; gap: 0.45rem; flex-wrap: nowrap; min-width: 0; font-size: 0.75rem; }
+.cleanup-meta > span:first-child { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cleanup-tag { flex-shrink: 0; font-size: 0.7rem; padding: 0 0.3rem; border-radius: 4px; }
+.cleanup-total, .cleanup-lgg { flex-shrink: 0; }
 .cleanup-tag.dupe { background: rgba(255,159,28,0.18); color: #ff9f1c; }
 .cleanup-tag.locked { color: var(--accent-2, #4ad6c8); }
 .cleanup-lgg { font-size: 0.75rem; white-space: nowrap; color: var(--accent-2, #4ad6c8); }
