@@ -42,50 +42,54 @@ export default function Nav({ loggedIn }: { loggedIn: boolean }) {
   return (
     <nav className="nav" ref={ref}>
       <div className="nav-inner">
-        <Link href="/" className="nav-brand"><Brand collapsible /></Link>
+        <Link href="/" className="nav-brand"><Brand /></Link>
 
         <button type="button" className="nav-hamburger" aria-label={t("menu")} aria-expanded={mobileOpen} onClick={() => setMobileOpen((o) => !o)}>
           <span /><span /><span />
         </button>
 
         <div className={`nav-menu ${mobileOpen ? "open" : ""}`}>
-          {NAV.map((e) =>
-            e.type === "link" ? (
-              <Link key={e.href} href={e.href} className={`nav-item ${isActive(e.href) ? "active" : ""}`} style={linkStyle(e.href)}>
-                {t(e.key)}
-              </Link>
-            ) : (
-              <div key={e.key} className={`nav-group ${openMenu === e.key ? "open" : ""} ${e.items.some((i) => isActive(i.href)) ? "active" : ""}`}>
-                <button type="button" className="nav-group-btn nav-item" onClick={() => setOpenMenu((m) => (m === e.key ? null : e.key))}>
-                  {t(e.key)} <span className="nav-caret" aria-hidden>▾</span>
-                </button>
-                <div className="nav-dropdown">
-                  {e.items.map((i) => (
-                    <Link key={i.href} href={i.href} className={`nav-drop-item ${isActive(i.href) ? "active" : ""}`} style={linkStyle(i.href)}>
-                      {t(i.key)}
-                    </Link>
-                  ))}
+          <div className="nav-links">
+            {NAV.map((e) =>
+              e.type === "link" ? (
+                <Link key={e.href} href={e.href} className={`nav-item ${isActive(e.href) ? "active" : ""}`} style={linkStyle(e.href)}>
+                  {t(e.key)}
+                </Link>
+              ) : (
+                <div key={e.key} className={`nav-group ${openMenu === e.key ? "open" : ""} ${e.items.some((i) => isActive(i.href)) ? "active" : ""}`}>
+                  <button type="button" className="nav-group-btn nav-item" onClick={() => setOpenMenu((m) => (m === e.key ? null : e.key))}>
+                    {t(e.key)} <span className="nav-caret" aria-hidden>▾</span>
+                  </button>
+                  <div className="nav-dropdown">
+                    {e.items.map((i) => (
+                      <Link key={i.href} href={i.href} className={`nav-drop-item ${isActive(i.href) ? "active" : ""}`} style={linkStyle(i.href)}>
+                        {t(i.key)}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )
-          )}
-        </div>
+              )
+            )}
+          </div>
 
-        <LanguageSwitcher />
-        {loggedIn ? (
-          <a href="/api/auth/logout" className="btn btn-logout nav-auth" title={t("logout")} aria-label={t("logout")}>
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-              <polyline points="16 17 21 12 16 7" />
-              <line x1="21" y1="12" x2="9" y2="12" />
-            </svg>
-            <span className="nav-auth-extra">{t("logout")}</span>
-          </a>
-        ) : (
-          <a href="/api/auth/login" className="btn nav-auth">
-            {t("login")}<span className="nav-auth-extra">{t("loginExtra")}</span>
-          </a>
-        )}
+          <div className="nav-actions">
+            <LanguageSwitcher />
+            {loggedIn ? (
+              <a href="/api/auth/logout" className="btn btn-logout nav-auth" title={t("logout")} aria-label={t("logout")}>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                <span className="nav-auth-extra">{t("logout")}</span>
+              </a>
+            ) : (
+              <a href="/api/auth/login" className="btn nav-auth">
+                {t("login")}<span className="nav-auth-extra">{t("loginExtra")}</span>
+              </a>
+            )}
+          </div>
+        </div>
       </div>
     </nav>
   );

@@ -224,7 +224,9 @@ h3 {
 }
 
 /* ---- Nav v2: groepen + dropdowns ---- */
-.nav-menu { display: flex; gap: 1rem; flex-wrap: wrap; flex: 1; justify-content: center; align-items: center; }
+.nav-menu { display: flex; gap: 1rem; flex: 1; align-items: center; }
+.nav-links { display: flex; gap: 1rem; flex-wrap: wrap; flex: 1; justify-content: center; align-items: center; }
+.nav-actions { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
 .nav-item {
   color: var(--text-dim); font-size: 0.92rem; padding: 0.25rem 0;
   border: 0; border-bottom: 2px solid transparent; background: none; cursor: pointer;
@@ -2536,23 +2538,23 @@ input:focus {
   .nav-brand {
     font-size: 0.95rem;
   }
-  .nav-brand { order: 1; margin-right: auto; }
-  .lang-switch { order: 2; flex-shrink: 0; }
-  .nav-auth { order: 3; flex-shrink: 0; }
+  /* Bovenbalk: alleen merk links + hamburger rechts */
+  .nav-brand { margin-right: auto; }
   .nav-hamburger {
-    order: 4; display: inline-flex; flex-direction: column; justify-content: center; gap: 4px;
-    width: 40px; height: 36px; padding: 8px; background: none; border: 1px solid var(--border);
-    border-radius: 9px; cursor: pointer;
+    display: inline-flex; flex-direction: column; justify-content: center; gap: 4px;
+    width: 42px; height: 38px; padding: 9px; background: none; border: 1px solid var(--border);
+    border-radius: 10px; cursor: pointer; flex-shrink: 0;
   }
   .nav-hamburger span { display: block; height: 2px; background: var(--text); border-radius: 2px; }
-  /* Uitklappaneel: groepen + links onder elkaar */
+  /* Uitklappaneel: groepen, links, en onderaan taal + uitloggen */
   .nav-menu {
     order: 5; flex: 1 1 100%; width: 100%; display: none;
-    flex-direction: column; align-items: stretch; gap: 0.1rem; margin-top: 0.4rem;
+    flex-direction: column; align-items: stretch; gap: 0.1rem; margin-top: 0.5rem;
   }
   .nav-menu.open { display: flex; }
+  .nav-links { flex-direction: column; align-items: stretch; gap: 0.1rem; flex: none; }
   .nav-item {
-    padding: 0.65rem 0.4rem; width: 100%; text-align: left;
+    padding: 0.7rem 0.4rem; width: 100%; text-align: left;
     border-bottom: 1px solid var(--border); border-radius: 0;
   }
   .nav-item.active { border-bottom-color: var(--border); }
@@ -2565,6 +2567,9 @@ input:focus {
     padding: 0.1rem 0; background: none; border: 0; box-shadow: none;
   }
   .nav-drop-item { padding: 0.5rem 0.4rem; }
+  /* Taal + uitloggen onderin het paneel */
+  .nav-actions { padding-top: 0.8rem; margin-top: 0.4rem; border-top: 1px solid var(--border); gap: 0.7rem; }
+  .nav-actions .nav-auth-extra { display: inline; }
   .btn,
   .btn-ghost {
     padding: 0.45rem 0.7rem;
@@ -2606,8 +2611,7 @@ input:focus {
     flex-wrap: wrap;
   }
 
-  /* Navbar compacter: alleen logo, korte login-tekst */
-  .brand-text,
+  /* Merknaam tonen; auth-tekst alleen in het hamburger-paneel (override hierboven). */
   .nav-auth-extra {
     display: none;
   }
