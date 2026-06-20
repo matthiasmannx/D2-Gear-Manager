@@ -13,7 +13,9 @@
     "logout": "Uitloggen",
     "language": "Taal",
     "community": "Community",
-    "clan": "Clan"
+    "clan": "Clan",
+    "power": "Power",
+    "weekly": "Weekly"
   },
   "home": {
     "tag": "Powered by de Bungie API",
@@ -63,6 +65,14 @@
       "clan": {
         "title": "Clan",
         "desc": "Je clan en wie er nu online is, met directe link naar ieders stats."
+      },
+      "power": {
+        "title": "Power",
+        "desc": "Zie per slot je hoogste gear en waar je power te winnen valt."
+      },
+      "weekly": {
+        "title": "Weekly",
+        "desc": "Je wekelijkse milestones en wat je deze reset nog moet doen."
       }
     }
   },
@@ -429,5 +439,14 @@
     "noClan": "Je zit in geen enkele clan (of het profiel staat op privé).",
     "membersTitle": "leden",
     "onlineCount": "{n} online"
+  },
+  "power": {
+    "title": "Power-optimizer",
+    "intro": "Je power per slot, je hoogste gear en hoeveel je kunt stijgen als je je beste spullen draagt.",
+    "loginPrompt": "Log in met Bungie om je power te analyseren.",
+    "loginBtn": "Login met Bungie",
+    "noChars": "Geen characters gevonden.",
+    "equipBest": "Draag je beste per slot → power {n}",
+    "atMax": "Je draagt al je hoogste gear per slot. 🔥"
   }
 }

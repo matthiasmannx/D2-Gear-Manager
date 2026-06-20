@@ -13,7 +13,9 @@
     "logout": "Déconnexion",
     "language": "Langue",
     "community": "Communauté",
-    "clan": "Clan"
+    "clan": "Clan",
+    "power": "Power",
+    "weekly": "Weekly"
   },
   "home": {
     "tag": "Propulsé par l'API Bungie",
@@ -63,6 +65,14 @@
       "clan": {
         "title": "Clan",
         "desc": "Ton clan et qui est en ligne, avec un lien direct vers les stats."
+      },
+      "power": {
+        "title": "Power",
+        "desc": "Ton meilleur équipement par slot et où gagner du power."
+      },
+      "weekly": {
+        "title": "Weekly",
+        "desc": "Tes jalons hebdo et ce qu'il reste à faire ce reset."
       }
     }
   },
@@ -429,5 +439,14 @@
     "noClan": "Tu n'es dans aucun clan (ou le profil est privé).",
     "membersTitle": "membres",
     "onlineCount": "{n} en ligne"
+  },
+  "power": {
+    "title": "Optimiseur de power",
+    "intro": "Ton power par slot, ton meilleur équipement et combien tu peux gagner.",
+    "loginPrompt": "Connecte-toi avec Bungie pour analyser ton power.",
+    "loginBtn": "Connexion Bungie",
+    "noChars": "Aucun personnage trouvé.",
+    "equipBest": "Équipe ton meilleur par slot → power {n}",
+    "atMax": "Tu portes déjà ton meilleur équipement. 🔥"
   }
 }

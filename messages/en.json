@@ -13,7 +13,9 @@
     "logout": "Log out",
     "language": "Language",
     "community": "Community",
-    "clan": "Clan"
+    "clan": "Clan",
+    "power": "Power",
+    "weekly": "Weekly"
   },
   "home": {
     "tag": "Powered by the Bungie API",
@@ -63,6 +65,14 @@
       "clan": {
         "title": "Clan",
         "desc": "Your clan and who's online now, with a direct link to everyone's stats."
+      },
+      "power": {
+        "title": "Power",
+        "desc": "See your highest gear per slot and where to gain power."
+      },
+      "weekly": {
+        "title": "Weekly",
+        "desc": "Your weekly milestones and what's left to do this reset."
       }
     }
   },
@@ -429,5 +439,14 @@
     "noClan": "You're not in a clan (or the profile is private).",
     "membersTitle": "members",
     "onlineCount": "{n} online"
+  },
+  "power": {
+    "title": "Power optimizer",
+    "intro": "Your power per slot, your highest gear, and how much you can gain by equipping your best.",
+    "loginPrompt": "Log in with Bungie to analyze your power.",
+    "loginBtn": "Login with Bungie",
+    "noChars": "No characters found.",
+    "equipBest": "Equip your best per slot → power {n}",
+    "atMax": "You're already wearing your highest gear per slot. 🔥"
   }
 }

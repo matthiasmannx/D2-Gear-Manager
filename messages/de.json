@@ -13,7 +13,9 @@
     "logout": "Abmelden",
     "language": "Sprache",
     "community": "Community",
-    "clan": "Clan"
+    "clan": "Clan",
+    "power": "Power",
+    "weekly": "Weekly"
   },
   "home": {
     "tag": "Powered by die Bungie-API",
@@ -63,6 +65,14 @@
       "clan": {
         "title": "Clan",
         "desc": "Dein Clan und wer gerade online ist, mit Direktlink zu den Stats."
+      },
+      "power": {
+        "title": "Power",
+        "desc": "Deine höchste Ausrüstung pro Slot und wo du Power gewinnst."
+      },
+      "weekly": {
+        "title": "Weekly",
+        "desc": "Deine wöchentlichen Milestones und was diese Woche noch offen ist."
       }
     }
   },
@@ -429,5 +439,14 @@
     "noClan": "Du bist in keinem Clan (oder das Profil ist privat).",
     "membersTitle": "Mitglieder",
     "onlineCount": "{n} online"
+  },
+  "power": {
+    "title": "Power-Optimierer",
+    "intro": "Deine Power pro Slot, deine höchste Ausrüstung und wie viel du gewinnen kannst.",
+    "loginPrompt": "Melde dich mit Bungie an, um deine Power zu analysieren.",
+    "loginBtn": "Mit Bungie anmelden",
+    "noChars": "Keine Charaktere gefunden.",
+    "equipBest": "Trag dein Bestes pro Slot → Power {n}",
+    "atMax": "Du trägst bereits deine höchste Ausrüstung. 🔥"
   }
 }

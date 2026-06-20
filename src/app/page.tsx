@@ -6,7 +6,7 @@ import BuildCard from "@/components/BuildCard";
 import { getTrendingBuilds } from "@/lib/communityBuilds";
 import { dbConfigured } from "@/lib/db";
 
-const SECTION_KEYS = ["items", "gear", "builds", "community", "players", "profile", "clan", "events", "changelog"] as const;
+const SECTION_KEYS = ["items", "gear", "builds", "community", "players", "profile", "clan", "power", "weekly", "events", "changelog"] as const;
 
 export default async function Home({
   searchParams,

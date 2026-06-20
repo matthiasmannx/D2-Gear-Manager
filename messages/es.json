@@ -13,7 +13,9 @@
     "logout": "Cerrar sesión",
     "language": "Idioma",
     "community": "Comunidad",
-    "clan": "Clan"
+    "clan": "Clan",
+    "power": "Power",
+    "weekly": "Weekly"
   },
   "home": {
     "tag": "Con la API de Bungie",
@@ -63,6 +65,14 @@
       "clan": {
         "title": "Clan",
         "desc": "Tu clan y quién está en línea, con enlace directo a las stats."
+      },
+      "power": {
+        "title": "Power",
+        "desc": "Tu mejor equipo por slot y dónde ganar power."
+      },
+      "weekly": {
+        "title": "Weekly",
+        "desc": "Tus hitos semanales y lo que falta este reset."
       }
     }
   },
@@ -429,5 +439,14 @@
     "noClan": "No estás en ningún clan (o el perfil es privado).",
     "membersTitle": "miembros",
     "onlineCount": "{n} en línea"
+  },
+  "power": {
+    "title": "Optimizador de power",
+    "intro": "Tu power por slot, tu mejor equipo y cuánto puedes subir.",
+    "loginPrompt": "Inicia sesión con Bungie para analizar tu power.",
+    "loginBtn": "Iniciar sesión con Bungie",
+    "noChars": "No se encontraron personajes.",
+    "equipBest": "Equipa lo mejor por slot → power {n}",
+    "atMax": "Ya llevas tu mejor equipo por slot. 🔥"
   }
 }

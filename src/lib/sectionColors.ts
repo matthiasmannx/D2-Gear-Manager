@@ -10,6 +10,8 @@ export const SECTION_COLORS: Record<string, string> = {
   "/profile": "#7c6cff", // indigo
   "/community": "#ff9f1c", // amber/oranje
   "/clan": "#8a9bff", // periwinkle
+  "/power": "#ffcf5c", // power-geel
+  "/weekly": "#5ad19b", // weekly-groen
 };
 
 export function sectionColor(href: string): string {

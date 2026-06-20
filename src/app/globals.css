@@ -2831,3 +2831,20 @@ input:focus {
 
 .lock-keepers { display: inline-flex; align-items: center; gap: 0.5rem; }
 .lock-result { font-size: 0.82rem; }
+
+/* ===== Power-optimizer ===== */
+.power-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.8rem; margin-top: 1rem; }
+.power-card { padding: 0.9rem 1rem; background-size: cover; background-position: center; }
+.power-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 0.7rem; }
+.power-class { font-weight: 800; font-size: 1.1rem; }
+.power-now { font-size: 1.5rem; font-weight: 800; color: #ffcf5c; }
+.power-max { font-size: 1rem; color: var(--muted); font-weight: 600; }
+.power-gain { color: #5ad19b; }
+.power-slots { display: grid; gap: 0.25rem; }
+.power-slot { display: grid; grid-template-columns: 70px 48px 1fr; align-items: center; gap: 0.5rem; font-size: 0.85rem; padding: 0.15rem 0.3rem; border-radius: 5px; }
+.power-slot.low { background: rgba(229,72,77,0.14); }
+.power-slot-label { color: var(--muted); }
+.power-slot-val { font-weight: 700; text-align: right; }
+.power-slot-up { font-size: 0.78rem; color: #5ad19b; }
+.power-slot-up b { color: #5ad19b; }
+.power-note { font-size: 0.8rem; margin: 0.7rem 0 0; }
