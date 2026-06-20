@@ -332,7 +332,10 @@
     "fullStats": "Vollständige Statistiken →",
     "statKd": "Lifetime-K/D",
     "statWinRate": "Siegrate",
-    "statFlawless": "Makellos-Tickets"
+    "statFlawless": "Makellos-Tickets",
+    "trendTitle": "K/D über Zeit",
+    "trendPoints": "Messpunkte",
+    "trendSoon": "Wir verfolgen deine K/D ab jetzt, komm für den Trend zurück."
   },
   "community": {
     "title": "Community Builds",

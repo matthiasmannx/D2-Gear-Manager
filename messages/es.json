@@ -332,7 +332,10 @@
     "fullStats": "Estadísticas completas →",
     "statKd": "K/D de por vida",
     "statWinRate": "Tasa de victorias",
-    "statFlawless": "Tickets de Impecable"
+    "statFlawless": "Tickets de Impecable",
+    "trendTitle": "K/D en el tiempo",
+    "trendPoints": "mediciones",
+    "trendSoon": "Seguimos tu K/D desde ahora, vuelve para ver la tendencia."
   },
   "community": {
     "title": "Community Builds",

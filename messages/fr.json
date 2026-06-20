@@ -332,7 +332,10 @@
     "fullStats": "Stats complètes →",
     "statKd": "K/D à vie",
     "statWinRate": "Taux de victoire",
-    "statFlawless": "Tickets Flawless"
+    "statFlawless": "Tickets Flawless",
+    "trendTitle": "K/D dans le temps",
+    "trendPoints": "mesures",
+    "trendSoon": "On suit ton K/D dès maintenant, reviens pour le graphique."
   },
   "community": {
     "title": "Community Builds",

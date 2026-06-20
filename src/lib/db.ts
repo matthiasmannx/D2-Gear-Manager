@@ -98,6 +98,17 @@ export async function ensureSchema(): Promise<void> {
   `;
   await sql`CREATE INDEX IF NOT EXISTS idx_comments_build ON build_comments (build_id, created_at)`;
   await sql`
+    CREATE TABLE IF NOT EXISTS stat_snapshots (
+      user_id     TEXT NOT NULL,
+      day         DATE NOT NULL,
+      kd          REAL,
+      win_rate    REAL,
+      kills       INTEGER,
+      captured_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+      PRIMARY KEY (user_id, day)
+    )
+  `;
+  await sql`
     CREATE TABLE IF NOT EXISTS user_prefs (
       user_id    TEXT PRIMARY KEY,
       prefs      JSONB NOT NULL DEFAULT '{}',

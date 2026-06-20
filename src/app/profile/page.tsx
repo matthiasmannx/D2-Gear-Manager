@@ -3,6 +3,8 @@ import { Suspense } from "react";
 import { getTranslations, getLocale } from "next-intl/server";
 import { Loading } from "@/components/Skeleton";
 import LiveActivity from "@/components/LiveActivity";
+import Sparkline from "@/components/Sparkline";
+import { saveSnapshot, getHistory } from "@/lib/statHistory";
 import { getValidAccessToken, getCurrentUserId } from "@/lib/auth";
 import {
   getMemberships,
@@ -59,6 +61,12 @@ async function ProfileContent() {
   const h = stats?.highlights;
   const accountId = await getCurrentUserId();
 
+  // Dagelijkse snapshot van je stats opslaan → trend over tijd.
+  const toNum = (v: any) => { const f = parseFloat(String(v ?? "").replace(/[%,\s]/g, "")); return Number.isFinite(f) ? f : null; };
+  const killsNum = (() => { const n = parseInt(String(h?.totalKills ?? "").replace(/[^\d]/g, ""), 10); return Number.isFinite(n) ? n : null; })();
+  await saveSnapshot(accountId, { kd: toNum(h?.kd), winRate: toNum(h?.winRate), kills: killsNum });
+  const history = await getHistory(accountId);
+
   return (
     <>
       <div className="player-head">
@@ -89,6 +97,19 @@ async function ProfileContent() {
           <BigStat key={r.label} label={r.label} value={r.rankName} small />
         ))}
       </div>
+
+      {/* K/D over tijd */}
+      {history.length >= 2 ? (
+        <div className="card trend-card">
+          <h3 style={{ marginTop: 0 }}>{t("trendTitle")}</h3>
+          <Sparkline points={history.map((s) => (s.kd ?? NaN))} color="#7c6cff" />
+          <div className="muted trend-meta">
+            {history[0].kd ?? "-"} → {history[history.length - 1].kd ?? "-"} · {history.length} {t("trendPoints")}
+          </div>
+        </div>
+      ) : (
+        <p className="muted" style={{ fontSize: "0.8rem", marginTop: "0.75rem" }}>{t("trendSoon")}</p>
+      )}
 
       {/* Guardians met banner */}
       {extras.characters.length > 0 && (

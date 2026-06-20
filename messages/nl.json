@@ -332,7 +332,10 @@
     "fullStats": "Volledige stats →",
     "statKd": "Lifetime K/D",
     "statWinRate": "Win rate",
-    "statFlawless": "Flawless tickets"
+    "statFlawless": "Flawless tickets",
+    "trendTitle": "K/D over tijd",
+    "trendPoints": "metingen",
+    "trendSoon": "We volgen je K/D vanaf nu, kom terug voor de trendgrafiek."
   },
   "community": {
     "title": "Community Builds",

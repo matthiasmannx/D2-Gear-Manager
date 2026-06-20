@@ -2876,3 +2876,7 @@ input:focus {
 .compare-val { font-weight: 700; text-align: center; font-variant-numeric: tabular-nums; }
 .compare-val.win { color: #5ad19b; }
 .compare-label { font-size: 0.8rem; text-align: center; min-width: 9ch; }
+
+/* ===== Stats-trend (sparkline) ===== */
+.trend-card { margin-top: 1.25rem; padding: 0.9rem 1.1rem; }
+.trend-meta { font-size: 0.8rem; margin-top: 0.4rem; }
