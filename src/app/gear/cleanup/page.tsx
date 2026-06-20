@@ -112,6 +112,7 @@ function CleanupSection({ title, count, desc, items, t, collapsed }: { title: st
                 <span>{[it.tier, it.type].filter(Boolean).join(" · ")}</span>
                 {it.statTotal != null && <span className="cleanup-total">{it.statTotal} pts</span>}
                 {it.gearTier ? <span className="cleanup-tag tier">T{it.gearTier}</span> : null}
+                {it.crafted && <span className="cleanup-tag crafted">Crafted</span>}
                 {it.dupe && <span className="cleanup-tag dupe">{t("dupeTag")}</span>}
                 {it.locked && <span className="cleanup-tag locked">🔒</span>}
               </div>

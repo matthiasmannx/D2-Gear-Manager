@@ -43,7 +43,7 @@ export async function analyzeVault(vault: GearItem[], armorMin = 65): Promise<Va
     else if (it.locked) verdict = "locked";
     // T5-armor (hoogste tier) of armor met genoeg stat-totaal = keeper.
     else if (isArmor && (it.gearTier === 5 || (statTotal != null && statTotal >= armorMin))) verdict = "armorgood";
-    else if (it.masterwork) verdict = "masterwork";
+    else if (it.masterwork || it.crafted) verdict = "masterwork"; // crafted nooit als junk
     else if (it.tier === "Rare" || it.tier === "Uncommon" || it.tier === "Common") verdict = "junk";
     else verdict = "review";
     return { ...it, verdict, dupe: (counts.get(it.hash) ?? 1) > 1, lightgg: `https://light.gg/db/items/${it.hash}/`, statTotal };

@@ -48,6 +48,7 @@ export interface GearItem {
   gearTier?: number;
   locked: boolean;
   masterwork: boolean;
+  crafted?: boolean;
   stats: ItemStat[];
   /** Plug-hashes van de gesokkelde perks (voor god-roll matching). */
   perks: number[];
@@ -93,6 +94,7 @@ const COMPONENTS = [200, 201, 205, 102, 300, 304, 305, 206];
 // ItemState flags (bitmask).
 const STATE_LOCKED = 1;
 const STATE_MASTERWORK = 4;
+const STATE_CRAFTED = 8;
 
 // Bucket voor de postmaster (Lost Items).
 const POSTMASTER_BUCKET = 215593132;
@@ -161,6 +163,7 @@ export async function loadGear(token: string, godRollMinOverride?: number): Prom
       gearTier: inst?.gearTier,
       locked: (state & STATE_LOCKED) !== 0,
       masterwork: (state & STATE_MASTERWORK) !== 0,
+      crafted: (state & STATE_CRAFTED) !== 0,
       stats,
       perks,
       rollPve: tags?.pve || undefined,
