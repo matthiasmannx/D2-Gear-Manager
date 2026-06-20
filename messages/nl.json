@@ -15,7 +15,10 @@
     "community": "Community",
     "clan": "Clan",
     "power": "Power",
-    "weekly": "Weekly"
+    "weekly": "Weekly",
+    "gBuilds": "Builds",
+    "gGuardian": "Mijn Guardian",
+    "menu": "Menu"
   },
   "home": {
     "tag": "Powered by de Bungie API",

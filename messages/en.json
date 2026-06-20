@@ -15,7 +15,10 @@
     "community": "Community",
     "clan": "Clan",
     "power": "Power",
-    "weekly": "Weekly"
+    "weekly": "Weekly",
+    "gBuilds": "Builds",
+    "gGuardian": "My Guardian",
+    "menu": "Menu"
   },
   "home": {
     "tag": "Powered by the Bungie API",
