@@ -448,5 +448,14 @@
     "noChars": "Geen characters gevonden.",
     "equipBest": "Draag je beste per slot → power {n}",
     "atMax": "Je draagt al je hoogste gear per slot. 🔥"
+  },
+  "weekly": {
+    "title": "Weekly checklist",
+    "intro": "Je wekelijkse milestones en wat je deze reset nog moet doen. Open eerst.",
+    "loginPrompt": "Log in met Bungie om je checklist te zien.",
+    "loginBtn": "Login met Bungie",
+    "none": "Geen milestones gevonden.",
+    "resetIn": "Reset over",
+    "note": "Voltooiing wordt getoond waar Bungie het aangeeft (rewards/challenges); samengevoegd over je characters."
   }
 }

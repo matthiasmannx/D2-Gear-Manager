@@ -448,5 +448,14 @@
     "noChars": "No characters found.",
     "equipBest": "Equip your best per slot → power {n}",
     "atMax": "You're already wearing your highest gear per slot. 🔥"
+  },
+  "weekly": {
+    "title": "Weekly checklist",
+    "intro": "Your weekly milestones and what's left to do this reset. Open first.",
+    "loginPrompt": "Log in with Bungie to see your checklist.",
+    "loginBtn": "Login with Bungie",
+    "none": "No milestones found.",
+    "resetIn": "Reset in",
+    "note": "Completion is shown where Bungie reports it (rewards/challenges); merged across your characters."
   }
 }

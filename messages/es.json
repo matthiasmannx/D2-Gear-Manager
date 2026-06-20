@@ -448,5 +448,14 @@
     "noChars": "No se encontraron personajes.",
     "equipBest": "Equipa lo mejor por slot → power {n}",
     "atMax": "Ya llevas tu mejor equipo por slot. 🔥"
+  },
+  "weekly": {
+    "title": "Checklist semanal",
+    "intro": "Tus hitos semanales y lo que falta este reset. Pendientes primero.",
+    "loginPrompt": "Inicia sesión con Bungie para ver tu checklist.",
+    "loginBtn": "Iniciar sesión con Bungie",
+    "none": "No se encontraron hitos.",
+    "resetIn": "Reset en",
+    "note": "El progreso se muestra donde Bungie lo indica (rewards/desafíos); combinado entre tus personajes."
   }
 }

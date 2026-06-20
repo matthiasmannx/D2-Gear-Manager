@@ -2850,3 +2850,16 @@ input:focus {
 .power-note { font-size: 0.8rem; margin: 0.7rem 0 0; }
 .cleanup-tag.crafted { background: rgba(217,119,63,0.22); color: #e7a766; font-weight: 700; }
 .live-team { font-size: 0.78rem; margin-top: 0.15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ===== Weekly checklist ===== */
+.weekly-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
+.weekly-count { font-weight: 800; font-size: 1.1rem; color: #5ad19b; }
+.weekly-list { display: grid; gap: 0.5rem; }
+.weekly-row { display: flex; align-items: center; gap: 0.7rem; padding: 0.6rem 0.8rem; }
+.weekly-row.is-done { opacity: 0.55; }
+.weekly-check { font-size: 1.1rem; width: 1.2rem; text-align: center; color: #5ad19b; flex-shrink: 0; }
+.weekly-row:not(.is-done) .weekly-check { color: var(--muted); }
+.weekly-row .item-icon { width: 34px; height: 34px; border-radius: 6px; flex-shrink: 0; }
+.weekly-info { min-width: 0; }
+.weekly-name { font-weight: 600; }
+.weekly-desc { font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70ch; }

@@ -448,5 +448,14 @@
     "noChars": "Keine Charaktere gefunden.",
     "equipBest": "Trag dein Bestes pro Slot → Power {n}",
     "atMax": "Du trägst bereits deine höchste Ausrüstung. 🔥"
+  },
+  "weekly": {
+    "title": "Wöchentliche Checkliste",
+    "intro": "Deine wöchentlichen Milestones und was diese Woche noch offen ist. Offene zuerst.",
+    "loginPrompt": "Melde dich mit Bungie an, um deine Checkliste zu sehen.",
+    "loginBtn": "Mit Bungie anmelden",
+    "none": "Keine Milestones gefunden.",
+    "resetIn": "Reset in",
+    "note": "Fortschritt wird angezeigt, wo Bungie ihn meldet (Rewards/Challenges); über deine Charaktere zusammengefasst."
   }
 }

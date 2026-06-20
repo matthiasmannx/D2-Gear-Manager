@@ -448,5 +448,14 @@
     "noChars": "Aucun personnage trouvé.",
     "equipBest": "Équipe ton meilleur par slot → power {n}",
     "atMax": "Tu portes déjà ton meilleur équipement. 🔥"
+  },
+  "weekly": {
+    "title": "Checklist hebdo",
+    "intro": "Tes jalons hebdo et ce qu'il reste à faire ce reset. À faire en premier.",
+    "loginPrompt": "Connecte-toi avec Bungie pour voir ta checklist.",
+    "loginBtn": "Connexion Bungie",
+    "none": "Aucun jalon trouvé.",
+    "resetIn": "Reset dans",
+    "note": "L'achèvement est affiché là où Bungie le signale (rewards/défis) ; fusionné entre tes personnages."
   }
 }
