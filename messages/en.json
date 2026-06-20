@@ -143,7 +143,8 @@
     "liveNow": "Now playing",
     "liveSince": "for {m} min",
     "livePrivate": "Live status is private",
-    "compareLink": "⚖️ Compare two players"
+    "compareLink": "⚖️ Compare two players",
+    "playedAgo": "{n} games ago"
   },
   "items": {
     "title": "Items",
@@ -471,6 +472,7 @@
     "p1": "Player 1 (Bungie name)",
     "p2": "Player 2 (Bungie name)",
     "compare": "Compare",
-    "notFound": "One or both players not found (or profile private)."
+    "notFound": "One or both players not found (or profile private).",
+    "ago": "{n} games ago"
   }
 }

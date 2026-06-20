@@ -143,7 +143,8 @@
     "liveNow": "En jeu",
     "liveSince": "depuis {m} min",
     "livePrivate": "Statut en direct privé",
-    "compareLink": "⚖️ Comparer deux joueurs"
+    "compareLink": "⚖️ Comparer deux joueurs",
+    "playedAgo": "il y a {n} parties"
   },
   "items": {
     "title": "Items",
@@ -471,6 +472,7 @@
     "p1": "Joueur 1 (nom Bungie)",
     "p2": "Joueur 2 (nom Bungie)",
     "compare": "Comparer",
-    "notFound": "Un ou les deux joueurs introuvables (ou profil privé)."
+    "notFound": "Un ou les deux joueurs introuvables (ou profil privé).",
+    "ago": "il y a {n} parties"
   }
 }

@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 
 export interface Picked { name: string; ref: string }
-interface Hit { name: string; type: number; id: string }
+interface Hit { name: string; type: number; id: string; platform?: string | null; ago?: number | null }
 
-export default function PlayerPicker({ placeholder, onPick }: { placeholder: string; onPick: (p: Picked | null) => void }) {
+export default function PlayerPicker({ placeholder, onPick, agoLabel }: { placeholder: string; onPick: (p: Picked | null) => void; agoLabel?: (n: number) => string }) {
   const [q, setQ] = useState("");
   const [hits, setHits] = useState<Hit[]>([]);
   const [open, setOpen] = useState(false);
@@ -49,7 +49,13 @@ export default function PlayerPicker({ placeholder, onPick }: { placeholder: str
               className="cmp-result"
               onClick={() => { onPick({ name: h.name, ref: `${h.type}:${h.id}` }); setQ(h.name); setPicked(true); setOpen(false); }}
             >
-              {h.name}
+              <span className="cmp-result-name">{h.name}</span>
+              {(h.platform || h.ago != null) && (
+                <span className="cmp-result-sub">
+                  {h.platform}
+                  {h.ago != null && agoLabel && <span className="cmp-result-ago">🎯 {agoLabel(h.ago)}</span>}
+                </span>
+              )}
             </button>
           ))}
         </div>

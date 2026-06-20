@@ -4,7 +4,8 @@ import { getTranslations } from "next-intl/server";
 import SearchBar from "@/components/SearchBar";
 import { Loading } from "@/components/Skeleton";
 import { searchPlayers, icon, PLATFORMS, PlayerResult } from "@/lib/bungie";
-import { isLoggedIn } from "@/lib/auth";
+import { isLoggedIn, getValidAccessToken } from "@/lib/auth";
+import { getRecentOpponents } from "@/lib/recentOpponents";
 import { FavStar, FavoritesList } from "@/components/Favorites";
 
 export const metadata = { title: "Players · Guardian Hub" };
@@ -59,6 +60,8 @@ async function Results({ query }: { query: string }) {
   }
 
   players = players.filter((p) => p.memberships.length > 0);
+  const token = await getValidAccessToken();
+  const opponents = token ? await getRecentOpponents(token) : {};
   if (players.length === 0) {
     return (
       <div className="empty">
@@ -94,6 +97,9 @@ async function Results({ query }: { query: string }) {
                       .map((x) => PLATFORMS[x.membershipType] ?? t("platformType", { n: x.membershipType }))
                       .join(" · ")}
                   </div>
+                  {opponents[m.membershipId] != null && (
+                    <div className="fav-ago">🎯 {t("playedAgo", { n: opponents[m.membershipId] })}</div>
+                  )}
                 </div>
               </div>
             </Link>

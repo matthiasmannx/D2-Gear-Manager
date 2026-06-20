@@ -2951,3 +2951,10 @@ input:focus {
 /* ===== Stats-trend (sparkline) ===== */
 .trend-card { margin-top: 1.25rem; padding: 0.9rem 1.1rem; }
 .trend-meta { font-size: 0.8rem; margin-top: 0.4rem; }
+
+/* compare-zoekresultaten: naam + platform + potten-geleden */
+.cmp-result-name { display: block; font-weight: 600; }
+.cmp-result-sub { display: flex; gap: 0.5rem; font-size: 0.75rem; color: var(--muted); margin-top: 0.1rem; }
+.cmp-result-ago { color: #e5564b; font-weight: 600; }
+/* recent-tegen-badge op spelerzoek-resultaten */
+.fav-ago { font-size: 0.72rem; color: #e5564b; font-weight: 600; white-space: nowrap; }

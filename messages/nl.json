@@ -143,7 +143,8 @@
     "liveNow": "Nu bezig",
     "liveSince": "sinds {m} min",
     "livePrivate": "Live-status staat privé",
-    "compareLink": "⚖️ Vergelijk twee spelers"
+    "compareLink": "⚖️ Vergelijk twee spelers",
+    "playedAgo": "{n} potten geleden"
   },
   "items": {
     "title": "Items",
@@ -471,6 +472,7 @@
     "p1": "Speler 1 (Bungie-naam)",
     "p2": "Speler 2 (Bungie-naam)",
     "compare": "Vergelijk",
-    "notFound": "Eén of beide spelers niet gevonden (of profiel privé)."
+    "notFound": "Eén of beide spelers niet gevonden (of profiel privé).",
+    "ago": "{n} potten geleden"
   }
 }
