@@ -2849,3 +2849,4 @@ input:focus {
 .power-slot-up b { color: #5ad19b; }
 .power-note { font-size: 0.8rem; margin: 0.7rem 0 0; }
 .cleanup-tag.crafted { background: rgba(217,119,63,0.22); color: #e7a766; font-weight: 700; }
+.live-team { font-size: 0.78rem; margin-top: 0.15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

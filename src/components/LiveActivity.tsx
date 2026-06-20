@@ -11,6 +11,7 @@ interface Live {
   since?: string;
   pvp?: boolean;
   hidden?: boolean;
+  fireteam?: string[];
 }
 
 export default function LiveActivity({ type, id }: { type: number; id: string }) {
@@ -48,6 +49,7 @@ export default function LiveActivity({ type, id }: { type: number; id: string })
       <div className="live-info">
         <div className="live-now">{t("liveNow")}</div>
         <div className="live-where">{[live.mode, live.map].filter(Boolean).join(" · ")}</div>
+        {live.fireteam && live.fireteam.length > 0 && <div className="live-team muted">👥 {live.fireteam.join(", ")}</div>}
       </div>
       {mins != null && <span className="live-since muted">{t("liveSince", { m: mins })}</span>}
     </div>

@@ -9,6 +9,7 @@ export interface LiveActivity {
   since?: string; // ISO-tijd waarop de activiteit begon
   pvp?: boolean;
   hidden?: boolean; // privacy: huidige activiteit staat dicht
+  fireteam?: string[]; // namen van fireteam-leden (component 1000)
 }
 
 const ORBIT = /orbit/i;
@@ -21,10 +22,14 @@ const ORBIT = /orbit/i;
 export async function getLiveActivity(membershipType: number, membershipId: string): Promise<LiveActivity> {
   let data: any;
   try {
-    data = await bungieFetch<any>(`/Destiny2/${membershipType}/Profile/${membershipId}/?components=204`, { noStore: true });
+    data = await bungieFetch<any>(`/Destiny2/${membershipType}/Profile/${membershipId}/?components=204,1000`, { noStore: true });
   } catch {
     return { active: false };
   }
+
+  // Fireteam-leden uit de Transitory-data (component 1000), indien zichtbaar.
+  const party: any[] = data?.profileTransitoryData?.data?.partyMembers ?? [];
+  const fireteam = party.map((p) => p?.displayName).filter((n): n is string => !!n);
 
   const acts = data?.characterActivities?.data;
   // Component niet teruggekregen terwijl het profiel wel bestaat → privacy dicht.
@@ -55,5 +60,6 @@ export async function getLiveActivity(membershipType: number, membershipId: stri
     icon: icon(actDef?.pgcrImage || modeDef?.displayProperties?.icon),
     since: cur.dateActivityStarted,
     pvp: modeDef?.activityModeCategory === 1, // 1 = PvP (Crucible)
+    fireteam: fireteam.length >= 2 ? fireteam : undefined,
   };
 }
