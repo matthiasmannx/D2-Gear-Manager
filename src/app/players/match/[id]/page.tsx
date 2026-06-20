@@ -121,7 +121,7 @@ function TeamCard({ team, colPlayer, viewStats, viewBuild }: { team: MatchTeam; 
 
 function fmtDate(iso: string, locale: string): string {
   try {
-    return new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(iso));
+    return new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date(iso));
   } catch {
     return iso;
   }

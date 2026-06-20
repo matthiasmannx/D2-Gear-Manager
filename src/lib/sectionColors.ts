@@ -1,17 +1,18 @@
 /** Eén kleur per sectie, gebruikt in de nav én op de landingspagina-kaarten. */
+// Elke sectie een eigen, duidelijk verschillende kleur (over de hele hue-wheel).
 export const SECTION_COLORS: Record<string, string> = {
-  "/items": "#f5a623", // goud
-  "/gear": "#4a9eff", // blauw
+  "/items": "#f5a623", // oranje/goud
+  "/power": "#ffd23f", // geel
+  "/weekly": "#a8d83a", // lime
+  "/players": "#34c759", // groen
+  "/changelog": "#22c5d8", // cyaan
+  "/gear": "#3aa0ff", // blauw
+  "/clan": "#6d8cff", // periwinkle
+  "/profile": "#9b6cff", // violet
+  "/events": "#c06cf6", // paars
+  "/community": "#ff5c8a", // roze
   "/builds": "#e0564b", // rood
-  "/players": "#38d39f", // groen
-  "/events": "#b58cf6", // paars
-  "/changelog": "#4ad6c8", // teal
-  "/sandbox": "#ff7eb6", // roze
-  "/profile": "#7c6cff", // indigo
-  "/community": "#ff9f1c", // amber/oranje
-  "/clan": "#8a9bff", // periwinkle
-  "/power": "#ffcf5c", // power-geel
-  "/weekly": "#5ad19b", // weekly-groen
+  "/sandbox": "#ff8a3d", // (samengevoegd in changelog; behoudt eigen tint)
 };
 
 export function sectionColor(href: string): string {

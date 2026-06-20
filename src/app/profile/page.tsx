@@ -102,7 +102,7 @@ async function ProfileContent() {
       {history.length >= 2 ? (
         <div className="card trend-card">
           <h3 style={{ marginTop: 0 }}>{t("trendTitle")}</h3>
-          <Sparkline points={history.map((s) => (s.kd ?? NaN))} color="#7c6cff" />
+          <Sparkline points={history.map((s) => (s.kd ?? NaN))} color="#9b6cff" />
           <div className="muted trend-meta">
             {history[0].kd ?? "-"} → {history[history.length - 1].kd ?? "-"} · {history.length} {t("trendPoints")}
           </div>

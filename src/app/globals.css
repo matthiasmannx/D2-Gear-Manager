@@ -2854,7 +2854,7 @@ input:focus {
 .live-pill .live-dot { width: 7px; height: 7px; }
 
 /* ===== Clan ===== */
-.clan-head { padding: 1rem 1.2rem; margin: 1rem 0; border-left: 3px solid #8a9bff; }
+.clan-head { padding: 1rem 1.2rem; margin: 1rem 0; border-left: 3px solid #6d8cff; }
 .clan-motto { margin: 0.3rem 0; font-style: italic; }
 .clan-about { margin: 0.3rem 0; font-size: 0.85rem; white-space: pre-wrap; }
 .clan-meta { margin-top: 0.5rem; font-size: 0.85rem; }
@@ -2863,7 +2863,7 @@ input:focus {
 .clan-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
 .clan-dot.on { background: #38d39f; box-shadow: 0 0 6px rgba(56,211,159,0.7); }
 .clan-name { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
-.clan-rank { font-size: 0.7rem; padding: 0.1rem 0.45rem; border-radius: 5px; background: rgba(138,155,255,0.18); color: #aeb8ff; white-space: nowrap; }
+.clan-rank { font-size: 0.7rem; padding: 0.1rem 0.45rem; border-radius: 5px; background: rgba(109,140,255,0.2); color: #aebcff; white-space: nowrap; }
 
 .lock-keepers { display: inline-flex; align-items: center; gap: 0.5rem; }
 .lock-result { font-size: 0.82rem; }
@@ -2873,7 +2873,7 @@ input:focus {
 .power-card { padding: 0; overflow: hidden; }
 .power-banner { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.8rem 1rem; background-size: cover; background-position: center; }
 .power-class { font-weight: 800; font-size: 1.15rem; }
-.power-now { font-size: 1.6rem; font-weight: 800; color: #ffcf5c; }
+.power-now { font-size: 1.6rem; font-weight: 800; color: #ffd23f; }
 .power-max { font-size: 1rem; color: var(--text-dim); font-weight: 600; }
 .power-gain { color: #5ad19b; }
 .power-slots { display: flex; flex-direction: column; }
@@ -2895,11 +2895,11 @@ input:focus {
 
 /* ===== Weekly checklist ===== */
 .weekly-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
-.weekly-count { font-weight: 800; font-size: 1.1rem; color: #5ad19b; }
+.weekly-count { font-weight: 800; font-size: 1.1rem; color: #a8d83a; }
 .weekly-list { display: grid; gap: 0.5rem; }
 .weekly-row { display: flex; align-items: center; gap: 0.7rem; padding: 0.6rem 0.8rem; }
 .weekly-row.is-done { opacity: 0.55; }
-.weekly-check { font-size: 1.1rem; width: 1.2rem; text-align: center; color: #5ad19b; flex-shrink: 0; }
+.weekly-check { font-size: 1.1rem; width: 1.2rem; text-align: center; color: #a8d83a; flex-shrink: 0; }
 .weekly-row:not(.is-done) .weekly-check { color: var(--muted); }
 .weekly-row .item-icon { width: 34px; height: 34px; border-radius: 6px; flex-shrink: 0; }
 .weekly-info { min-width: 0; }
