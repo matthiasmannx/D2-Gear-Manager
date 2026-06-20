@@ -15,7 +15,7 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
     <>
       <h1>{t("title")}</h1>
       <p className="muted">{t("intro")}</p>
-      <CompareForm a0={a} b0={b} labels={{ p1: t("p1"), p2: t("p2"), compare: t("compare") }} />
+      <CompareForm labels={{ p1: t("p1"), p2: t("p2"), compare: t("compare") }} />
       {a && b && (
         <Suspense key={`${a}|${b}`} fallback={<Loading head={false} cards={0} rows={6} />}>
           <CompareBody a={a} b={b} />
@@ -25,25 +25,32 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
   );
 }
 
-async function resolve(name: string) {
-  const results = await searchPlayers(name).catch(() => []);
-  const withM = results.find((r) => r.memberships?.length);
-  if (!withM) return null;
-  const m = withM.memberships.find((x: any) => x.crossSaveOverride === x.membershipType) ?? withM.memberships[0];
+async function build(type: number, id: string, fallbackName: string) {
   const [stats, extras] = await Promise.all([
-    getPvpStats(m.membershipType, m.membershipId).catch(() => null),
-    getPlayerExtras(m.membershipType, m.membershipId).catch(() => null),
+    getPvpStats(type, id).catch(() => null),
+    getPlayerExtras(type, id).catch(() => null),
   ]);
   return {
-    name: extras?.name ?? withM.bungieName ?? name,
+    name: extras?.name ?? fallbackName,
     platform: extras?.platform ?? null,
     emblem: extras?.emblemPath ?? null,
     banner: extras?.characters?.[0]?.emblemBackground ?? null,
     h: stats?.highlights ?? null,
     flawless: extras?.flawlessCount ?? null,
-    type: m.membershipType,
-    id: m.membershipId,
+    type,
+    id,
   };
+}
+
+/** Param is "type:id" (uit de picker) of een naam (fallback). */
+async function resolve(param: string) {
+  const ref = /^(\d+):(\d+)$/.exec(param);
+  if (ref) return build(Number(ref[1]), ref[2], param);
+  const results = await searchPlayers(param).catch(() => []);
+  const withM = results.find((r) => r.memberships?.length);
+  if (!withM) return null;
+  const m = withM.memberships.find((x: any) => x.crossSaveOverride === x.membershipType) ?? withM.memberships[0];
+  return build(m.membershipType, m.membershipId, withM.bungieName ?? param);
 }
 
 const num = (s: any) => { if (s == null) return null; const f = parseFloat(String(s).replace(/[%,\s]/g, "")); return Number.isFinite(f) ? f : null; };

@@ -2908,11 +2908,19 @@ input:focus {
 
 /* ===== Speler-vergelijking ===== */
 .compare-form { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin: 1rem 0 1.5rem; }
-.compare-form input {
-  flex: 1; min-width: 180px; padding: 0.6rem 0.85rem; font: inherit;
+.cmp-pick { position: relative; flex: 1; min-width: 200px; }
+.cmp-input {
+  width: 100%; padding: 0.6rem 0.85rem; font: inherit; appearance: none;
   background: var(--card); color: var(--text); border: 1px solid var(--border); border-radius: 9px;
 }
-.compare-form input:focus { outline: none; border-color: var(--accent); }
+.cmp-input:focus { outline: none; border-color: var(--accent); }
+.cmp-results {
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 60;
+  background: var(--bg-elev, #11151d); border: 1px solid var(--border); border-radius: 9px;
+  max-height: 260px; overflow: auto; box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+.cmp-result { display: block; width: 100%; text-align: left; padding: 0.55rem 0.8rem; background: none; border: 0; color: var(--text); cursor: pointer; font: inherit; }
+.cmp-result:hover { background: rgba(255, 255, 255, 0.06); }
 .compare-vs { color: var(--muted); font-weight: 800; }
 
 .cmp { margin-top: 0.5rem; }
