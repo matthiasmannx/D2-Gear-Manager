@@ -114,7 +114,10 @@ main.container {
 .footer-name {
   font-weight: 800;
   color: var(--text);
+  text-decoration: none;
+  transition: color 0.15s;
 }
+a.footer-name:hover { color: var(--accent); text-decoration: underline; }
 
 a {
   color: inherit;

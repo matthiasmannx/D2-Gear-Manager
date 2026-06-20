@@ -46,7 +46,8 @@ export default async function RootLayout({
           <SettingsSync loggedIn={loggedIn} />
           <main className="container">{children}</main>
           <footer className="site-footer">
-            DESIGNED &amp; DEVELOPED BY <strong className="footer-name">MATTHIAS MANN</strong>
+            DESIGNED &amp; DEVELOPED BY{" "}
+            <a href="https://www.linkedin.com/in/matthias-mann-ab4193134/" target="_blank" rel="noopener noreferrer" className="footer-name">MATTHIAS MANN</a>
           </footer>
         </NextIntlClientProvider>
       </body>
