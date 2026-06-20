@@ -139,7 +139,8 @@
     "buildLoadFailed": "Build konnte nicht geladen werden (Profil evtl. privat).",
     "liveNow": "Spielt gerade",
     "liveSince": "seit {m} Min.",
-    "livePrivate": "Live-Status ist privat"
+    "livePrivate": "Live-Status ist privat",
+    "compareLink": "⚖️ Zwei Spieler vergleichen"
   },
   "items": {
     "title": "Items",
@@ -457,5 +458,13 @@
     "none": "Keine Milestones gefunden.",
     "resetIn": "Reset in",
     "note": "Fortschritt wird angezeigt, wo Bungie ihn meldet (Rewards/Challenges); über deine Charaktere zusammengefasst."
+  },
+  "compare": {
+    "title": "Spieler vergleichen",
+    "intro": "Vergleiche zwei Spieler nebeneinander: K/D, Win-Rate, Flawless und mehr.",
+    "p1": "Spieler 1 (Bungie-Name)",
+    "p2": "Spieler 2 (Bungie-Name)",
+    "compare": "Vergleichen",
+    "notFound": "Ein oder beide Spieler nicht gefunden (oder Profil privat)."
   }
 }

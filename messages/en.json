@@ -139,7 +139,8 @@
     "buildLoadFailed": "Couldn't load the build (profile may be private).",
     "liveNow": "Now playing",
     "liveSince": "for {m} min",
-    "livePrivate": "Live status is private"
+    "livePrivate": "Live status is private",
+    "compareLink": "⚖️ Compare two players"
   },
   "items": {
     "title": "Items",
@@ -457,5 +458,13 @@
     "none": "No milestones found.",
     "resetIn": "Reset in",
     "note": "Completion is shown where Bungie reports it (rewards/challenges); merged across your characters."
+  },
+  "compare": {
+    "title": "Compare players",
+    "intro": "Compare two players side by side on K/D, win rate, flawless and more.",
+    "p1": "Player 1 (Bungie name)",
+    "p2": "Player 2 (Bungie name)",
+    "compare": "Compare",
+    "notFound": "One or both players not found (or profile private)."
   }
 }

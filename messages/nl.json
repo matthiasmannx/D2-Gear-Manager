@@ -139,7 +139,8 @@
     "buildLoadFailed": "Kon de build niet laden (profiel mogelijk privé).",
     "liveNow": "Nu bezig",
     "liveSince": "sinds {m} min",
-    "livePrivate": "Live-status staat privé"
+    "livePrivate": "Live-status staat privé",
+    "compareLink": "⚖️ Vergelijk twee spelers"
   },
   "items": {
     "title": "Items",
@@ -457,5 +458,13 @@
     "none": "Geen milestones gevonden.",
     "resetIn": "Reset over",
     "note": "Voltooiing wordt getoond waar Bungie het aangeeft (rewards/challenges); samengevoegd over je characters."
+  },
+  "compare": {
+    "title": "Spelers vergelijken",
+    "intro": "Vergelijk twee spelers naast elkaar op K/D, win rate, flawless en meer.",
+    "p1": "Speler 1 (Bungie-naam)",
+    "p2": "Speler 2 (Bungie-naam)",
+    "compare": "Vergelijk",
+    "notFound": "Eén of beide spelers niet gevonden (of profiel privé)."
   }
 }

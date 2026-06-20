@@ -22,6 +22,7 @@ export default async function PlayersPage({
     <>
       <h1>{t("title")}</h1>
       <p className="muted">{t("intro")}</p>
+      <Link href="/compare" className="muted" style={{ display: "inline-block", fontSize: "0.85rem", marginTop: "0.25rem" }}>{t("compareLink")}</Link>
 
       {!loggedIn && (
         <div className="notice" style={{ marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>

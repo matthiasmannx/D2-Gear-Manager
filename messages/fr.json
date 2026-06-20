@@ -139,7 +139,8 @@
     "buildLoadFailed": "Impossible de charger le build (profil peut-être privé).",
     "liveNow": "En jeu",
     "liveSince": "depuis {m} min",
-    "livePrivate": "Statut en direct privé"
+    "livePrivate": "Statut en direct privé",
+    "compareLink": "⚖️ Comparer deux joueurs"
   },
   "items": {
     "title": "Items",
@@ -457,5 +458,13 @@
     "none": "Aucun jalon trouvé.",
     "resetIn": "Reset dans",
     "note": "L'achèvement est affiché là où Bungie le signale (rewards/défis) ; fusionné entre tes personnages."
+  },
+  "compare": {
+    "title": "Comparer des joueurs",
+    "intro": "Compare deux joueurs côte à côte : K/D, taux de victoire, flawless et plus.",
+    "p1": "Joueur 1 (nom Bungie)",
+    "p2": "Joueur 2 (nom Bungie)",
+    "compare": "Comparer",
+    "notFound": "Un ou les deux joueurs introuvables (ou profil privé)."
   }
 }
