@@ -2535,11 +2535,8 @@ input:focus {
     align-items: flex-start;
     flex-wrap: wrap;
   }
-  .nav-brand {
-    font-size: 0.95rem;
-  }
-  /* Bovenbalk: alleen merk links + hamburger rechts */
-  .nav-brand { margin-right: auto; }
+  /* Bovenbalk: groot merk links + hamburger rechts */
+  .nav-brand { font-size: 1.5rem; margin-right: auto; }
   .nav-hamburger {
     display: inline-flex; flex-direction: column; justify-content: center; gap: 4px;
     width: 42px; height: 38px; padding: 9px; background: none; border: 1px solid var(--border);
