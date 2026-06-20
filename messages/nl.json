@@ -144,7 +144,10 @@
     "liveSince": "sinds {m} min",
     "livePrivate": "Live-status staat privé",
     "compareLink": "⚖️ Vergelijk twee spelers",
-    "playedAgo": "{n} potten geleden"
+    "playedAgo": "{n} potten geleden",
+    "sharedShow": "Bekijk de matches",
+    "relTeammate": "Teammate",
+    "relOpponent": "Tegenstander"
   },
   "items": {
     "title": "Items",

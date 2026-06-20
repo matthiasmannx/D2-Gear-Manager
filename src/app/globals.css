@@ -2958,3 +2958,18 @@ input:focus {
 .cmp-result-ago { color: #e5564b; font-weight: 600; }
 /* recent-tegen-badge op spelerzoek-resultaten */
 .fav-ago { font-size: 0.72rem; color: #e5564b; font-weight: 600; white-space: nowrap; }
+
+/* ===== Gedeelde matches (klikbaar) ===== */
+.shared-details .shared-summary { cursor: pointer; list-style: none; }
+.shared-details .shared-summary::-webkit-details-marker { display: none; }
+.shared-toggle { color: var(--accent-2, #4ad6c8); font-weight: 600; }
+.shared-list { display: flex; flex-direction: column; gap: 0.35rem; margin-top: 0.7rem; }
+.shared-match { display: flex; align-items: center; gap: 0.6rem; padding: 0.45rem 0.6rem; background: var(--card); border: 1px solid var(--border); border-radius: 8px; border-left: 3px solid var(--border); }
+.shared-match.teammate { border-left-color: #38d39f; }
+.shared-match.opponent { border-left-color: var(--danger, #e5564b); }
+.shared-rel { font-size: 0.7rem; font-weight: 700; padding: 0.1rem 0.4rem; border-radius: 5px; white-space: nowrap; }
+.shared-rel.teammate { background: rgba(56,211,159,0.18); color: #38d39f; }
+.shared-rel.opponent { background: rgba(229,86,75,0.18); color: #e5564b; }
+.shared-map { font-weight: 600; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.shared-mode { font-size: 0.8rem; white-space: nowrap; }
+.shared-when { font-size: 0.78rem; white-space: nowrap; }

@@ -144,7 +144,10 @@
     "liveSince": "for {m} min",
     "livePrivate": "Live status is private",
     "compareLink": "⚖️ Compare two players",
-    "playedAgo": "{n} games ago"
+    "playedAgo": "{n} games ago",
+    "sharedShow": "View the matches",
+    "relTeammate": "Teammate",
+    "relOpponent": "Opponent"
   },
   "items": {
     "title": "Items",

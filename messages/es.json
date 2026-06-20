@@ -144,7 +144,10 @@
     "liveSince": "hace {m} min",
     "livePrivate": "Estado en vivo privado",
     "compareLink": "⚖️ Comparar dos jugadores",
-    "playedAgo": "hace {n} partidas"
+    "playedAgo": "hace {n} partidas",
+    "sharedShow": "Ver las partidas",
+    "relTeammate": "Compañero",
+    "relOpponent": "Rival"
   },
   "items": {
     "title": "Items",

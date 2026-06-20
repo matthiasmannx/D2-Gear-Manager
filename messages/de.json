@@ -144,7 +144,10 @@
     "liveSince": "seit {m} Min.",
     "livePrivate": "Live-Status ist privat",
     "compareLink": "⚖️ Zwei Spieler vergleichen",
-    "playedAgo": "vor {n} Spielen"
+    "playedAgo": "vor {n} Spielen",
+    "sharedShow": "Matches ansehen",
+    "relTeammate": "Teammate",
+    "relOpponent": "Gegner"
   },
   "items": {
     "title": "Items",

@@ -1126,6 +1126,84 @@ export async function getSharedMatchCount(
   }
 }
 
+export interface SharedMatch {
+  instanceId: string;
+  mapName: string;
+  mode: string;
+  date: string;
+  relation: "teammate" | "opponent";
+  won: boolean;
+}
+export interface SharedMatchesDetail extends SharedMatches {
+  matches: SharedMatch[];
+}
+
+/** Zoals getSharedMatchCount, maar mét de lijst gedeelde matches (teammate/opponent). */
+export async function getSharedMatches(
+  accessToken: string,
+  target: { membershipType: number; membershipId: string; characterIds: string[] }
+): Promise<SharedMatchesDetail | null> {
+  try {
+    const { primary } = await getMemberships(accessToken);
+    if (!primary) return null;
+    if (primary.membershipId === target.membershipId) return { count: 0, self: true, teammate: 0, opponent: 0, matches: [] };
+
+    const meProfile = await getProfile(accessToken, primary.membershipType, primary.membershipId, [200]);
+    const meChars = Object.keys(meProfile?.characters?.data ?? {});
+    if (meChars.length === 0) return { count: 0, self: false, teammate: 0, opponent: 0, matches: [] };
+
+    const [mine, theirs] = await Promise.all([
+      recentInstanceIds(primary.membershipType, primary.membershipId, meChars),
+      recentInstanceIds(target.membershipType, target.membershipId, target.characterIds),
+    ]);
+    const shared = [...theirs].filter((iid) => mine.has(iid));
+
+    const raw = (
+      await Promise.all(
+        shared.slice(0, 25).map(async (iid) => {
+          try {
+            const pgcr = await bungieFetch<any>(`/Destiny2/Stats/PostGameCarnageReport/${iid}/`, { revalidate: 60 * 60 * 24 * 30 });
+            return { iid, pgcr };
+          } catch {
+            return null;
+          }
+        })
+      )
+    ).filter((x): x is { iid: string; pgcr: any } => x !== null);
+
+    const matches: SharedMatch[] = [];
+    let teammate = 0;
+    let opponent = 0;
+    const refHashes = new Set<number>();
+    for (const { iid, pgcr } of raw) {
+      const entries: any[] = pgcr?.entries ?? [];
+      const me = entries.find((e) => e.player?.destinyUserInfo?.membershipId === primary.membershipId);
+      const tgt = entries.find((e) => e.player?.destinyUserInfo?.membershipId === target.membershipId);
+      if (!me || !tgt) continue;
+      const mt = me.values?.team?.basic?.value;
+      const tt = tgt.values?.team?.basic?.value;
+      const relation: "teammate" | "opponent" = mt != null && tt != null && mt === tt ? "teammate" : "opponent";
+      if (relation === "teammate") teammate++; else opponent++;
+      const ad = pgcr?.activityDetails ?? {};
+      if (ad.referenceId) refHashes.add(ad.referenceId);
+      matches.push({ instanceId: iid, mapName: String(ad.referenceId ?? ""), mode: modeLabel(ad), date: pgcr?.period ?? "", relation, won: me.values?.standing?.basic?.value === 0 });
+    }
+
+    const names: Record<string, string> = {};
+    await Promise.all(
+      [...refHashes].map(async (h) => {
+        try { const d = await getEntityDefinition("DestinyActivityDefinition", h); names[h] = d?.displayProperties?.name ?? "-"; } catch { names[h] = "-"; }
+      })
+    );
+    for (const mm of matches) mm.mapName = names[mm.mapName] ?? "-";
+    matches.sort((a, b) => (a.date < b.date ? 1 : -1));
+
+    return { count: shared.length, self: false, teammate, opponent, matches };
+  } catch {
+    return null;
+  }
+}
+
 /** Volledige icon-URL bouwen vanuit een relatief manifest-pad. */
 export function icon(path?: string | null): string | null {
   if (!path) return null;

@@ -5,7 +5,7 @@ import {
   getPvpModes,
   getPlayerExtras,
   getRecentMatches,
-  getSharedMatchCount,
+  getSharedMatches,
   getMatchStreaks,
   PvpStatsResult,
   PvpModeSummary,
@@ -59,7 +59,7 @@ async function PlayerBody({ type, id }: { type: string; id: string }) {
     charIds.length ? getPvpModes(mType, id, charIds).catch(() => []) : Promise.resolve([] as PvpModeSummary[]),
     charIds.length ? getRecentMatches(mType, id, charIds).catch(() => []) : Promise.resolve([] as MatchResult[]),
     token && charIds.length
-      ? getSharedMatchCount(token, { membershipType: mType, membershipId: id, characterIds: charIds }).catch(() => null)
+      ? getSharedMatches(token, { membershipType: mType, membershipId: id, characterIds: charIds }).catch(() => null)
       : Promise.resolve(null),
     charIds.length ? getMatchStreaks(mType, id, charIds).catch(() => ({} as Record<string, StreakInfo>)) : Promise.resolve({} as Record<string, StreakInfo>),
   ]);
@@ -85,21 +85,29 @@ async function PlayerBody({ type, id }: { type: string; id: string }) {
       {failed && <div className="notice error">{t("loadFailed")}</div>}
 
       {/* Samen gematcht */}
-      {shared && !shared.self && (
-        <div className="notice" style={{ marginTop: "0.5rem", borderLeftColor: shared.count > 0 ? "#38d39f" : "var(--border)" }}>
-          {shared.count > 0 ? (
-            <>
-              {t("shared", { count: shared.count })}
-              {shared.teammate + shared.opponent > 0 && (
-                <>, <span style={{ color: "#38d39f" }}>{t("sharedTeammate", { n: shared.teammate })}</span>, <span style={{ color: "var(--danger)" }}>{t("sharedOpponent", { n: shared.opponent })}</span></>
-              )}
-              .
-            </>
-          ) : (
-            t("sharedNone")
-          )}
-        </div>
-      )}
+      {shared && !shared.self && shared.count > 0 ? (
+        <details className="notice shared-details" style={{ marginTop: "0.5rem", borderLeftColor: "#38d39f" }}>
+          <summary className="shared-summary">
+            {t("shared", { count: shared.count })}
+            {shared.teammate + shared.opponent > 0 && (
+              <>, <span style={{ color: "#38d39f" }}>{t("sharedTeammate", { n: shared.teammate })}</span>, <span style={{ color: "var(--danger)" }}>{t("sharedOpponent", { n: shared.opponent })}</span></>
+            )}
+            . <span className="shared-toggle">{t("sharedShow")}</span>
+          </summary>
+          <div className="shared-list">
+            {shared.matches.map((mm) => (
+              <Link key={mm.instanceId} href={`/players/match/${mm.instanceId}`} className={`shared-match ${mm.relation}`}>
+                <span className={`shared-rel ${mm.relation}`}>{mm.relation === "teammate" ? t("relTeammate") : t("relOpponent")}</span>
+                <span className="shared-map">{mm.mapName}</span>
+                <span className="muted shared-mode">{mm.mode}</span>
+                <span className="muted shared-when">{fmtDate(mm.date, locale)}</span>
+              </Link>
+            ))}
+          </div>
+        </details>
+      ) : shared && !shared.self ? (
+        <div className="notice" style={{ marginTop: "0.5rem" }}>{t("sharedNone")}</div>
+      ) : null}
 
       {/* Top: K/D, win rate, flawless, ranks */}
       <div className="stat-cards">
@@ -286,6 +294,13 @@ function StatRow({ label, value, highlight }: { label: string; value: string; hi
     </div>
   );
 }
+function fmtDate(iso: string, locale: string): string {
+  try {
+    return new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", year: "numeric" }).format(new Date(iso));
+  } catch {
+    return "";
+  }
+}
 function relTime(
   iso: string,
   locale: string,
@@ -297,7 +312,7 @@ function relTime(
     if (days <= 0) return labels.today;
     if (days === 1) return labels.yesterday;
     if (days < 7) return labels.daysAgo(days);
-    return new Intl.DateTimeFormat(locale, { day: "numeric", month: "short" }).format(then);
+    return new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", year: "numeric" }).format(then);
   } catch {
     return "";
   }
