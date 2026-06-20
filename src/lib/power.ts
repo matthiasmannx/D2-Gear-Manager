@@ -3,11 +3,16 @@ import { GearData, SLOT_ORDER } from "./gear";
 
 const WEAPON_BUCKETS = new Set([1498876634, 2465295065, 953998645]); // kinetic/energy/power
 
+export interface ItemRef {
+  power: number;
+  name: string;
+  icon: string | null;
+}
 export interface SlotPower {
   bucket: number;
   label: string;
-  equipped: number;
-  best: number;
+  equipped: ItemRef | null;
+  best: ItemRef | null;
   upgrade: number; // best - equipped (0 = al je beste)
 }
 export interface CharPower {
@@ -15,13 +20,13 @@ export interface CharPower {
   classType: number;
   light: number;
   emblem?: string;
-  current: number; // gemiddelde van wat je nu draagt (basis-power, zonder artifact)
-  max: number; // gemiddelde als je je beste per slot draagt
+  current: number;
+  max: number;
+  totalGain: number;
   slots: SlotPower[];
-  lowestBucket: number; // laagste uitgeruste slot
 }
 
-/** Berekent per character het power-potentieel uit alles wat je bezit. */
+/** Berekent per character het power-potentieel + welk item je het beste equipt. */
 export function analyzePower(data: GearData): CharPower[] {
   const pool = [
     ...data.characters.flatMap((c) => [...c.equipped, ...c.inventory]),
@@ -31,27 +36,33 @@ export function analyzePower(data: GearData): CharPower[] {
   return data.characters.map((c) => {
     const slots: SlotPower[] = SLOT_ORDER.map((s) => {
       const isWeapon = WEAPON_BUCKETS.has(s.bucket);
-      const best = pool
-        .filter((it) => it.bucketHash === s.bucket && it.power != null && (isWeapon || it.classType === c.classType || it.classType === 3))
-        .reduce((m, it) => Math.max(m, it.power ?? 0), 0);
-      const equipped = c.equipped.find((it) => it.bucketHash === s.bucket)?.power ?? 0;
-      return { bucket: s.bucket, label: s.label, equipped, best, upgrade: Math.max(0, best - equipped) };
+      let best: ItemRef | null = null;
+      for (const it of pool) {
+        if (it.bucketHash !== s.bucket || it.power == null) continue;
+        if (!isWeapon && it.classType !== c.classType && it.classType !== 3) continue;
+        if (!best || it.power > best.power) best = { power: it.power, name: it.name, icon: it.icon };
+      }
+      const eq = c.equipped.find((it) => it.bucketHash === s.bucket);
+      const equipped: ItemRef | null = eq ? { power: eq.power ?? 0, name: eq.name, icon: eq.icon } : null;
+      const upgrade = Math.max(0, (best?.power ?? 0) - (equipped?.power ?? 0));
+      return { bucket: s.bucket, label: s.label, equipped, best, upgrade };
     });
 
-    const avg = (key: "equipped" | "best") => Math.floor(slots.reduce((a, s) => a + s[key], 0) / (slots.length || 1));
-    let lowestBucket = slots[0]?.bucket ?? 0;
-    let lowestVal = Infinity;
-    for (const s of slots) if (s.equipped < lowestVal) { lowestVal = s.equipped; lowestBucket = s.bucket; }
+    const avg = (pick: (s: SlotPower) => number) => Math.floor(slots.reduce((a, s) => a + pick(s), 0) / (slots.length || 1));
+    const current = avg((s) => s.equipped?.power ?? 0);
+    const max = avg((s) => s.best?.power ?? 0);
+    // Grootste winst eerst zodat je ziet wat je het beste upgradet.
+    slots.sort((a, b) => b.upgrade - a.upgrade);
 
     return {
       characterId: c.characterId,
       classType: c.classType,
       light: c.light,
       emblem: c.emblemBackground ?? c.emblemPath,
-      current: avg("equipped"),
-      max: avg("best"),
+      current,
+      max,
+      totalGain: max - current,
       slots,
-      lowestBucket,
     };
   });
 }

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 import { getValidAccessToken } from "@/lib/auth";
@@ -42,32 +41,48 @@ async function PowerBody() {
   }
   if (!data || data.characters.length === 0) return <div className="empty">{t("noChars")}</div>;
 
-  const chars = analyzePower(data);
   return (
     <div className="power-grid">
-      {chars.map((c) => <PowerCard key={c.characterId} c={c} t={t} />)}
+      {analyzePower(data).map((c) => <PowerCard key={c.characterId} c={c} t={t} />)}
     </div>
   );
 }
 
 function PowerCard({ c, t }: { c: CharPower; t: (k: string, v?: any) => string }) {
-  const gain = c.max - c.current;
   return (
-    <div className="card power-card" style={c.emblem ? { backgroundImage: `linear-gradient(180deg, rgba(11,14,20,0.86), rgba(11,14,20,0.97)), url(${c.emblem})` } : undefined}>
-      <div className="power-head">
+    <div className="card power-card">
+      <div className="power-banner" style={c.emblem ? { backgroundImage: `linear-gradient(90deg, rgba(11,14,20,0.85), rgba(11,14,20,0.5)), url(${c.emblem})` } : undefined}>
         <span className="power-class">{CLASS_NAMES[c.classType]}</span>
-        <span className="power-now">{c.current}{gain > 0 && <span className="power-max"> → {c.max} <span className="power-gain">+{gain}</span></span>}</span>
+        <span className="power-now">
+          {c.current}
+          {c.totalGain > 0 && <span className="power-max"> → {c.max} <span className="power-gain">+{c.totalGain}</span></span>}
+        </span>
       </div>
       <div className="power-slots">
         {c.slots.map((s) => (
-          <div key={s.bucket} className={`power-slot ${s.bucket === c.lowestBucket ? "low" : ""}`}>
-            <span className="power-slot-label">{s.label}</span>
-            <span className="power-slot-val">{s.equipped}</span>
-            {s.upgrade > 0 && <span className="power-slot-up">→ {s.best} <b>+{s.upgrade}</b></span>}
+          <div key={s.bucket} className={`power-slot ${s.upgrade > 0 ? "up" : "ok"}`}>
+            {s.best?.icon ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img className="item-icon" src={s.best.icon} alt="" />
+            ) : (
+              <div className="item-icon" />
+            )}
+            <div className="power-slot-info">
+              <div className="power-slot-top">
+                <span className="power-slot-label">{s.label}</span>
+                <span className="power-slot-power">
+                  {s.equipped?.power ?? 0}
+                  {s.upgrade > 0 && <span className="power-arrow"> → {s.best?.power} <b>+{s.upgrade}</b></span>}
+                </span>
+              </div>
+              <div className="power-slot-name muted">
+                {s.upgrade > 0 ? <span className="power-equip">⤴ {s.best?.name}</span> : s.best?.name}
+              </div>
+            </div>
           </div>
         ))}
       </div>
-      <p className="muted power-note">{gain > 0 ? t("equipBest", { n: c.max }) : t("atMax")}</p>
+      <p className="muted power-note">{c.totalGain > 0 ? t("equipBest", { n: c.max }) : t("atMax")}</p>
     </div>
   );
 }
