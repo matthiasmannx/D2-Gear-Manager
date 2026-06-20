@@ -34,8 +34,19 @@ async function resolve(name: string) {
     getPvpStats(m.membershipType, m.membershipId).catch(() => null),
     getPlayerExtras(m.membershipType, m.membershipId).catch(() => null),
   ]);
-  return { name: extras?.name ?? withM.bungieName ?? name, h: stats?.highlights ?? null, flawless: extras?.flawlessCount ?? null, type: m.membershipType, id: m.membershipId };
+  return {
+    name: extras?.name ?? withM.bungieName ?? name,
+    platform: extras?.platform ?? null,
+    emblem: extras?.emblemPath ?? null,
+    banner: extras?.characters?.[0]?.emblemBackground ?? null,
+    h: stats?.highlights ?? null,
+    flawless: extras?.flawlessCount ?? null,
+    type: m.membershipType,
+    id: m.membershipId,
+  };
 }
+
+const num = (s: any) => { if (s == null) return null; const f = parseFloat(String(s).replace(/[%,\s]/g, "")); return Number.isFinite(f) ? f : null; };
 
 async function CompareBody({ a, b }: { a: string; b: string }) {
   const t = await getTranslations("compare");
@@ -43,35 +54,70 @@ async function CompareBody({ a, b }: { a: string; b: string }) {
   const [pa, pb] = await Promise.all([resolve(a), resolve(b)]);
   if (!pa || !pb) return <div className="empty">{t("notFound")}</div>;
 
-  const rows: { label: string; a: any; b: any; cmp?: boolean }[] = [
+  const rows = [
     { label: tp("statKd"), a: pa.h?.kd, b: pb.h?.kd, cmp: true },
     { label: tp("statWinRate"), a: pa.h?.winRate, b: pb.h?.winRate, cmp: true },
     { label: tp("statFlawless"), a: pa.flawless, b: pb.flawless, cmp: true },
     { label: tp("hlTotalKills"), a: pa.h?.totalKills, b: pb.h?.totalKills, cmp: true },
     { label: tp("hlCombatRating"), a: pa.h?.combatRating, b: pb.h?.combatRating, cmp: true },
-    { label: tp("hlTimePlayed"), a: pa.h?.timePlayed, b: pb.h?.timePlayed },
+    { label: tp("hlTimePlayed"), a: pa.h?.timePlayed, b: pb.h?.timePlayed, cmp: false },
   ];
-  const num = (s: any) => { if (s == null) return null; const f = parseFloat(String(s).replace(/[%,\s]/g, "")); return Number.isFinite(f) ? f : null; };
+
+  let aWins = 0, bWins = 0;
+  for (const r of rows) {
+    if (!r.cmp) continue;
+    const na = num(r.a), nb = num(r.b);
+    if (na != null && nb != null) { if (na > nb) aWins++; else if (nb > na) bWins++; }
+  }
 
   return (
-    <div className="compare-grid">
-      <div className="compare-head">
-        <Link href={`/players/${pa.type}/${pa.id}`} className="compare-name">{pa.name}</Link>
-        <span className="muted">vs</span>
-        <Link href={`/players/${pb.type}/${pb.id}`} className="compare-name">{pb.name}</Link>
+    <div className="cmp">
+      <div className="cmp-head">
+        <PlayerHead p={pa} win={aWins > bWins} />
+        <div className="cmp-vs">VS</div>
+        <PlayerHead p={pb} win={bWins > aWins} right />
       </div>
-      {rows.map((r) => {
-        const na = num(r.a), nb = num(r.b);
-        const aWin = r.cmp && na != null && nb != null && na > nb;
-        const bWin = r.cmp && na != null && nb != null && nb > na;
-        return (
-          <div key={r.label} className="compare-row">
-            <span className={`compare-val ${aWin ? "win" : ""}`}>{r.a ?? "-"}</span>
-            <span className="compare-label muted">{r.label}</span>
-            <span className={`compare-val ${bWin ? "win" : ""}`}>{r.b ?? "-"}</span>
-          </div>
-        );
-      })}
+
+      <div className="cmp-stats">
+        {rows.map((r) => {
+          const na = num(r.a), nb = num(r.b);
+          const aWin = r.cmp && na != null && nb != null && na > nb;
+          const bWin = r.cmp && na != null && nb != null && nb > na;
+          const total = (na ?? 0) + (nb ?? 0);
+          const aw = r.cmp && total > 0 ? Math.round(((na ?? 0) / total) * 100) : 50;
+          return (
+            <div key={r.label} className="cmp-stat">
+              <div className="cmp-stat-row">
+                <span className={`cmp-val ${aWin ? "win" : ""}`}>{r.a ?? "-"}</span>
+                <span className="cmp-stat-label">{r.label}</span>
+                <span className={`cmp-val cmp-val-r ${bWin ? "win" : ""}`}>{r.b ?? "-"}</span>
+              </div>
+              {r.cmp && (
+                <div className="cmp-bar">
+                  <div className={`cmp-bar-a ${aWin ? "win" : ""}`} style={{ width: `${aw}%` }} />
+                  <div className={`cmp-bar-b ${bWin ? "win" : ""}`} style={{ width: `${100 - aw}%` }} />
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
+  );
+}
+
+function PlayerHead({ p, win, right }: { p: any; win: boolean; right?: boolean }) {
+  return (
+    <Link
+      href={`/players/${p.type}/${p.id}`}
+      className={`cmp-player ${right ? "right" : ""} ${win ? "winner" : ""}`}
+      style={p.banner ? { backgroundImage: `linear-gradient(90deg, rgba(11,14,20,0.82), rgba(11,14,20,0.55)), url(${p.banner})` } : undefined}
+    >
+      {p.emblem && /* eslint-disable-next-line @next/next/no-img-element */ <img className="cmp-emblem" src={p.emblem} alt="" />}
+      <span className="cmp-player-info">
+        <span className="cmp-player-name">{win && "🏆 "}{p.name}</span>
+        {p.platform && <span className="cmp-player-plat muted">{p.platform}</span>}
+      </span>
+    </Link>
   );
 }
