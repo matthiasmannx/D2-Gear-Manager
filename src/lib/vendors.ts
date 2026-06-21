@@ -159,7 +159,7 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
       let vicon: string | null = null;
       let banner: string | null = null;
       let location = "";
-      let rank: { level: number; name?: string; resets?: number } | undefined;
+      let rank: VendorView["rank"];
       try {
         const def = await getEntityDefinition("DestinyVendorDefinition", Number(vendorHash));
         const dp = def?.displayProperties ?? {};
