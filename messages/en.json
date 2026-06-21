@@ -304,7 +304,9 @@
     "groupWeekly": "Weekly",
     "resetsIn": "Everything resets in",
     "vendorOther": "Other",
-    "free": "Free"
+    "free": "Free",
+    "resetReady": "Reset ready",
+    "resetTo": "{n} ranks to reset"
   },
   "changelog": {
     "title": "Changelog",

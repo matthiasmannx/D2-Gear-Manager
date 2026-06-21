@@ -203,6 +203,8 @@ interface CatLabels {
   warlock: string;
   other: string;
   free: string;
+  resetReady: string;
+  resetTo: string;
 }
 
 // Elementen — subclass-items (Aspects/Supers/Melees…) hebben dit in hun type,
@@ -270,6 +272,8 @@ async function Vendors() {
     warlock: "Warlock",
     other: t("vendorOther"),
     free: t("free"),
+    resetReady: t("resetReady"),
+    resetTo: t("resetTo", { n: "{n}" }),
   };
 
   // Groeperen op locatie: Tower ("The Last City") eerst, daarna planeten.
@@ -324,6 +328,11 @@ function VendorCard({ v, labels }: { v: VendorView; labels: CatLabels }) {
             🏅 {v.rank.name || `Rank ${v.rank.level}`}{v.rank.resets ? ` · ${v.rank.resets}×` : ""}
           </span>
         )}
+        {v.rank?.canReset ? (
+          <span className="vendor-reset ready">♻️ {labels.resetReady}</span>
+        ) : v.rank && v.rank.ranksToReset != null && v.rank.ranksToReset > 0 ? (
+          <span className="vendor-reset">♻️ {labels.resetTo.replace("{n}", String(v.rank.ranksToReset))}</span>
+        ) : null}
         <span className="muted vendor-count">
           {v.items.length}
           {exotics > 0 && <span className="vendor-ex"> · ✦{exotics}</span>}

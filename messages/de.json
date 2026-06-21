@@ -304,7 +304,9 @@
     "groupWeekly": "Wöchentlich",
     "resetsIn": "Alles resettet in",
     "vendorOther": "Sonstiges",
-    "free": "Kostenlos"
+    "free": "Kostenlos",
+    "resetReady": "Reset bereit",
+    "resetTo": "noch {n} bis Reset"
   },
   "changelog": {
     "title": "Changelog",

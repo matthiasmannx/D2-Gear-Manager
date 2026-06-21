@@ -2980,3 +2980,7 @@ input:focus {
 
 /* vendor reputatie-rank badge */
 .vendor-rank { font-size: 0.72rem; font-weight: 700; padding: 0.1rem 0.45rem; border-radius: 6px; background: rgba(245,166,35,0.18); color: #ffcf5c; white-space: nowrap; }
+
+/* vendor reset-status badge */
+.vendor-reset { font-size: 0.72rem; font-weight: 700; padding: 0.1rem 0.45rem; border-radius: 6px; background: rgba(255,255,255,0.08); color: var(--muted); white-space: nowrap; }
+.vendor-reset.ready { background: rgba(90,209,155,0.2); color: #5ad19b; animation: live-pulse 1.8s infinite; }

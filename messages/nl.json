@@ -304,7 +304,9 @@
     "groupWeekly": "Wekelijks",
     "resetsIn": "Alles reset over",
     "vendorOther": "Overig",
-    "free": "Gratis"
+    "free": "Gratis",
+    "resetReady": "Reset klaar",
+    "resetTo": "nog {n} tot reset"
   },
   "changelog": {
     "title": "Changelog",

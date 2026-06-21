@@ -83,7 +83,7 @@ export interface VendorView {
   banner: string | null; // achtergrond-banner van de vendor-locatie
   location: string; // destination-naam (bv. "The Last City" = Tower)
   items: VendorItem[];
-  rank?: { level: number; name?: string; resets?: number }; // reputatie-rank (ranked vendors)
+  rank?: { level: number; name?: string; resets?: number; canReset?: boolean; ranksToReset?: number; pointsToReset?: number }; // reputatie-rank + reset-status
 }
 
 export async function getVendorInventory(token: string): Promise<VendorView[] | null> {
@@ -178,13 +178,27 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
         const prog = vendorsData[vendorHash]?.progression;
         if (prog?.progressionHash) {
           let stepName: string | undefined;
+          let canReset: boolean | undefined;
+          let ranksToReset: number | undefined;
+          let pointsToReset: number | undefined;
           try {
             const pdef = await getEntityDefinition("DestinyProgressionDefinition", prog.progressionHash);
-            stepName = pdef?.steps?.[prog.stepIndex ?? prog.level ?? 0]?.stepName;
+            const steps: any[] = pdef?.steps ?? [];
+            const total = steps.length;
+            const cur = prog.stepIndex ?? prog.level ?? 0;
+            stepName = steps[cur]?.stepName;
+            // repeatLastStep = resetbare reputatie-rank (Vanguard/Crucible/Gambit/…).
+            if (pdef?.repeatLastStep && total > 0) {
+              ranksToReset = Math.max(0, total - 1 - cur);
+              let pts = Math.max(0, (prog.nextLevelAt ?? 0) - (prog.progressToNextLevel ?? 0));
+              for (let i = cur + 1; i < total; i++) pts += steps[i]?.progressTotal ?? 0;
+              pointsToReset = pts;
+              canReset = ranksToReset === 0;
+            }
           } catch {
-            /* geen rank-naam */
+            /* geen rank-info */
           }
-          rank = { level: prog.level ?? prog.stepIndex ?? 0, name: stepName, resets: prog.currentResetCount };
+          rank = { level: prog.level ?? prog.stepIndex ?? 0, name: stepName, resets: prog.currentResetCount, canReset, ranksToReset, pointsToReset };
         }
 
         // Unlock-eis per item (bv. "Requires Rank X") uit de failureStrings.
