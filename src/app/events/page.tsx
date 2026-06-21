@@ -319,6 +319,11 @@ function VendorCard({ v, labels }: { v: VendorView; labels: CatLabels }) {
           <img src={v.icon} alt="" className="vendor-icon" />
         )}
         <span className="vendor-name">{v.name}</span>
+        {v.rank && (
+          <span className="vendor-rank" title={v.rank.resets ? `${v.rank.resets}× reset` : undefined}>
+            🏅 {v.rank.name || `Rank ${v.rank.level}`}{v.rank.resets ? ` · ${v.rank.resets}×` : ""}
+          </span>
+        )}
         <span className="muted vendor-count">
           {v.items.length}
           {exotics > 0 && <span className="vendor-ex"> · ✦{exotics}</span>}

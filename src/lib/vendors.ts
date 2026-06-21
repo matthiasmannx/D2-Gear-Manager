@@ -83,6 +83,7 @@ export interface VendorView {
   banner: string | null; // achtergrond-banner van de vendor-locatie
   location: string; // destination-naam (bv. "The Last City" = Tower)
   items: VendorItem[];
+  rank?: { level: number; name?: string; resets?: number }; // reputatie-rank (ranked vendors)
 }
 
 export async function getVendorInventory(token: string): Promise<VendorView[] | null> {
@@ -158,6 +159,7 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
       let vicon: string | null = null;
       let banner: string | null = null;
       let location = "";
+      let rank: { level: number; name?: string; resets?: number } | undefined;
       try {
         const def = await getEntityDefinition("DestinyVendorDefinition", Number(vendorHash));
         const dp = def?.displayProperties ?? {};
@@ -172,6 +174,19 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
           const dd = await getEntityDefinition("DestinyDestinationDefinition", loc.destinationHash);
           location = dd?.displayProperties?.name ?? "";
         }
+        // Reputatie-rank van de vendor (ranked vendors zoals Shaxx/Zavala/Banshee).
+        const prog = vendorsData[vendorHash]?.progression;
+        if (prog?.progressionHash) {
+          let stepName: string | undefined;
+          try {
+            const pdef = await getEntityDefinition("DestinyProgressionDefinition", prog.progressionHash);
+            stepName = pdef?.steps?.[prog.stepIndex ?? prog.level ?? 0]?.stepName;
+          } catch {
+            /* geen rank-naam */
+          }
+          rank = { level: prog.level ?? prog.stepIndex ?? 0, name: stepName, resets: prog.currentResetCount };
+        }
+
         // Unlock-eis per item (bv. "Requires Rank X") uit de failureStrings.
         const failStrings: string[] = def?.failureStrings ?? [];
         if (failStrings.length) {
@@ -186,7 +201,7 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
       }
       if (!name) return null;
 
-      return { hash: Number(vendorHash), name, icon: vicon, banner, location, items: items.slice(0, 30) };
+      return { hash: Number(vendorHash), name, icon: vicon, banner, location, items: items.slice(0, 30), rank };
     })
   );
   let views = built.filter((v): v is VendorView => v !== null);

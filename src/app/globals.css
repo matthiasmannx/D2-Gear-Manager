@@ -2977,3 +2977,6 @@ input:focus {
 .shared-map { font-weight: 600; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .shared-mode { font-size: 0.8rem; white-space: nowrap; }
 .shared-when { font-size: 0.78rem; white-space: nowrap; }
+
+/* vendor reputatie-rank badge */
+.vendor-rank { font-size: 0.72rem; font-weight: 700; padding: 0.1rem 0.45rem; border-radius: 6px; background: rgba(245,166,35,0.18); color: #ffcf5c; white-space: nowrap; }
