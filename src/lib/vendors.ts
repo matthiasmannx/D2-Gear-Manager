@@ -100,7 +100,9 @@ export async function getVendorInventory(token: string): Promise<VendorView[] | 
   try {
     res = await bungieFetch<any>(
       `/Destiny2/${primary.membershipType}/Profile/${primary.membershipId}/Character/${characterId}/Vendors/?components=400,402`,
-      { accessToken: token }
+      // 30 min cachen (URL is per membership+character → per-user veilig) zodat de
+      // vendors-sectie niet bij elke pagina-open opnieuw ~30s moet laden.
+      { accessToken: token, revalidate: 1800 }
     );
   } catch {
     return [];
