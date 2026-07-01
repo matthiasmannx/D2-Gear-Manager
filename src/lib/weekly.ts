@@ -8,7 +8,7 @@
  * web-research bij.
  */
 
-export const WEEKLY_UPDATED = "2026-06-16"; // YYYY-MM-DD
+export const WEEKLY_UPDATED = "2026-06-30"; // YYYY-MM-DD
 
 export interface WeeklyHighlights {
   nightfall?: { activity: string; weapon: string };
@@ -17,5 +17,12 @@ export interface WeeklyHighlights {
   featuredRaid?: string;
 }
 
-// Nog in te vullen, zie de bron-links op de Events-pagina.
-export const WEEKLY: WeeklyHighlights = {};
+// Week 30 juni - 7 juli 2026. Sinds The Edge of Fate is er geen wekelijkse
+// Grandmaster Nightfall meer (Nightfalls roteren nu dagelijks); de wekelijkse
+// premium-vanguardactiviteit is de Grandmaster Vanguard Alert.
+export const WEEKLY: WeeklyHighlights = {
+  nightfall: {
+    activity: "Grandmaster Vanguard Alert: The Sunless Cell",
+    weapon: "Null Composure",
+  },
+};

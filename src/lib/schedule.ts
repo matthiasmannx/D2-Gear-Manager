@@ -15,7 +15,10 @@ const RESET_HOUR = 17; // UTC
  * Vul hier de aangekondigde startdata in (een IB-week loopt di → di).
  * Voorbeeld: "2026-07-07T17:00:00Z".
  */
-export const IRON_BANNER_DATES: string[] = [];
+export const IRON_BANNER_DATES: string[] = [
+  "2026-06-30T17:00:00Z", // Renegades: IB keert terug, daarna elke 4 weken
+  "2026-07-28T17:00:00Z",
+];
 
 /** Eerstvolgende bekende IB-startdatum na `from`, of null. */
 export function nextIronBanner(from: Date = new Date()): Date | null {
