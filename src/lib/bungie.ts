@@ -690,6 +690,7 @@ export interface MatchResult {
   deaths: string;
   assists: string;
   kd: string;
+  kda: string; // Destiny-efficiency: (kills + assists) / deaths
   date: string; // ISO
   instanceId?: string;
 }
@@ -734,6 +735,11 @@ export async function getRecentMatches(
     const v = m.values ?? {};
     const standing = v.standing?.basic?.value;
     const won = standing === 0;
+    // Destiny rekent assists als kill mee: efficiency = (kills + assists) / deaths.
+    const k = v.kills?.basic?.value ?? 0;
+    const d = v.deaths?.basic?.value ?? 0;
+    const a = v.assists?.basic?.value ?? 0;
+    const kda = d > 0 ? ((k + a) / d).toFixed(2) : (k + a).toFixed(2);
     return {
       won,
       result: won ? "Victory" : "Defeat",
@@ -743,6 +749,7 @@ export async function getRecentMatches(
       deaths: disp(v, "deaths"),
       assists: disp(v, "assists"),
       kd: disp(v, "killsDeathsRatio"),
+      kda,
       date: m.period,
       instanceId: m.activityDetails?.instanceId,
     };

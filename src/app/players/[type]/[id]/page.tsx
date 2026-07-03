@@ -207,7 +207,7 @@ async function PlayerBody({ type, id }: { type: string; id: string }) {
                   <span className="match-map">{m.mapName}</span>
                   <span className="match-mode">{m.mode}</span>
                   <span className="match-kda muted">{m.kills}/{m.deaths}/{m.assists}</span>
-                  <span className="match-kd">{m.kd} K/D</span>
+                  <span className="match-kd">{m.kda} KDA</span>
                   <span className="match-date muted">{relTime(m.date, locale, { today: t("relToday"), yesterday: t("relYesterday"), daysAgo: (n: number) => t("relDaysAgo", { n }) })}</span>
                 </>
               );
