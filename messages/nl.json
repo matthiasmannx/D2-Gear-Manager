@@ -186,6 +186,8 @@
     "postmaster": "Postmaster ({n}), klik voor god-roll & pull",
     "postmasterEmpty": "Postmaster leeg",
     "pull": "Pull naar character",
+    "pmVaultAll": "Alles naar vault",
+    "pmVaultResult": "{vaulted} naar vault · {pulled} opgehaald (kan niet naar vault) · {skipped} overgeslagen",
     "equip": "Equip",
     "vault": "Vault",
     "lock": "Lock",

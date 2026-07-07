@@ -186,6 +186,8 @@
     "postmaster": "Postmaster ({n}), click for god roll & pull",
     "postmasterEmpty": "Postmaster empty",
     "pull": "Pull to character",
+    "pmVaultAll": "All to vault",
+    "pmVaultResult": "{vaulted} to vault · {pulled} pulled (can't vault) · {skipped} skipped",
     "equip": "Equip",
     "vault": "Vault",
     "lock": "Lock",

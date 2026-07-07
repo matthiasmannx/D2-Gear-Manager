@@ -186,6 +186,8 @@
     "postmaster": "Poststelle ({n}), für God-Roll & Abholen klicken",
     "postmasterEmpty": "Poststelle leer",
     "pull": "Zum Charakter holen",
+    "pmVaultAll": "Alles in den Tresor",
+    "pmVaultResult": "{vaulted} in den Tresor · {pulled} geholt (nicht lagerbar) · {skipped} übersprungen",
     "equip": "Anlegen",
     "vault": "Tresor",
     "lock": "Sperren",

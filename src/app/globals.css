@@ -862,6 +862,31 @@ input:focus {
 .gc-postmaster {
   padding-bottom: 0.6rem;
 }
+.gear-pm-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.gear-pm-all {
+  flex: none;
+  font-size: 0.72rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.gear-pm-all:hover:not(:disabled) {
+  background: var(--accent);
+  color: #fff;
+}
+.gear-pm-all:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
 /* Equip-slot als drop-zone bij slepen: groen = past, rood = past niet */
 .gear-slot.slot-ok {
   outline: 1px dashed #38d39f;

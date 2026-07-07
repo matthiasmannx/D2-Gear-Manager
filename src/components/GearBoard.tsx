@@ -312,6 +312,9 @@ export default function GearBoard({
   };
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+  // Character-id waarvan de postmaster nu wordt leeggehaald (voor de knop-status).
+  const [pmBusy, setPmBusy] = useState<string | null>(null);
   const [dropZone, setDropZone] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
   // bucketHash van het item dat nu gesleept wordt (om passende slots te kleuren)
@@ -435,6 +438,44 @@ export default function GearBoard({
       setError(e.message);
     } finally {
       setBusy(false);
+    }
+  }
+
+  // Hele postmaster van een character leeghalen → alles wat kan naar de vault.
+  async function pullAllToVault(c: Character) {
+    const items = c.postmaster.map((it) => ({
+      hash: it.hash,
+      itemId: it.instanceId,
+      itemType: it.itemType,
+      name: it.name,
+    }));
+    if (items.length === 0) return;
+    setPmBusy(c.characterId);
+    setError(null);
+    setNotice(null);
+    try {
+      const res = await fetch("/api/gear/postmaster/vault-all", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ characterId: c.characterId, membershipType, items }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? t("actionFailed"));
+      setNotice(
+        t("pmVaultResult", {
+          vaulted: data.vaulted ?? 0,
+          pulled: data.pulledOnly ?? 0,
+          skipped: data.skipped ?? 0,
+        })
+      );
+      if (Array.isArray(data.errors) && data.errors.length > 0) {
+        setError(data.errors.slice(0, 3).join(" · "));
+      }
+      refreshSoon();
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setPmBusy(null);
     }
   }
 
@@ -667,6 +708,7 @@ export default function GearBoard({
         </div>
       )}
 
+      {notice && <div className="notice" style={{ marginTop: "1rem" }}>{notice}</div>}
       {error && <div className="notice error" style={{ marginTop: "1rem" }}>{error}</div>}
       {busy && <div className="gear-busy">{t("busy")}</div>}
 
@@ -796,7 +838,17 @@ export default function GearBoard({
           <div className="gc-row gc-postmaster">
             {c.postmaster.length > 0 ? (
               <>
-                <span className="gear-sublabel">📭 {t("postmaster", { n: c.postmaster.length })}</span>
+                <div className="gear-pm-head">
+                  <span className="gear-sublabel">📭 {t("postmaster", { n: c.postmaster.length })}</span>
+                  <button
+                    className="gear-pm-all"
+                    onClick={() => pullAllToVault(c)}
+                    disabled={pmBusy !== null}
+                    title={t("pmVaultAll")}
+                  >
+                    {pmBusy === c.characterId ? t("busy") : `⇊ ${t("pmVaultAll")}`}
+                  </button>
+                </div>
                 <div className="gear-vault gc-items">
                   {c.postmaster.map((it, i) => (
                     <Tile key={(it.instanceId ?? it.hash) + "-pm-" + i} item={it} source={c.characterId} equipped={false} context="postmaster" a={actions} />

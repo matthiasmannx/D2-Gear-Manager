@@ -186,6 +186,8 @@
     "postmaster": "Cartero ({n}): haz clic para god roll y recoger",
     "postmasterEmpty": "Cartero vacío",
     "pull": "Recoger al personaje",
+    "pmVaultAll": "Todo a la bóveda",
+    "pmVaultResult": "{vaulted} a la bóveda · {pulled} recogidos (no almacenables) · {skipped} omitidos",
     "equip": "Equipar",
     "vault": "Cámara",
     "lock": "Bloquear",

@@ -186,6 +186,8 @@
     "postmaster": "Bureau de poste ({n}), cliquez pour god roll & récupérer",
     "postmasterEmpty": "Bureau de poste vide",
     "pull": "Récupérer sur le personnage",
+    "pmVaultAll": "Tout au coffre",
+    "pmVaultResult": "{vaulted} au coffre · {pulled} récupérés (non stockables) · {skipped} ignorés",
     "equip": "Équiper",
     "vault": "Coffre",
     "lock": "Verrouiller",
