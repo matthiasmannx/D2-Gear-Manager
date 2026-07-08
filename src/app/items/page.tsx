@@ -18,7 +18,7 @@ export default async function ItemsPage({
     <>
       <h1>{t("title")}</h1>
       <p className="muted">{t("intro")}</p>
-      <SearchBar basePath="/items" initial={q} placeholder={t("searchPlaceholder")} />
+      <SearchBar basePath="/items" initial={q} placeholder={t("searchPlaceholder")} live />
       {q ? <Results query={q} /> : <Hint />}
     </>
   );
