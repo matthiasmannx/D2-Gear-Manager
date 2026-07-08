@@ -22,7 +22,7 @@ export async function resolveItemByName(name: string): Promise<ResolvedItem | nu
   // Alleen op " / " splitsen (alternatieven). NIET op " of ", dat hoort in
   // namen als "Heart of Inmost Light" / "Crown of Tempests".
   const query = name.split(/\s\/\s/)[0].trim();
-  const hits = await searchItemIndex(query, 8);
+  const hits = await searchItemIndex(query, null, 8);
   if (hits.length === 0) return null;
 
   // Voorkeur voor een exotic-treffer (build-exotics zijn exotic).

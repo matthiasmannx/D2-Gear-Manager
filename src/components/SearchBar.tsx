@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 
@@ -17,6 +17,7 @@ export default function SearchBar({
   live?: boolean;
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const t = useTranslations("common");
   const [value, setValue] = useState(initial);
   // Laatst genavigeerde query, zodat we niet dubbel navigeren.
@@ -26,8 +27,13 @@ export default function SearchBar({
     const q = raw.trim();
     if (q === lastNav.current) return;
     lastNav.current = q;
+    // Overige params (bv. categorie-filter) behouden.
+    const params = new URLSearchParams(searchParams.toString());
+    if (q) params.set("q", q);
+    else params.delete("q");
+    const qs = params.toString();
     // replace i.p.v. push: geen history-vervuiling terwijl je letters typt.
-    router.replace(q ? `${basePath}?q=${encodeURIComponent(q)}` : basePath);
+    router.replace(qs ? `${basePath}?${qs}` : basePath);
   };
 
   function submit(e: React.FormEvent) {

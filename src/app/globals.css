@@ -2448,6 +2448,21 @@ input:focus {
 .chip-aspect {
   border-color: var(--class-color);
 }
+.item-filters {
+  margin: -0.6rem 0 1.4rem;
+}
+.item-filters .chip {
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+.item-filters .chip:hover {
+  border-color: var(--accent);
+}
+.item-filters .chip.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
 .stat-priority {
   display: flex;
   flex-wrap: wrap;

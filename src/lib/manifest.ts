@@ -3,6 +3,7 @@ import fs from "fs/promises";
 import path from "path";
 import os from "os";
 import { bungieFetch, BUNGIE_ROOT } from "./bungie";
+import { categoryTypes } from "./itemCategories";
 
 /**
  * Bungie's SearchDestinyEntities-endpoint is uitgefaseerd/onbetrouwbaar, dus we
@@ -192,13 +193,17 @@ export async function lookupItems(
  */
 export async function searchItemIndex(
   query: string,
+  category?: string | null,
   limit = 60
 ): Promise<ItemIndexEntry[]> {
   const { entries } = await getIndex();
   const q = query.trim().toLowerCase();
   if (!q) return [];
 
-  const matches = entries.filter((e) => e.name.toLowerCase().includes(q));
+  const types = categoryTypes(category);
+  const matches = entries.filter(
+    (e) => e.name.toLowerCase().includes(q) && (!types || types.includes(e.itemType))
+  );
   matches.sort((a, b) => {
     const an = a.name.toLowerCase();
     const bn = b.name.toLowerCase();

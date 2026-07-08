@@ -8,10 +8,10 @@ export async function GET(req: NextRequest) {
   const kind = req.nextUrl.searchParams.get("kind");
   if (q.length < 2) return NextResponse.json({ items: [] });
 
-  const wantType = kind === "armor" ? 2 : kind === "weapon" ? 3 : null;
-  const hits = await searchItemIndex(q, 30);
+  const category = kind === "armor" || kind === "weapon" ? kind : null;
+  const hits = await searchItemIndex(q, category, 30);
   const items = hits
-    .filter((h) => (wantType === null || h.itemType === wantType) && h.equippable)
+    .filter((h) => h.equippable)
     .slice(0, 12)
     .map((h) => ({ hash: h.hash, name: h.name, icon: icon(h.icon), type: h.type, tier: h.tier }));
   return NextResponse.json({ items });
