@@ -2453,10 +2453,13 @@ input:focus {
 }
 .item-filters .chip {
   cursor: pointer;
+  color: var(--text);
+  background: var(--bg-elev);
   transition: background 0.12s, border-color 0.12s, color 0.12s;
 }
 .item-filters .chip:hover {
   border-color: var(--accent);
+  color: var(--text);
 }
 .item-filters .chip.on {
   background: var(--accent);
