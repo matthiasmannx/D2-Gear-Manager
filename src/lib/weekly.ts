@@ -8,7 +8,7 @@
  * web-research bij.
  */
 
-export const WEEKLY_UPDATED = "2026-06-30"; // YYYY-MM-DD
+export const WEEKLY_UPDATED = "2026-09-22"; // YYYY-MM-DD
 
 export interface WeeklyHighlights {
   nightfall?: { activity: string; weapon: string };
@@ -17,12 +17,15 @@ export interface WeeklyHighlights {
   featuredRaid?: string;
 }
 
-// Week 30 juni - 7 juli 2026. Sinds The Edge of Fate is er geen wekelijkse
+// Week 22-29 september 2026. Sinds The Edge of Fate is er geen wekelijkse
 // Grandmaster Nightfall meer (Nightfalls roteren nu dagelijks); de wekelijkse
-// premium-vanguardactiviteit is de Grandmaster Vanguard Alert.
+// premium-vanguardactiviteit is de Grandmaster Vanguard Alert. Featured
+// raid/dungeon deze week weggelaten: bron noemt meerdere (Root of
+// Nightmares + Garden of Salvation; Sundered Doctrine + Spire of the
+// Watcher) zonder één duidelijke rotator.
 export const WEEKLY: WeeklyHighlights = {
   nightfall: {
     activity: "Grandmaster Vanguard Alert: The Sunless Cell",
-    weapon: "Null Composure",
+    weapon: "Adored",
   },
 };
