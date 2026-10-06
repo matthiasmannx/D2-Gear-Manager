@@ -16,8 +16,7 @@ const RESET_HOUR = 17; // UTC
  * Voorbeeld: "2026-07-07T17:00:00Z".
  */
 export const IRON_BANNER_DATES: string[] = [
-  "2026-09-22T17:00:00Z", // live deze week (Control + Eruption)
-  "2026-10-20T17:00:00Z", // volgende bevestigde IB-week, 4 weken later
+  "2026-10-20T17:00:00Z", // volgende bevestigde IB-week (Control + Eruption)
 ];
 
 /** Eerstvolgende bekende IB-startdatum na `from`, of null. */
