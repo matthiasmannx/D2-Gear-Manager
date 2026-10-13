@@ -8,7 +8,7 @@
  * web-research bij.
  */
 
-export const WEEKLY_UPDATED = "2026-10-06"; // YYYY-MM-DD
+export const WEEKLY_UPDATED = "2026-10-13"; // YYYY-MM-DD
 
 export interface WeeklyHighlights {
   nightfall?: { activity: string; weapon: string };
@@ -17,15 +17,15 @@ export interface WeeklyHighlights {
   featuredRaid?: string;
 }
 
-// Week 6 - 13 oktober 2026. Sinds The Edge of Fate is er geen wekelijkse
+// 13-20 oktober 2026. Sinds The Edge of Fate is er geen wekelijkse
 // Grandmaster Nightfall meer (Nightfalls roteren nu dagelijks); de wekelijkse
 // premium-vanguardactiviteit is de Grandmaster Vanguard Alert.
 // Featured raid/dungeon deze week weggelaten: bron noemt twee raids
-// (Salvation's Edge + Vault of Glass) en twee dungeons (Warlord's Ruin +
-// Pit of Heresy) zonder één duidelijke rotator.
+// (Vow of the Disciple + Last Wish) en twee dungeons (Vesper's Host +
+// Prophecy) zonder één duidelijke rotator.
 export const WEEKLY: WeeklyHighlights = {
   nightfall: {
-    activity: "Grandmaster Vanguard Alert: The Arms Dealer",
-    weapon: "Ouster Engine",
+    activity: "Grandmaster Vanguard Alert: Warden of Nothing",
+    weapon: "Whatchamacallit",
   },
 };
