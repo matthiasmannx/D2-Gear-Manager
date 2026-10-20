@@ -8,7 +8,7 @@
  * web-research bij.
  */
 
-export const WEEKLY_UPDATED = "2026-10-13"; // YYYY-MM-DD
+export const WEEKLY_UPDATED = "2026-10-20"; // YYYY-MM-DD
 
 export interface WeeklyHighlights {
   nightfall?: { activity: string; weapon: string };
@@ -17,15 +17,15 @@ export interface WeeklyHighlights {
   featuredRaid?: string;
 }
 
-// 13-20 oktober 2026. Sinds The Edge of Fate is er geen wekelijkse
+// 20-27 oktober 2026. Sinds The Edge of Fate is er geen wekelijkse
 // Grandmaster Nightfall meer (Nightfalls roteren nu dagelijks); de wekelijkse
 // premium-vanguardactiviteit is de Grandmaster Vanguard Alert.
 // Featured raid/dungeon deze week weggelaten: bron noemt twee raids
-// (Vow of the Disciple + Last Wish) en twee dungeons (Vesper's Host +
-// Prophecy) zonder één duidelijke rotator.
+// (King's Fall + Garden of Salvation) en twee dungeons (Sundered Doctrine +
+// Grasp of Avarice) zonder één duidelijke rotator.
 export const WEEKLY: WeeklyHighlights = {
   nightfall: {
-    activity: "Grandmaster Vanguard Alert: Warden of Nothing",
-    weapon: "Whatchamacallit",
+    activity: "Grandmaster Vanguard Alert: Birthplace of the Vile",
+    weapon: "Null Composure",
   },
 };
