@@ -8,7 +8,7 @@
  * web-research bij.
  */
 
-export const WEEKLY_UPDATED = "2026-10-20"; // YYYY-MM-DD
+export const WEEKLY_UPDATED = "2026-11-03"; // YYYY-MM-DD
 
 export interface WeeklyHighlights {
   nightfall?: { activity: string; weapon: string };
@@ -17,15 +17,15 @@ export interface WeeklyHighlights {
   featuredRaid?: string;
 }
 
-// 20-27 oktober 2026. Sinds The Edge of Fate is er geen wekelijkse
+// 3-10 november 2026. Sinds The Edge of Fate is er geen wekelijkse
 // Grandmaster Nightfall meer (Nightfalls roteren nu dagelijks); de wekelijkse
 // premium-vanguardactiviteit is de Grandmaster Vanguard Alert.
 // Featured raid/dungeon deze week weggelaten: bron noemt twee raids
-// (King's Fall + Garden of Salvation) en twee dungeons (Sundered Doctrine +
-// Grasp of Avarice) zonder één duidelijke rotator.
+// (Crota's End + Vault of Glass) en twee dungeons (Spire of the Watcher +
+// Pit of Heresy) zonder één duidelijke rotator.
 export const WEEKLY: WeeklyHighlights = {
   nightfall: {
-    activity: "Grandmaster Vanguard Alert: Birthplace of the Vile",
-    weapon: "Null Composure",
+    activity: "Grandmaster Vanguard Alert: The Sunless Cell",
+    weapon: "The Palindrome",
   },
 };
